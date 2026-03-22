@@ -1,0 +1,67 @@
+"use client";
+
+import { useEffect, useRef } from "react";
+import gsap from "gsap";
+
+const techs = [
+  "Next.js",
+  "NestJS",
+  "Prisma",
+  "AWS",
+  "TypeScript",
+  "ROS2",
+  "C/C++",
+  "STM32",
+  "ESP32",
+  "Python",
+  "Docker",
+  "PostgreSQL",
+  "Java",
+  "TailwindCSS",
+  "3D Printing",
+  "SLAM",
+  "Digital Logic",
+  "Git",
+];
+
+export default function LogoMarquee() {
+  const trackRef = useRef<HTMLDivElement>(null);
+
+  useEffect(() => {
+    if (!trackRef.current) return;
+
+    const track = trackRef.current;
+    const ctx = gsap.context(() => {
+      // Animate the first copy leftward by its own width, then repeat seamlessly
+      gsap.to(track, {
+        xPercent: -50,
+        duration: 40,
+        ease: "none",
+        repeat: -1,
+      });
+    });
+
+    return () => ctx.revert();
+  }, []);
+
+  return (
+    <section className="relative overflow-hidden border-y border-border bg-muted/30 py-5">
+      {/* Fade edges */}
+      <div className="pointer-events-none absolute inset-y-0 left-0 z-10 w-24 bg-linear-to-r from-background to-transparent" />
+      <div className="pointer-events-none absolute inset-y-0 right-0 z-10 w-24 bg-linear-to-l from-background to-transparent" />
+
+      <div ref={trackRef} className="flex w-max gap-10 whitespace-nowrap">
+        {/* Duplicate the list so it loops seamlessly */}
+        {[...techs, ...techs].map((tech, i) => (
+          <span
+            key={`${tech}-${i}`}
+            className="inline-flex items-center gap-2 text-sm font-semibold uppercase tracking-widest text-muted-foreground/60 select-none"
+          >
+            <span className="h-1 w-1 rounded-full bg-secondary/60" />
+            {tech}
+          </span>
+        ))}
+      </div>
+    </section>
+  );
+}
