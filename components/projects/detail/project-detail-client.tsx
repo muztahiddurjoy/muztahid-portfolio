@@ -1,7 +1,7 @@
 "use client";
 
 import { notFound } from "next/navigation";
-import { projects } from "@/lib/projects-data";
+import type { Project } from "@/lib/keystatic-types";
 import ProjectDetailHero from "@/components/projects/detail/project-detail-hero";
 import ProjectOverview from "@/components/projects/detail/project-overview";
 import ProjectChallengeSolution from "@/components/projects/detail/project-challenge-solution";
@@ -13,9 +13,10 @@ import Footer from "@/components/home/footer";
 
 interface ProjectDetailClientProps {
   slug: string;
+  projects: Project[];
 }
 
-export default function ProjectDetailClient({ slug }: ProjectDetailClientProps) {
+export default function ProjectDetailClient({ slug, projects }: ProjectDetailClientProps) {
   const projectIndex = projects.findIndex((p) => p.slug === slug);
   const project = projects[projectIndex];
 

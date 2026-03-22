@@ -1,0 +1,92 @@
+---
+title: Java DSA Engine
+subtitle: Computer Science Fundamentals
+category: software
+type: bento
+description: >-
+  A comprehensive data structures and algorithms library built from scratch in
+  Java — Linked Lists, Hash Tables, Trees, and Graphs implemented from first
+  principles to master time and space complexity.
+challengeTitle: The Challenge
+challengeDescription: >-
+  Moving beyond surface-level understanding of data structures to truly
+  internalize how they work at the memory level — understanding why a Hash Table
+  amortizes to O(1), why tree rotations maintain balance, and how graph
+  traversals explore state spaces.
+solutionTitle: The Solution
+solutionDescription: >-
+  Built every structure from first principles with detailed documentation of
+  design decisions, included unit tests for edge cases, and profiled actual
+  runtime performance against Java's built-in implementations to validate
+  understanding.
+stack:
+  - name: Java
+    color: ''
+  - name: JUnit
+    color: ''
+  - name: Big-O Analysis
+    color: ''
+  - name: Algorithms
+    color: ''
+codeSnippetFilename: src/HashTable.java
+codeSnippetLanguage: java
+codeSnippetCode: |-
+  public class HashTable<K, V> {
+      private static final int INITIAL_CAPACITY = 16;
+      private static final float LOAD_FACTOR = 0.75f;
+      private Entry<K, V>[] buckets;
+      private int size;
+
+      @SuppressWarnings("unchecked")
+      public HashTable() {
+          buckets = new Entry[INITIAL_CAPACITY];
+          size = 0;
+      }
+
+      public void put(K key, V value) {
+          if ((float) size / buckets.length >= LOAD_FACTOR) {
+              resize();
+          }
+          int index = hash(key);
+          Entry<K, V> entry = buckets[index];
+          while (entry != null) {
+              if (entry.key.equals(key)) {
+                  entry.value = value;
+                  return;
+              }
+              entry = entry.next;
+          }
+          buckets[index] = new Entry<>(key, value, buckets[index]);
+          size++;
+      }
+
+      private int hash(K key) {
+          return (key.hashCode() & 0x7FFFFFFF) % buckets.length;
+      }
+  }
+githubUrl: https://github.com/muztahiddurjoy
+liveUrl: null
+keyMetrics:
+  - label: Structures
+    value: '12+'
+  - label: Algorithms
+    value: '30+'
+  - label: Test Cases
+    value: '200+'
+  - label: From Scratch
+    value: 100%
+features:
+  - Linked Lists (singly, doubly, circular)
+  - Hash Table with chaining and open addressing
+  - BST, AVL Tree, and Heap implementations
+  - Graph traversals (BFS, DFS, Dijkstra)
+  - Sorting algorithms (Quick, Merge, Heap)
+  - Comprehensive JUnit test suites
+  - Big-O analysis documentation
+year: '2024'
+role: Academic Project
+duration: Ongoing
+sortOrder: 4
+---
+
+This isn't a portfolio project — it's a discipline statement. Every data structure in this repository is implemented from scratch, without importing Java's Collections framework. Linked Lists (singly, doubly, circular), Hash Tables with open addressing and chaining, Binary Search Trees, AVL Trees, Heaps, Graphs (adjacency list and matrix), and their associated algorithms — all written to deeply understand the mechanics of time and space complexity. Each implementation includes comprehensive unit tests and Big-O analysis documentation.

@@ -14,7 +14,7 @@ import {
   Navigation,
   ArrowRight,
 } from "lucide-react";
-import type { Project } from "@/lib/projects-data";
+import type { Project } from "@/lib/keystatic-types";
 import Link from "next/link";
 
 gsap.registerPlugin(ScrollTrigger);

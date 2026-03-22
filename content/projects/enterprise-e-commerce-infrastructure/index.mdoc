@@ -1,0 +1,90 @@
+---
+title: Enterprise E-Commerce Infrastructure
+subtitle: zf-emart & zf-foods
+category: software
+type: spotlight
+description: >-
+  A production-grade, multi-tenant e-commerce platform handling complex inventory
+  management, payment processing, and real-time order tracking across multiple
+  storefronts.
+challengeTitle: The Challenge
+challengeDescription: >-
+  Handling complex database schemas with deeply nested relational models,
+  configuring production-grade environments with zero-downtime deployments, and
+  managing authentication flows across multiple client applications.
+solutionTitle: The Solution
+solutionDescription: >-
+  Engineered a modular Nest.js backend with clean service-repository separation,
+  leveraging Prisma for type-safe database access and migration management.
+  Secured production access for AWS SES email delivery, managed seamless DNS
+  configurations for custom domains, and implemented JWT-based auth with refresh
+  token rotation.
+stack:
+  - name: Next.js
+    color: ''
+  - name: Nest.js
+    color: ''
+  - name: Prisma
+    color: ''
+  - name: AWS SES
+    color: ''
+  - name: PostgreSQL
+    color: ''
+  - name: TypeScript
+    color: ''
+  - name: Docker
+    color: ''
+codeSnippetFilename: prisma/schema.prisma
+codeSnippetLanguage: prisma
+codeSnippetCode: |-
+  model Product {
+    id          String   @id @default(cuid())
+    name        String
+    slug        String   @unique
+    description String?  @db.Text
+    price       Decimal  @db.Decimal(10, 2)
+    compareAt   Decimal? @db.Decimal(10, 2)
+    sku         String   @unique
+    inventory   Int      @default(0)
+    published   Boolean  @default(false)
+
+    category    Category @relation(fields: [categoryId], references: [id])
+    categoryId  String
+    images      ProductImage[]
+    variants    ProductVariant[]
+    orders      OrderItem[]
+
+    createdAt   DateTime @default(now())
+    updatedAt   DateTime @updatedAt
+
+    @@index([categoryId])
+    @@index([slug])
+    @@map("products")
+  }
+githubUrl: https://github.com/muztahiddurjoy
+liveUrl: null
+keyMetrics:
+  - label: Database Models
+    value: '25+'
+  - label: API Endpoints
+    value: '60+'
+  - label: Uptime
+    value: '99.9%'
+  - label: Response Time
+    value: <200ms
+features:
+  - Multi-tenant storefront architecture
+  - JWT authentication with refresh token rotation
+  - Real-time inventory synchronization
+  - AWS SES email integration with custom domains
+  - Prisma ORM with type-safe migrations
+  - Docker containerized deployment pipeline
+  - Role-based access control (RBAC)
+  - Webhook-driven order status updates
+year: '2024'
+role: Full-Stack Engineer
+duration: 6+ months
+sortOrder: 0
+---
+
+Built from the ground up as a full-stack enterprise solution, this platform powers multiple storefronts under a unified backend. The architecture separates concerns cleanly — a Next.js frontend handles SSR and client interactivity while a Nest.js API layer manages business logic, authentication, and data orchestration through Prisma ORM. The system handles thousands of SKUs, multi-level category hierarchies, and real-time inventory synchronization across storefronts.

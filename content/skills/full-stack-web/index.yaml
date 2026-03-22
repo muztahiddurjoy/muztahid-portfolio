@@ -1,0 +1,11 @@
+---
+title: Full-Stack Web
+icon: Globe
+skills:
+  - Next.js
+  - NestJS
+  - Prisma
+  - AWS
+  - Java (DSA)
+sortOrder: 0
+---

@@ -3,29 +3,22 @@
 import { useEffect, useRef } from "react";
 import gsap from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
-import { Globe, Cpu, Box } from "lucide-react";
+import { Globe, Cpu, Box, type LucideIcon } from "lucide-react";
+import type { SkillCategory } from "@/lib/keystatic-types";
 
 gsap.registerPlugin(ScrollTrigger);
 
-const categories = [
-  {
-    icon: Globe,
-    title: "Full-Stack Web",
-    skills: ["Next.js", "NestJS", "Prisma", "AWS", "Java (DSA)"],
-  },
-  {
-    icon: Cpu,
-    title: "Hardware & Embedded",
-    skills: ["C/C++", "ROS2", "ESP32", "STM32", "Digital Logic"],
-  },
-  {
-    icon: Box,
-    title: "Prototyping",
-    skills: ["3D Printing", "Bambu Lab workflows"],
-  },
-];
+const iconMap: Record<string, LucideIcon> = {
+  Globe,
+  Cpu,
+  Box,
+};
 
-export default function SkillsGrid() {
+interface SkillsGridProps {
+  categories: SkillCategory[];
+}
+
+export default function SkillsGrid({ categories }: SkillsGridProps) {
   const ref = useRef<HTMLElement>(null);
 
   useEffect(() => {
@@ -60,7 +53,9 @@ export default function SkillsGrid() {
         </p>
 
         <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
-          {categories.map(({ icon: Icon, title, skills }) => (
+          {categories.map(({ icon, title, skills }) => {
+            const Icon = iconMap[icon] || Globe;
+            return (
             <div
               key={title}
               className="skill-cell rounded-2xl border border-border bg-card p-6 flex flex-col gap-5"
@@ -84,7 +79,8 @@ export default function SkillsGrid() {
                 ))}
               </ul>
             </div>
-          ))}
+            );
+          })}
         </div>
       </div>
     </section>

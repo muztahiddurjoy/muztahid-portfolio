@@ -5,7 +5,7 @@ import gsap from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
 import { Button } from "@/components/ui/button";
 import { ArrowLeft, ArrowRight } from "lucide-react";
-import type { Project } from "@/lib/projects-data";
+import type { Project } from "@/lib/keystatic-types";
 import Link from "next/link";
 
 gsap.registerPlugin(ScrollTrigger);

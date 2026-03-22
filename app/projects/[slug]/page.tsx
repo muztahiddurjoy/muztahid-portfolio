@@ -1,8 +1,9 @@
 import type { Metadata } from "next";
-import { projects } from "@/lib/projects-data";
+import { getProjects, getProject } from "@/lib/keystatic";
 import ProjectDetailClient from "@/components/projects/detail/project-detail-client";
 
-export function generateStaticParams() {
+export async function generateStaticParams() {
+  const projects = await getProjects();
   return projects.map((project) => ({ slug: project.slug }));
 }
 
@@ -12,7 +13,7 @@ export async function generateMetadata({
   params: Promise<{ slug: string }>;
 }): Promise<Metadata> {
   const { slug } = await params;
-  const project = projects.find((p) => p.slug === slug);
+  const project = await getProject(slug);
   if (!project) {
     return { title: "Project Not Found" };
   }
@@ -28,5 +29,6 @@ export default async function ProjectPage({
   params: Promise<{ slug: string }>;
 }) {
   const { slug } = await params;
-  return <ProjectDetailClient slug={slug} />;
+  const projects = await getProjects();
+  return <ProjectDetailClient slug={slug} projects={projects} />;
 }

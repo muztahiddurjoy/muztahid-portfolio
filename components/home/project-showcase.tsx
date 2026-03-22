@@ -12,80 +12,37 @@ import {
   Bot,
   Satellite,
   Database,
+  type LucideIcon,
 } from "lucide-react";
 
 gsap.registerPlugin(ScrollTrigger);
 
-const projects = [
-  {
-    id: "zf-emart",
-    title: "zf-emart & zf-foods",
-    subtitle: "Enterprise E-Commerce",
-    description:
-      "Multi-tenant e-commerce platform handling complex product catalogs, role-based admin dashboards, and transactional email pipelines via AWS SES. Designed a normalized Prisma schema supporting 50+ relational models.",
-    tags: ["Next.js", "NestJS", "Prisma", "AWS SES", "PostgreSQL"],
-    icon: ShoppingCart,
-    span: "md:col-span-2", // wide card
-    metric: { value: "50+", label: "DB Models" },
-  },
-  {
-    id: "autonomous-nav",
-    title: "Autonomous Navigation",
-    subtitle: "BRACU Mongol-tori",
-    description:
-      "Built a ROS2-based navigation stack with real-time SLAM mapping, LiDAR point-cloud processing, and motor-control firmware on STM32. Tested in unstructured outdoor environments.",
-    tags: ["ROS2", "SLAM", "C/C++", "STM32", "LiDAR"],
-    icon: Navigation,
-    span: "", // normal card
-    metric: { value: "< 5cm", label: "Accuracy" },
-  },
-  {
-    id: "3d-prototyping",
-    title: "3D Print Prototyping",
-    subtitle: "Rapid Manufacturing",
-    description:
-      "End-to-end physical prototyping — from CAD modeling to slicing and production on Bambu Lab printers. Designed custom enclosures, mounts, and sensor housings for robotic assemblies.",
-    tags: ["Bambu Lab", "CAD", "FDM/FFF", "Fusion 360"],
-    icon: Printer,
-    span: "", // normal card
-    metric: { value: "30+", label: "Parts Printed" },
-  },
-  {
-    id: "appbaksho-clients",
-    title: "Appbaksho Client Suite",
-    subtitle: "Agency Portfolio",
-    description:
-      "Delivered 5+ production web applications for SMB clients — from restaurant ordering systems to inventory management dashboards. Each project shipped with CI/CD, custom auth, and monitoring.",
-    tags: ["Full-Stack", "Vercel", "Prisma", "Stripe"],
-    icon: Database,
-    span: "md:col-span-2", // wide card
-    metric: { value: "5+", label: "Clients Shipped" },
-  },
-  {
-    id: "space-apps",
-    title: "NASA Space Apps Project",
-    subtitle: "Global Hackathon",
-    description:
-      "48-hour hackathon project processing satellite telemetry for environmental monitoring. Built interactive data visualizations with real-time streaming graphs.",
-    tags: ["Python", "Data Viz", "REST APIs", "Teamwork"],
-    icon: Satellite,
-    span: "", // normal card
-    metric: { value: "48h", label: "Sprint" },
-  },
-  {
-    id: "bot-internal",
-    title: "BOT Engineers Internal Tools",
-    subtitle: "DevOps & Tooling",
-    description:
-      "Designed internal dashboards for team management, sprint tracking, and automated deployment notifications. Integrated GitHub webhooks for real-time build status.",
-    tags: ["React", "Node.js", "Docker", "GitHub Actions"],
-    icon: Bot,
-    span: "", // normal card
-    metric: { value: "3x", label: "Deploy Speed" },
-  },
-];
+const iconMap: Record<string, LucideIcon> = {
+  ShoppingCart,
+  Navigation,
+  Printer,
+  Bot,
+  Satellite,
+  Database,
+};
 
-export default function ProjectShowcase() {
+interface ShowcaseProject {
+  id: string;
+  title: string;
+  subtitle: string;
+  description: string;
+  tags: string[];
+  icon: string;
+  span: string;
+  metricValue: string;
+  metricLabel: string;
+}
+
+interface ProjectShowcaseProps {
+  projects: ShowcaseProject[];
+}
+
+export default function ProjectShowcase({ projects }: ProjectShowcaseProps) {
   const sectionRef = useRef<HTMLElement>(null);
 
   useEffect(() => {
@@ -129,7 +86,7 @@ export default function ProjectShowcase() {
         {/* Bento-style asymmetric grid */}
         <div className="grid grid-cols-1 md:grid-cols-4 gap-5">
           {projects.map((project) => {
-            const Icon = project.icon;
+            const Icon = iconMap[project.icon] || Database;
             return (
               <article
                 key={project.id}
@@ -155,10 +112,10 @@ export default function ProjectShowcase() {
                     {/* Metric badge */}
                     <div className="hidden sm:flex flex-col items-end">
                       <span className="text-xl font-black text-primary leading-none">
-                        {project.metric.value}
+                        {project.metricValue}
                       </span>
                       <span className="text-[10px] uppercase tracking-wider text-muted-foreground">
-                        {project.metric.label}
+                        {project.metricLabel}
                       </span>
                     </div>
                   </div>

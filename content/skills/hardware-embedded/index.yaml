@@ -1,0 +1,11 @@
+---
+title: Hardware & Embedded
+icon: Cpu
+skills:
+  - C/C++
+  - ROS2
+  - ESP32
+  - STM32
+  - Digital Logic
+sortOrder: 1
+---

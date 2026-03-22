@@ -10,20 +10,67 @@ import Education from "@/components/home/education";
 import Philosophy from "@/components/home/philosophy";
 import ContactCTA from "@/components/home/contact-cta";
 import Footer from "@/components/home/footer";
+import {
+  getSiteSettings,
+  getMetrics,
+  getEducation,
+  getFeaturedCases,
+  getProjectShowcase,
+  getExperiences,
+  getSkills,
+} from "@/lib/keystatic";
 
-export default function Home() {
+export default async function Home() {
+  const [siteSettings, metricsData, educationData, featuredCases, projectShowcase, experiences, skills] =
+    await Promise.all([
+      getSiteSettings(),
+      getMetrics(),
+      getEducation(),
+      getFeaturedCases(),
+      getProjectShowcase(),
+      getExperiences(),
+      getSkills(),
+    ]);
+
   return (
     <>
-      <Hero />
+      <Hero siteSettings={siteSettings} />
       <StatsBar />
       <LogoMarquee />
-      <FeaturedWork />
-      <ProjectShowcase />
-      <ExperienceTimeline />
-      <SkillsGrid />
-      <Metrics />
-      <Education />
-      <Philosophy />
+      <FeaturedWork cases={(featuredCases?.cases ?? []).map(c => ({
+        id: c.id,
+        title: c.title,
+        description: c.description,
+        tags: [...c.tags],
+        accent: c.accent,
+      }))} />
+      <ProjectShowcase projects={(projectShowcase?.projects ?? []).map(p => ({
+        id: p.id,
+        title: p.title,
+        subtitle: p.subtitle,
+        description: p.description,
+        tags: [...p.tags],
+        icon: p.icon,
+        span: p.span,
+        metricValue: p.metricValue,
+        metricLabel: p.metricLabel,
+      }))} />
+      <ExperienceTimeline experiences={experiences} />
+      <SkillsGrid categories={skills} />
+      <Metrics items={(metricsData?.items ?? []).map(m => ({
+        value: m.value ?? 0,
+        suffix: m.suffix,
+        label: m.label,
+      }))} />
+      <Education data={educationData ? {
+        degree: educationData.degree,
+        university: educationData.university,
+        status: educationData.status,
+        summary: educationData.degreeDescription,
+        coursework: [...educationData.coursework],
+        achievements: [...educationData.achievements],
+      } : null} />
+      <Philosophy siteSettings={siteSettings} />
       <ContactCTA />
       <Footer />
     </>

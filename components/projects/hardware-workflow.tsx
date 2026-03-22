@@ -4,13 +4,17 @@ import { useEffect, useRef } from "react";
 import gsap from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
 import { PenTool, Layers, Printer } from "lucide-react";
-import { prototypingSteps } from "@/lib/projects-data";
+import type { WorkflowStep } from "@/lib/keystatic-types";
 
 gsap.registerPlugin(ScrollTrigger);
 
 const stepIcons = [PenTool, Layers, Printer];
 
-export default function HardwareWorkflow() {
+interface HardwareWorkflowProps {
+  steps: WorkflowStep[];
+}
+
+export default function HardwareWorkflow({ steps }: HardwareWorkflowProps) {
   const ref = useRef<HTMLElement>(null);
   const trackRef = useRef<HTMLDivElement>(null);
 
@@ -65,7 +69,7 @@ export default function HardwareWorkflow() {
       </div>
 
       <div ref={trackRef} className="flex gap-8 pl-6 md:pl-12 lg:pl-20 pr-20 w-max">
-        {prototypingSteps.map((step, i) => {
+        {steps.map((step, i) => {
           const Icon = stepIcons[i];
           return (
             <div
@@ -91,7 +95,7 @@ export default function HardwareWorkflow() {
 
               {/* Progress indicator */}
               <div className="mt-6 flex items-center gap-2">
-                {prototypingSteps.map((_, j) => (
+                {steps.map((_, j) => (
                   <div
                     key={j}
                     className={`h-1 flex-1 rounded-full ${

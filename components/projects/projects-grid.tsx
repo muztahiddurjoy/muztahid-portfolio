@@ -2,12 +2,16 @@
 
 import { useState, useEffect, useRef } from "react";
 import gsap from "gsap";
-import { projects, type ProjectCategory } from "@/lib/projects-data";
+import type { Project, ProjectCategory } from "@/lib/keystatic-types";
 import ProjectFilterNav from "@/components/projects/project-filter-nav";
 import CaseStudyCard from "@/components/projects/case-study-card";
 import BentoGridProjects from "@/components/projects/bento-grid-projects";
 
-export default function ProjectsGrid() {
+interface ProjectsGridProps {
+  projects: Project[];
+}
+
+export default function ProjectsGrid({ projects }: ProjectsGridProps) {
   const [filter, setFilter] = useState<ProjectCategory>("all");
   const gridRef = useRef<HTMLDivElement>(null);
 

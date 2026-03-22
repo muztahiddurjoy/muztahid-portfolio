@@ -6,14 +6,17 @@ import { ScrollTrigger } from "gsap/ScrollTrigger";
 
 gsap.registerPlugin(ScrollTrigger);
 
-const metrics = [
-  { value: 15, suffix: "+", label: "Projects Shipped" },
-  { value: 50, suffix: "+", label: "Database Models Designed" },
-  { value: 18, suffix: "+", label: "Technologies in Stack" },
-  { value: 4, suffix: "", label: "Engineering Roles" },
-];
+interface MetricItem {
+  value: number;
+  suffix: string;
+  label: string;
+}
 
-export default function Metrics() {
+interface MetricsProps {
+  items: MetricItem[];
+}
+
+export default function Metrics({ items }: MetricsProps) {
   const sectionRef = useRef<HTMLElement>(null);
   const numberRefs = useRef<(HTMLSpanElement | null)[]>([]);
 
@@ -22,7 +25,7 @@ export default function Metrics() {
       numberRefs.current.forEach((el, i) => {
         if (!el) return;
         const target = { val: 0 };
-        const end = metrics[i].value;
+        const end = items[i]?.value ?? 0;
 
         gsap.to(target, {
           val: end,
@@ -34,7 +37,7 @@ export default function Metrics() {
             toggleActions: "play none none none",
           },
           onUpdate() {
-            el.textContent = `${Math.round(target.val)}${metrics[i].suffix}`;
+            el.textContent = `${Math.round(target.val)}${items[i]?.suffix ?? ""}`;
           },
         });
       });
@@ -61,7 +64,7 @@ export default function Metrics() {
     <section ref={sectionRef} className="py-20 bg-primary text-primary-foreground">
       <div className="container mx-auto px-6 md:px-12 lg:px-20">
         <div className="grid grid-cols-2 md:grid-cols-4 gap-10 md:gap-6 text-center">
-          {metrics.map((m, i) => (
+          {items.map((m, i) => (
             <div key={m.label} className="metric-item flex flex-col items-center gap-2">
               <span
                 ref={(el) => {

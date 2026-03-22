@@ -6,7 +6,18 @@ import { ArrowRight, Download, Globe, Cpu, Server, Layers, Cog, Wifi } from "luc
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 
-export default function Hero() {
+interface SiteSettings {
+  name?: string;
+  heroTagline?: string;
+  heroSubtitle?: string;
+  [key: string]: unknown;
+}
+
+interface HeroProps {
+  siteSettings: SiteSettings | null;
+}
+
+export default function Hero({ siteSettings }: HeroProps) {
   const containerRef = useRef<HTMLDivElement>(null);
   const graphicRef = useRef<HTMLDivElement>(null);
 
@@ -59,13 +70,16 @@ export default function Hero() {
           </Badge>
 
           <h1 className="hero-text text-5xl md:text-7xl lg:text-[5.5rem] font-black tracking-tight leading-[0.95]">
-            Muztahid
-            <br />
-            Rahman
+            {(siteSettings?.name ?? "Muztahid Rahman").split(" ").map((word, i) => (
+              <span key={i}>
+                {i > 0 && <br />}
+                {word}
+              </span>
+            ))}
           </h1>
 
           <p className="hero-text text-lg md:text-xl max-w-lg text-primary-foreground/80 leading-relaxed">
-            Architecting Scalable Web Platforms &amp; Autonomous Systems.
+            {siteSettings?.heroTagline ?? "Architecting Scalable Web Platforms & Autonomous Systems."}
           </p>
 
           <div className="hero-text flex flex-wrap gap-3 pt-2">

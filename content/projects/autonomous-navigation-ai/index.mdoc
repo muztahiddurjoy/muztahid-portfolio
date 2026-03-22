@@ -1,0 +1,92 @@
+---
+title: Autonomous Navigation & AI
+subtitle: BRACU Mongol-tori
+category: hardware
+type: spotlight
+description: >-
+  Mars rover and autonomous systems developed for the BRACU Mongol-tori robotics
+  team — tackling unstructured terrain navigation, sensor fusion, and real-time
+  decision-making.
+challengeTitle: The Challenge
+challengeDescription: >-
+  Navigating unstructured, unpredictable physical environments where GPS signals
+  are unreliable, terrain is uneven, and the system must make real-time decisions
+  with limited computational resources onboard.
+solutionTitle: The Solution
+solutionDescription: >-
+  Implemented a ROS2-based autonomy stack with SLAM (Simultaneous Localization
+  and Mapping) for spatial awareness, fusing LiDAR point clouds with IMU data
+  for robust odometry. Custom C++ nodes handle path planning with obstacle
+  avoidance, while a state machine manages mission execution and failsafe
+  behaviors.
+stack:
+  - name: ROS2
+    color: ''
+  - name: C/C++
+    color: ''
+  - name: Python
+    color: ''
+  - name: Linux
+    color: ''
+  - name: SLAM
+    color: ''
+  - name: OpenCV
+    color: ''
+  - name: LiDAR
+    color: ''
+codeSnippetFilename: src/nav_node.cpp
+codeSnippetLanguage: cpp
+codeSnippetCode: |-
+  #include "rclcpp/rclcpp.hpp"
+  #include "nav_msgs/msg/odometry.hpp"
+  #include "geometry_msgs/msg/twist.hpp"
+
+  class AutonomousNav : public rclcpp::Node {
+  public:
+    AutonomousNav() : Node("autonomous_nav") {
+      odom_sub_ = this->create_subscription<nav_msgs::msg::Odometry>(
+        "/odom", 10,
+        std::bind(&AutonomousNav::odom_callback, this, std::placeholders::_1)
+      );
+      cmd_pub_ = this->create_publisher<geometry_msgs::msg::Twist>(
+        "/cmd_vel", 10
+      );
+      RCLCPP_INFO(this->get_logger(), "Navigation node initialized");
+    }
+
+  private:
+    void odom_callback(const nav_msgs::msg::Odometry::SharedPtr msg) {
+      auto cmd = geometry_msgs::msg::Twist();
+      double target_x = waypoints_[current_wp_].x;
+      double dx = target_x - msg->pose.pose.position.x;
+      cmd.linear.x = std::clamp(dx * 0.5, -1.0, 1.0);
+      cmd_pub_->publish(cmd);
+    }
+  };
+githubUrl: https://github.com/muztahiddurjoy
+liveUrl: null
+keyMetrics:
+  - label: Sensor Inputs
+    value: '5+'
+  - label: Nav Accuracy
+    value: ±15cm
+  - label: Response Rate
+    value: 30Hz
+  - label: Competition
+    value: URC
+features:
+  - ROS2 inter-process communication framework
+  - SLAM-based real-time mapping and localization
+  - LiDAR + IMU sensor fusion pipeline
+  - Custom C++ path planning with obstacle avoidance
+  - State machine for mission execution
+  - Failsafe behavior management
+  - GPS waypoint navigation with dead-reckoning fallback
+  - Real-time telemetry dashboard
+year: '2024'
+role: Autonomy & Software Lead
+duration: Ongoing
+sortOrder: 1
+---
+
+As part of the BRACU Mongol-tori competitive robotics team, this project encompasses the full autonomy stack for a mars rover platform. The system integrates ROS2 for inter-process communication, SLAM for real-time mapping, and custom path-planning algorithms for navigating rocky, unpredictable terrain. Sensor fusion combines LiDAR, IMU, and camera feeds to build a coherent world model that the autonomous navigation module uses for decision-making.

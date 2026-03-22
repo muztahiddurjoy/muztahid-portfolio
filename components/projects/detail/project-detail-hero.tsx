@@ -5,7 +5,7 @@ import gsap from "gsap";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { ArrowLeft, Github, ExternalLink, Calendar, User, Clock } from "lucide-react";
-import type { Project } from "@/lib/projects-data";
+import type { Project } from "@/lib/keystatic-types";
 import Link from "next/link";
 
 interface ProjectDetailHeroProps {

@@ -8,25 +8,23 @@ import { Badge } from "@/components/ui/badge";
 
 gsap.registerPlugin(ScrollTrigger);
 
-const coursework = [
-  "Data Structures & Algorithms",
-  "Discrete Mathematics",
-  "Digital Logic Design",
-  "Object-Oriented Programming",
-  "Database Management Systems",
-  "Computer Architecture",
-  "Operating Systems",
-  "Linear Algebra",
-];
+interface EducationData {
+  degree?: string;
+  university?: string;
+  status?: string;
+  summary?: string;
+  coursework?: string[];
+  achievements?: string[];
+}
 
-const achievements = [
-  "NASA Space Apps Challenge Participant",
-  "Member — BRACU Mongol-tori Robotics Team",
-  "Founded Appbaksho Software Agency",
-];
+interface EducationProps {
+  data: EducationData | null;
+}
 
-export default function Education() {
+export default function Education({ data }: EducationProps) {
   const ref = useRef<HTMLElement>(null);
+  const coursework = data?.coursework ?? [];
+  const achievements = data?.achievements ?? [];
 
   useEffect(() => {
     const ctx = gsap.context(() => {
@@ -67,22 +65,22 @@ export default function Education() {
               </div>
               <div>
                 <h3 className="text-lg font-extrabold text-card-foreground leading-tight">
-                  B.Sc. in Computer Science
+                  {data?.degree ?? "B.Sc. in Computer Science"}
                 </h3>
-                <p className="text-sm text-muted-foreground">BRAC University</p>
+                <p className="text-sm text-muted-foreground">{data?.university ?? "BRAC University"}</p>
               </div>
             </div>
 
             <div className="flex items-center gap-2 text-sm text-muted-foreground">
               <span className="h-px flex-1 bg-border" />
               <span className="text-xs font-semibold uppercase tracking-widest">
-                Ongoing
+                {data?.status ?? "Ongoing"}
               </span>
               <span className="h-px flex-1 bg-border" />
             </div>
 
             <p className="text-sm text-muted-foreground leading-relaxed">
-              Focused on theoretical CS fundamentals alongside hands-on systems engineering. Actively combining academic rigor with industry-grade project delivery.
+              {data?.summary ?? "Focused on theoretical CS fundamentals alongside hands-on systems engineering. Actively combining academic rigor with industry-grade project delivery."}
             </p>
           </div>
 

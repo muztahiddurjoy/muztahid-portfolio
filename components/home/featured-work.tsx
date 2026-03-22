@@ -7,26 +7,19 @@ import { Badge } from "@/components/ui/badge";
 
 gsap.registerPlugin(ScrollTrigger);
 
-const cases = [
-  {
-    id: "web",
-    title: "zf-emart & zf-foods",
-    description:
-      "Full-stack e-commerce architecture managing complex database schemas and AWS SES production deployments.",
-    tags: ["Next.js", "NestJS", "Prisma"],
-    accent: "primary" as const,
-  },
-  {
-    id: "robotics",
-    title: "Autonomous Navigation Systems",
-    description:
-      "Implementing ROS2 and SLAM for unstructured environment navigation with the Mongol-tori team, alongside low-level STM32 microcontroller programming.",
-    tags: ["ROS2", "C/C++", "STM32"],
-    accent: "secondary" as const,
-  },
-];
+interface FeaturedCase {
+  id: string;
+  title: string;
+  description: string;
+  tags: string[];
+  accent: "primary" | "secondary";
+}
 
-export default function FeaturedWork() {
+interface FeaturedWorkProps {
+  cases: FeaturedCase[];
+}
+
+export default function FeaturedWork({ cases }: FeaturedWorkProps) {
   const sectionRef = useRef<HTMLElement>(null);
 
   useEffect(() => {

@@ -10,18 +10,22 @@ import ExplainerShowcase from "@/components/journal/explainer-showcase";
 import ScrollTelemetry from "@/components/journal/scroll-telemetry";
 import NewsletterTerminal from "@/components/journal/newsletter-terminal";
 import Footer from "@/components/home/footer";
-import { journalEntries, type LogCategory } from "@/lib/journal-data";
+import type { JournalEntry, LogCategory } from "@/lib/keystatic-types";
 
-export default function JournalPageClient() {
+interface JournalPageClientProps {
+  entries: JournalEntry[];
+}
+
+export default function JournalPageClient({ entries }: JournalPageClientProps) {
   const [activeCategory, setActiveCategory] = useState<LogCategory>("all");
   const feedRef = useRef<HTMLDivElement>(null);
 
-  const featured = journalEntries.find((e) => e.featured);
+  const featured = entries.find((e) => e.featured);
 
   const filtered =
     activeCategory === "all"
-      ? journalEntries.filter((e) => !e.featured)
-      : journalEntries.filter((e) => e.category === activeCategory);
+      ? entries.filter((e) => !e.featured)
+      : entries.filter((e) => e.category === activeCategory);
 
   const handleCategoryChange = useCallback(
     (cat: LogCategory) => {

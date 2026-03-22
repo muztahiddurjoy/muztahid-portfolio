@@ -1,0 +1,17 @@
+---
+role: Founder & Lead Developer
+org: Appbaksho
+period: 2023 — Present
+description: >-
+  Founded a software agency delivering full-stack web products for local
+  businesses. Handled end-to-end delivery from client discovery through database
+  design, deployment on AWS, and post-launch monitoring.
+tags:
+  - Entrepreneurship
+  - Prisma
+  - PostgreSQL
+  - AWS SES
+icon: Lightbulb
+side: left
+sortOrder: 2
+---

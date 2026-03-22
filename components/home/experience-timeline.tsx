@@ -3,55 +3,24 @@
 import { useEffect, useRef } from "react";
 import gsap from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
-import { Briefcase, Rocket, Lightbulb, GraduationCap } from "lucide-react";
+import { Briefcase, Rocket, Lightbulb, GraduationCap, type LucideIcon } from "lucide-react";
 import { Badge } from "@/components/ui/badge";
+import type { ExperienceEntry } from "@/lib/keystatic-types";
 
 gsap.registerPlugin(ScrollTrigger);
 
-const experiences = [
-  {
-    icon: Briefcase,
-    role: "Chief Software Engineer",
-    org: "BOT Engineers",
-    period: "2024 — Present",
-    description:
-      "Leading a cross-functional engineering team building production-grade web applications and internal tooling. Architected CI/CD pipelines, enforced code-review culture, and drove migration to a monorepo with Turborepo.",
-    tags: ["Leadership", "Next.js", "NestJS", "AWS", "CI/CD"],
-    side: "left" as const,
-  },
-  {
-    icon: Rocket,
-    role: "AI & Autonomy Engineer",
-    org: "BRACU Mongol-tori",
-    period: "2023 — Present",
-    description:
-      "Developing autonomous navigation stacks using ROS2 and SLAM algorithms for unstructured terrains. Programming low-level motor drivers on STM32 micro-controllers and integrating LiDAR-based obstacle avoidance.",
-    tags: ["ROS2", "SLAM", "C/C++", "STM32", "LiDAR"],
-    side: "right" as const,
-  },
-  {
-    icon: Lightbulb,
-    role: "Founder & Lead Developer",
-    org: "Appbaksho",
-    period: "2023 — Present",
-    description:
-      "Founded a software agency delivering full-stack web products for local businesses. Handled end-to-end delivery from client discovery through database design, deployment on AWS, and post-launch monitoring.",
-    tags: ["Entrepreneurship", "Prisma", "PostgreSQL", "AWS SES"],
-    side: "left" as const,
-  },
-  {
-    icon: GraduationCap,
-    role: "NASA Space Apps Challenger",
-    org: "NASA International Space Apps Challenge",
-    period: "2023",
-    description:
-      "Competed in the global hackathon, building a data-visualization prototype that processed satellite telemetry data for environmental monitoring. Collaborated across disciplines within a 48-hour sprint.",
-    tags: ["Hackathon", "Data Viz", "Teamwork", "Python"],
-    side: "right" as const,
-  },
-];
+const iconMap: Record<string, LucideIcon> = {
+  Briefcase,
+  Rocket,
+  Lightbulb,
+  GraduationCap,
+};
 
-export default function ExperienceTimeline() {
+interface ExperienceTimelineProps {
+  experiences: ExperienceEntry[];
+}
+
+export default function ExperienceTimeline({ experiences }: ExperienceTimelineProps) {
   const sectionRef = useRef<HTMLElement>(null);
 
   useEffect(() => {
@@ -119,7 +88,7 @@ export default function ExperienceTimeline() {
 
           <div className="flex flex-col gap-16">
             {experiences.map((exp, idx) => {
-              const Icon = exp.icon;
+              const Icon = iconMap[exp.icon] || Briefcase;
               const isLeft = exp.side === "left";
 
               return (
@@ -171,7 +140,7 @@ function TimelineContent({
   exp,
   align,
 }: {
-  exp: (typeof experiences)[number];
+  exp: ExperienceEntry;
   Icon: React.ComponentType<{ size?: number; className?: string }>;
   align: "left" | "right";
 }) {
