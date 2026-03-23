@@ -1,0 +1,19 @@
+{
+  "steps": [
+    {
+      "step": 1,
+      "title": "CAD / Modeling",
+      "description": "Design components in SolidWorks or Fusion 360 with precise tolerances, stress analysis, and assembly constraints. Every physical part starts as a 3D model validated against mechanical requirements."
+    },
+    {
+      "step": 2,
+      "title": "Slicing & Optimization",
+      "description": "Export STL files and configure slice parameters — layer height (0.2mm standard, 0.12mm precision), infill patterns (gyroid for strength, grid for speed), support generation, and material-specific temperature profiles."
+    },
+    {
+      "step": 3,
+      "title": "3D Printing & Assembly",
+      "description": "Print on Bambu Lab hardware with real-time monitoring. Post-processing includes support removal, surface finishing, heat-set insert installation, and final assembly with electronic components."
+    }
+  ]
+}

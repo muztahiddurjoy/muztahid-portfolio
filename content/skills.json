@@ -1,0 +1,23 @@
+[
+  {
+    "slug": "full-stack-web",
+    "title": "Full-Stack Web",
+    "icon": "Globe",
+    "skills": ["Next.js", "NestJS", "Prisma", "AWS", "Java (DSA)"],
+    "sortOrder": 0
+  },
+  {
+    "slug": "hardware-embedded",
+    "title": "Hardware & Embedded",
+    "icon": "Cpu",
+    "skills": ["C/C++", "ROS2", "ESP32", "STM32", "Digital Logic"],
+    "sortOrder": 1
+  },
+  {
+    "slug": "prototyping",
+    "title": "Prototyping",
+    "icon": "Box",
+    "skills": ["3D Printing", "Bambu Lab workflows"],
+    "sortOrder": 2
+  }
+]

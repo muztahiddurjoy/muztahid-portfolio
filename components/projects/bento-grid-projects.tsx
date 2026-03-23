@@ -11,7 +11,7 @@ import {
   BookOpen,
   ArrowRight,
 } from "lucide-react";
-import type { Project } from "@/lib/keystatic-types";
+import type { Project } from "@/lib/types";
 import Link from "next/link";
 
 gsap.registerPlugin(ScrollTrigger);

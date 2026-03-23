@@ -1,0 +1,8 @@
+{
+  "items": [
+    { "value": 15, "suffix": "+", "label": "Projects Shipped" },
+    { "value": 50, "suffix": "+", "label": "Database Models Designed" },
+    { "value": 18, "suffix": "+", "label": "Technologies in Stack" },
+    { "value": 4, "suffix": "", "label": "Engineering Roles" }
+  ]
+}

@@ -2,7 +2,7 @@
 
 import { useEffect, useRef, useState } from "react";
 import gsap from "gsap";
-import { categories, type LogCategory } from "@/lib/keystatic-types";
+import { categories, type LogCategory } from "@/lib/types";
 import {
   Layers,
   BookOpen,

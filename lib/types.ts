@@ -1,4 +1,4 @@
-// ─── Project types (keep backward-compatible with existing components) ───
+// ─── Project types ───
 
 export type ProjectCategory = "all" | "software" | "hardware";
 
@@ -45,9 +45,8 @@ export interface Project {
   year: string;
   role: string;
   duration: string;
+  sortOrder?: number;
 }
-
-// ─── Journal types ───
 
 export type LogCategory =
   | "all"
@@ -97,4 +96,78 @@ export interface SkillCategory {
   icon: string;
   skills: string[];
   sortOrder: number;
+}
+
+// ─── Site Settings types ───
+
+export interface SiteSettings {
+  name: string;
+  title: string;
+  siteDescription: string;
+  heroTagline: string;
+  heroSubtitle: string;
+  philosophyQuote: string;
+  philosophyAttribution: string;
+  [key: string]: unknown;
+}
+
+// ─── Metrics types ───
+
+export interface MetricItem {
+  value: number;
+  suffix: string;
+  label: string;
+}
+
+export interface MetricsData {
+  items: MetricItem[];
+}
+
+// ─── Education types ───
+
+export interface EducationData {
+  degree: string;
+  university: string;
+  status: string;
+  degreeDescription: string;
+  coursework: string[];
+  achievements: string[];
+}
+
+// ─── Featured Cases types ───
+
+export interface FeaturedCase {
+  id: string;
+  title: string;
+  description: string;
+  tags: string[];
+  accent: "primary" | "secondary";
+}
+
+export interface FeaturedCasesData {
+  cases: FeaturedCase[];
+}
+
+// ─── Project Showcase types ───
+
+export interface ShowcaseProject {
+  id: string;
+  title: string;
+  subtitle: string;
+  description: string;
+  tags: string[];
+  icon: string;
+  span: string;
+  metricValue: string;
+  metricLabel: string;
+}
+
+export interface ProjectShowcaseData {
+  projects: ShowcaseProject[];
+}
+
+// ─── Prototyping Steps types ───
+
+export interface PrototypingStepsData {
+  steps: WorkflowStep[];
 }

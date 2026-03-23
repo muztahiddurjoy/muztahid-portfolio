@@ -17,33 +17,30 @@ import {
   getProjectShowcase,
   getExperiences,
   getSkills,
-} from "@/lib/keystatic";
+} from "@/lib/content";
 
-export default async function Home() {
-  const [siteSettings, metricsData, educationData, featuredCases, projectShowcase, experiences, skills] =
-    await Promise.all([
-      getSiteSettings(),
-      getMetrics(),
-      getEducation(),
-      getFeaturedCases(),
-      getProjectShowcase(),
-      getExperiences(),
-      getSkills(),
-    ]);
+export default function Home() {
+  const siteSettings = getSiteSettings();
+  const metricsData = getMetrics();
+  const educationData = getEducation();
+  const featuredCases = getFeaturedCases();
+  const projectShowcase = getProjectShowcase();
+  const experiences = getExperiences();
+  const skills = getSkills();
 
   return (
     <>
       <Hero siteSettings={siteSettings} />
       <StatsBar />
       <LogoMarquee />
-      <FeaturedWork cases={(featuredCases?.cases ?? []).map(c => ({
+      <FeaturedWork cases={featuredCases.cases.map(c => ({
         id: c.id,
         title: c.title,
         description: c.description,
         tags: [...c.tags],
         accent: c.accent,
       }))} />
-      <ProjectShowcase projects={(projectShowcase?.projects ?? []).map(p => ({
+      <ProjectShowcase projects={projectShowcase.projects.map(p => ({
         id: p.id,
         title: p.title,
         subtitle: p.subtitle,
@@ -56,19 +53,19 @@ export default async function Home() {
       }))} />
       <ExperienceTimeline experiences={experiences} />
       <SkillsGrid categories={skills} />
-      <Metrics items={(metricsData?.items ?? []).map(m => ({
+      <Metrics items={metricsData.items.map(m => ({
         value: m.value ?? 0,
         suffix: m.suffix,
         label: m.label,
       }))} />
-      <Education data={educationData ? {
+      <Education data={{
         degree: educationData.degree,
         university: educationData.university,
         status: educationData.status,
         summary: educationData.degreeDescription,
         coursework: [...educationData.coursework],
         achievements: [...educationData.achievements],
-      } : null} />
+      }} />
       <Philosophy siteSettings={siteSettings} />
       <ContactCTA />
     </>

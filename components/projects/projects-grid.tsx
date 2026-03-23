@@ -2,7 +2,7 @@
 
 import { useState, useEffect, useRef } from "react";
 import gsap from "gsap";
-import type { Project, ProjectCategory } from "@/lib/keystatic-types";
+import type { Project, ProjectCategory } from "@/lib/types";
 import ProjectFilterNav from "@/components/projects/project-filter-nav";
 import CaseStudyCard from "@/components/projects/case-study-card";
 import BentoGridProjects from "@/components/projects/bento-grid-projects";

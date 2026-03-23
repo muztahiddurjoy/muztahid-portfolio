@@ -1,5 +1,5 @@
 import type { Metadata } from "next";
-import { getJournalEntries } from "@/lib/keystatic";
+import { getJournalEntries } from "@/lib/content";
 import JournalPageClient from "./journal-client";
 
 export const metadata: Metadata = {
@@ -8,7 +8,7 @@ export const metadata: Metadata = {
     "Documenting algorithmic theory, architectural decisions, and hardware mechanics. Research logs on data structures, cloud infrastructure, ROS2 autonomy, and analog engineering.",
 };
 
-export default async function JournalPage() {
-  const entries = await getJournalEntries();
+export default function JournalPage() {
+  const entries = getJournalEntries();
   return <JournalPageClient entries={entries} />;
 }

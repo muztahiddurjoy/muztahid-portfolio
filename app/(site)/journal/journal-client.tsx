@@ -10,7 +10,7 @@ import ExplainerShowcase from "@/components/journal/explainer-showcase";
 import ScrollTelemetry from "@/components/journal/scroll-telemetry";
 import NewsletterTerminal from "@/components/journal/newsletter-terminal";
 import Footer from "@/components/home/footer";
-import type { JournalEntry, LogCategory } from "@/lib/keystatic-types";
+import type { JournalEntry, LogCategory } from "@/lib/types";
 
 interface JournalPageClientProps {
   entries: JournalEntry[];

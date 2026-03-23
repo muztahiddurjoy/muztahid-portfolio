@@ -4,7 +4,7 @@ import { useEffect, useRef } from "react";
 import gsap from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
 import { PenTool, Layers, Printer } from "lucide-react";
-import type { WorkflowStep } from "@/lib/keystatic-types";
+import type { WorkflowStep } from "@/lib/types";
 
 gsap.registerPlugin(ScrollTrigger);
 

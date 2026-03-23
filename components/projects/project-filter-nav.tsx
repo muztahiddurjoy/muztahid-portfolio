@@ -3,7 +3,7 @@
 import { useEffect, useRef, useState } from "react";
 import gsap from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
-import type { ProjectCategory } from "@/lib/keystatic-types";
+import type { ProjectCategory } from "@/lib/types";
 
 gsap.registerPlugin(ScrollTrigger);
 

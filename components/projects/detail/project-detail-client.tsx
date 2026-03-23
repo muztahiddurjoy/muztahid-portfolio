@@ -1,7 +1,7 @@
 "use client";
 
 import { notFound } from "next/navigation";
-import type { Project } from "@/lib/keystatic-types";
+import type { Project } from "@/lib/types";
 import ProjectDetailHero from "@/components/projects/detail/project-detail-hero";
 import ProjectOverview from "@/components/projects/detail/project-overview";
 import ProjectChallengeSolution from "@/components/projects/detail/project-challenge-solution";

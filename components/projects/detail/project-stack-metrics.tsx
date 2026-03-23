@@ -4,7 +4,7 @@ import { useEffect, useRef } from "react";
 import gsap from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
 import { Badge } from "@/components/ui/badge";
-import type { Project } from "@/lib/keystatic-types";
+import type { Project } from "@/lib/types";
 
 gsap.registerPlugin(ScrollTrigger);
 

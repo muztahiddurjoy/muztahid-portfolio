@@ -4,7 +4,7 @@ import { useEffect, useRef } from "react";
 import gsap from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
 import { ArrowRight, Clock, Tag } from "lucide-react";
-import type { JournalEntry } from "@/lib/keystatic-types";
+import type { JournalEntry } from "@/lib/types";
 
 gsap.registerPlugin(ScrollTrigger);
 

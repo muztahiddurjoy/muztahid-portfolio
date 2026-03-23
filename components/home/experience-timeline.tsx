@@ -5,7 +5,7 @@ import gsap from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
 import { Briefcase, Rocket, Lightbulb, GraduationCap, type LucideIcon } from "lucide-react";
 import { Badge } from "@/components/ui/badge";
-import type { ExperienceEntry } from "@/lib/keystatic-types";
+import type { ExperienceEntry } from "@/lib/types";
 
 gsap.registerPlugin(ScrollTrigger);
 

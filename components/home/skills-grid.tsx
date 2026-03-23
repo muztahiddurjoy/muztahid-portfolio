@@ -4,7 +4,7 @@ import { useEffect, useRef } from "react";
 import gsap from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
 import { Globe, Cpu, Box, type LucideIcon } from "lucide-react";
-import type { SkillCategory } from "@/lib/keystatic-types";
+import type { SkillCategory } from "@/lib/types";
 
 gsap.registerPlugin(ScrollTrigger);
 
