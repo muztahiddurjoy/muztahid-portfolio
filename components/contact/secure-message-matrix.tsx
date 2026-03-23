@@ -4,16 +4,6 @@ import { useEffect, useRef, useState } from "react";
 import gsap from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
 import { Send, Terminal } from "lucide-react";
-import { Input } from "@/components/ui/input";
-import { Textarea } from "@/components/ui/textarea";
-import { Button } from "@/components/ui/button";
-import {
-  Select,
-  SelectContent,
-  SelectItem,
-  SelectTrigger,
-  SelectValue,
-} from "@/components/ui/select";
 
 gsap.registerPlugin(ScrollTrigger);
 
@@ -56,7 +46,6 @@ export default function SecureMessageMatrix() {
     if (!name || !email || !intent || !message) return;
 
     setStatus("sending");
-    // Simulate send
     setTimeout(() => {
       setStatus("sent");
       setName("");
@@ -68,56 +57,48 @@ export default function SecureMessageMatrix() {
   };
 
   return (
-    <section ref={sectionRef} className="py-20 bg-card">
+    <section ref={sectionRef} className="py-24 md:py-32 bg-foreground text-background border-t-4 border-background">
       <div className="container mx-auto px-6 md:px-12 lg:px-20">
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-16">
           {/* Left — Intro */}
           <div className="form-reveal">
             <div className="flex items-center gap-3 mb-6">
-              <Terminal size={16} className="text-muted-foreground" />
-              <span className="text-xs font-semibold uppercase tracking-widest text-muted-foreground">
+              <div className="flex items-center justify-center w-10 h-10 bg-background text-foreground">
+                <Terminal size={20} />
+              </div>
+              <span className="text-xs font-mono uppercase tracking-[0.2em] text-background/50">
                 Routing Protocol
               </span>
             </div>
 
-            <h2 className="text-3xl md:text-5xl font-black tracking-tight mb-6">
-              Transmit a
-              <br />
-              Secure Packet.
+            <span className="font-script text-2xl text-primary -rotate-2 inline-block mb-2">
+              Reach out.
+            </span>
+
+            <h2 className="text-3xl md:text-5xl font-black uppercase tracking-tighter text-background leading-[0.9] mb-6">
+              Transmit a<br />
+              <span className="bg-background text-foreground px-3 pt-3 pb-1 inline-block mt-2">
+                Secure Packet
+              </span>
             </h2>
 
-            <p className="text-muted-foreground leading-relaxed max-w-md">
+            <p className="text-sm text-background/50 leading-relaxed max-w-md border-l-8 border-accent pl-6">
               All messages are routed through a structured intake pipeline.
               Select your communication vector below to ensure proper routing
               and prioritization.
             </p>
 
-            {/* Terminal-style status */}
-            <div className="mt-10 rounded-lg border border-border bg-background p-4 font-mono text-xs">
-              <div className="flex items-center gap-2 mb-3">
-                <div className="w-2.5 h-2.5 rounded-full bg-red-500/80" />
-                <div className="w-2.5 h-2.5 rounded-full bg-yellow-500/80" />
-                <div className="w-2.5 h-2.5 rounded-full bg-green-500/80" />
-                <span className="ml-2 text-muted-foreground">
-                  routing_protocol.sh
-                </span>
+            {/* Terminal status */}
+            <div className="mt-10 border-4 border-background p-4 font-mono text-xs">
+              <div className="flex items-center gap-2 mb-3 pb-2 border-b-2 border-background/20">
+                <span className="w-2 h-2 bg-accent" />
+                <span className="text-background/60">routing_protocol.sh</span>
               </div>
-              <div className="space-y-1 text-muted-foreground">
-                <p>
-                  <span className="text-green-600">$</span> initializing secure
-                  channel...
-                </p>
-                <p>
-                  <span className="text-green-600">$</span> encryption: TLS 1.3
-                </p>
-                <p>
-                  <span className="text-green-600">$</span> routing table:
-                  loaded
-                </p>
-                <p>
-                  <span className="text-green-600">$</span> status:{" "}
-                  <span className="text-green-500">ready for intake</span>
-                </p>
+              <div className="space-y-1 text-background/50">
+                <p><span className="text-accent">$</span> initializing secure channel...</p>
+                <p><span className="text-accent">$</span> encryption: TLS 1.3</p>
+                <p><span className="text-accent">$</span> routing table: loaded</p>
+                <p><span className="text-accent">$</span> status: <span className="text-background">ready for intake</span></p>
               </div>
             </div>
           </div>
@@ -125,87 +106,86 @@ export default function SecureMessageMatrix() {
           {/* Right — Form */}
           <form onSubmit={handleSubmit} className="space-y-5">
             <div className="form-reveal space-y-2">
-              <label className="text-xs font-semibold uppercase tracking-widest text-muted-foreground">
+              <label className="text-[10px] font-black uppercase tracking-[0.2em] text-background/50">
                 Identifier
               </label>
-              <Input
+              <input
                 value={name}
                 onChange={(e) => setName(e.target.value)}
                 placeholder="Your full name"
                 required
-                className="h-12 rounded-none border-border bg-background text-foreground placeholder:text-muted-foreground/50 focus:border-secondary focus:ring-secondary/30 transition-colors"
+                className="w-full h-12 px-4 border-4 border-background bg-transparent text-background placeholder:text-background/30 font-mono text-sm focus:outline-none focus:bg-background/5 transition-colors"
               />
             </div>
 
             <div className="form-reveal space-y-2">
-              <label className="text-xs font-semibold uppercase tracking-widest text-muted-foreground">
+              <label className="text-[10px] font-black uppercase tracking-[0.2em] text-background/50">
                 Return Address
               </label>
-              <Input
+              <input
                 type="email"
                 value={email}
                 onChange={(e) => setEmail(e.target.value)}
                 placeholder="your@email.com"
                 required
-                className="h-12 rounded-none border-border bg-background text-foreground placeholder:text-muted-foreground/50 focus:border-secondary focus:ring-secondary/30 transition-colors"
+                className="w-full h-12 px-4 border-4 border-background bg-transparent text-background placeholder:text-background/30 font-mono text-sm focus:outline-none focus:bg-background/5 transition-colors"
               />
             </div>
 
             <div className="form-reveal space-y-2">
-              <label className="text-xs font-semibold uppercase tracking-widest text-muted-foreground">
+              <label className="text-[10px] font-black uppercase tracking-[0.2em] text-background/50">
                 Communication Vector
               </label>
-              <Select value={intent} onValueChange={setIntent} required>
-                <SelectTrigger className="w-full h-12 rounded-none border-border bg-background text-foreground focus:border-secondary focus:ring-secondary/30 transition-colors">
-                  <SelectValue placeholder="Select Vector" />
-                </SelectTrigger>
-                <SelectContent>
-                  {intents.map((v) => (
-                    <SelectItem key={v} value={v}>
-                      {v}
-                    </SelectItem>
-                  ))}
-                </SelectContent>
-              </Select>
+              <select
+                value={intent}
+                onChange={(e) => setIntent(e.target.value)}
+                required
+                className="w-full h-12 px-4 border-4 border-background bg-transparent text-background font-mono text-sm focus:outline-none focus:bg-background/5 transition-colors appearance-none cursor-pointer"
+              >
+                <option value="" className="bg-foreground text-background">Select Vector</option>
+                {intents.map((v) => (
+                  <option key={v} value={v} className="bg-foreground text-background">{v}</option>
+                ))}
+              </select>
             </div>
 
             <div className="form-reveal space-y-2">
-              <label className="text-xs font-semibold uppercase tracking-widest text-muted-foreground">
+              <label className="text-[10px] font-black uppercase tracking-[0.2em] text-background/50">
                 Payload
               </label>
-              <Textarea
+              <textarea
                 value={message}
                 onChange={(e) => setMessage(e.target.value)}
                 placeholder="Describe your inquiry, project scope, or collaboration intent..."
                 required
                 rows={6}
-                className="rounded-none border-border bg-background text-foreground placeholder:text-muted-foreground/50 focus:border-secondary focus:ring-secondary/30 resize-none transition-colors"
+                className="w-full px-4 py-3 border-4 border-background bg-transparent text-background placeholder:text-background/30 font-mono text-sm focus:outline-none focus:bg-background/5 resize-none transition-colors"
               />
             </div>
 
             <div className="form-reveal pt-2">
-              <Button
+              <button
                 type="submit"
                 disabled={status === "sending"}
-                className="w-full h-12 rounded-none font-semibold uppercase tracking-widest text-sm bg-primary text-primary-foreground hover:bg-primary-foreground hover:text-primary transition-colors duration-300"
+                className="w-full h-12 border-4 border-background bg-background text-foreground font-black uppercase tracking-[0.15em] text-sm hover:bg-transparent hover:text-background transition-colors duration-200 flex items-center justify-center gap-2 disabled:opacity-50"
               >
                 {status === "sending" ? (
                   "Transmitting..."
                 ) : (
                   <>
-                    <Send size={14} className="mr-2" />
+                    <Send size={14} />
                     Transmit Message
                   </>
                 )}
-              </Button>
+              </button>
             </div>
 
-            {/* Success state */}
             {status === "sent" && (
-              <div className="rounded-lg border border-green-500/30 bg-green-500/5 p-4 font-mono text-xs text-green-600 animate-in fade-in duration-300">
-                <span className="inline-block w-2 h-2 rounded-full bg-green-500 mr-2 animate-pulse" />
-                Payload Delivered — Message routed successfully. Expect response
-                within 24h.
+              <div className="border-4 border-background p-4 font-mono text-xs text-background animate-in fade-in duration-300">
+                <div className="flex items-center gap-2">
+                  <span className="w-2 h-2 bg-accent" />
+                  Payload Delivered — Message routed successfully. Expect response within 24h.
+                </div>
               </div>
             )}
           </form>

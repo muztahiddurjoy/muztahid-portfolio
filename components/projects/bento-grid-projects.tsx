@@ -3,8 +3,6 @@
 import { useEffect, useRef } from "react";
 import gsap from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
-import { Badge } from "@/components/ui/badge";
-import { Button } from "@/components/ui/button";
 import {
   Rocket,
   Cpu,
@@ -50,61 +48,59 @@ export default function BentoGridProjects({ projects }: BentoGridProjectsProps) 
   }, []);
 
   return (
-    <section ref={ref} className="py-24 bg-muted/40">
+    <section ref={ref} className="py-24 md:py-32 bg-background border-t-4 border-foreground">
       <div className="container mx-auto px-6 md:px-12 lg:px-20">
-        <p className="text-xs tracking-widest uppercase text-muted-foreground mb-3">
-          Focused Systems
-        </p>
-        <h2 className="text-3xl md:text-4xl font-black tracking-tight text-foreground mb-12">
-          Micro-Architecture Grid
+        <span className="font-script text-accent text-lg mb-2 block">focused systems</span>
+        <h2 className="text-3xl md:text-4xl font-black uppercase tracking-tighter text-foreground mb-12">
+          MICRO-ARCHITECTURE GRID
         </h2>
 
-        <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
-          {projects.map((project) => {
+        <div className="grid grid-cols-1 md:grid-cols-3 gap-0">
+          {projects.map((project, i) => {
             const Icon = iconMap[project.slug] || Rocket;
             return (
               <div
                 key={project.slug}
-                className="bento-card rounded-2xl border border-border bg-card p-6 flex flex-col"
+                className={`bento-card border-4 border-foreground p-6 flex flex-col ${i > 0 ? "md:border-l-0 max-md:border-t-0" : ""}`}
               >
-                <div className="flex items-center gap-3 mb-4">
-                  <div className="flex items-center justify-center w-10 h-10 rounded-lg bg-primary/10 dark:bg-primary/20">
-                    <Icon size={18} className="text-primary" />
+                {/* Header */}
+                <div className="flex items-center gap-3 mb-4 border-b-4 border-foreground pb-4">
+                  <div className="w-10 h-10 bg-foreground text-background flex items-center justify-center">
+                    <Icon size={18} />
                   </div>
                   <div>
-                    <p className="text-[10px] tracking-widest uppercase text-muted-foreground">
+                    <p className="text-[10px] tracking-[0.2em] uppercase text-foreground/40 font-mono">
                       {project.subtitle}
                     </p>
-                    <h3 className="text-lg font-extrabold tracking-tight text-foreground leading-tight">
+                    <h3 className="text-lg font-black uppercase tracking-tighter text-foreground leading-tight">
                       {project.title}
                     </h3>
                   </div>
                 </div>
 
-                <p className="text-sm text-muted-foreground leading-relaxed mb-5 flex-1">
+                <p className="text-sm text-foreground/50 leading-relaxed mb-5 flex-1">
                   {project.description}
                 </p>
 
                 <div className="flex flex-wrap gap-1.5 mb-5">
                   {project.stack.map((tech) => (
-                    <Badge
+                    <span
                       key={tech.name}
-                      variant="secondary"
-                      className="text-[10px] tracking-wider uppercase font-semibold"
+                      className="px-2 py-0.5 border-2 border-foreground/30 text-[10px] font-black uppercase tracking-[0.1em] text-foreground/50"
                     >
                       {tech.name}
-                    </Badge>
+                    </span>
                   ))}
                 </div>
 
                 {project.keyMetrics && (
-                  <div className="grid grid-cols-3 gap-3 mb-5 p-3 rounded-lg bg-muted/60">
-                    {project.keyMetrics.slice(0, 3).map((metric) => (
-                      <div key={metric.label} className="text-center">
-                        <p className="text-sm font-extrabold text-foreground">
+                  <div className="grid grid-cols-3 gap-0 mb-5 border-4 border-foreground">
+                    {project.keyMetrics.slice(0, 3).map((metric, mi) => (
+                      <div key={metric.label} className={`text-center p-3 ${mi > 0 ? "border-l-4 border-foreground" : ""}`}>
+                        <p className="text-sm font-black text-foreground">
                           {metric.value}
                         </p>
-                        <p className="text-[10px] text-muted-foreground uppercase tracking-wider">
+                        <p className="text-[10px] text-foreground/40 uppercase tracking-[0.15em] font-mono">
                           {metric.label}
                         </p>
                       </div>
@@ -113,14 +109,10 @@ export default function BentoGridProjects({ projects }: BentoGridProjectsProps) 
                 )}
 
                 <Link href={`/projects/${project.slug}`}>
-                  <Button
-                    variant="outline"
-                    size="sm"
-                    className="w-full cursor-pointer font-semibold"
-                  >
+                  <button className="w-full cursor-pointer bg-foreground text-background py-3 font-black text-xs uppercase tracking-[0.15em] transition-colors duration-200 hover:bg-accent hover:text-foreground border-4 border-foreground flex items-center justify-center gap-2">
                     Explore
-                    <ArrowRight size={14} className="ml-2" />
-                  </Button>
+                    <ArrowRight size={14} />
+                  </button>
                 </Link>
               </div>
             );

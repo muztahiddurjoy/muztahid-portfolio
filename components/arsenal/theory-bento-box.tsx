@@ -3,59 +3,49 @@
 import { useEffect, useRef } from "react";
 import gsap from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
-import { BookOpen, Binary, Sigma, Atom } from "lucide-react";
-import { Badge } from "@/components/ui/badge";
+import { BookOpen, Binary, Sigma, Atom, ArrowRight } from "lucide-react";
 
 gsap.registerPlugin(ScrollTrigger);
 
 const cards = [
   {
+    id: "dsa",
     icon: Binary,
     title: "Data Structures & Algorithms",
-    subtitle: "Java / C++",
-    description:
-      "Building Linked Lists, Hash Tables, Binary Trees, and Graphs from scratch — not just using library implementations. Every structure is analyzed for Big-O time and space complexity. Problems are solved with a focus on optimal solutions: amortized analysis for dynamic arrays, collision resolution strategies for hash maps, and balancing factors for AVL trees.",
+    description: "Algorithmic thinking applied to real engineering — from graph traversal in path planning to hash maps in caching layers.",
     topics: [
-      "Linked Lists",
-      "Hash Tables",
-      "Binary Trees",
-      "Graph Traversal",
-      "Dynamic Programming",
-      "Big-O Analysis",
+      "Graph Theory (BFS, DFS, Dijkstra, A*)",
+      "Dynamic Programming & Memoization",
+      "Tree Structures (BST, AVL, Tries)",
+      "Sorting & Search Optimization",
+      "Space-Time Complexity Analysis",
     ],
-    span: "md:col-span-2 md:row-span-2",
   },
   {
+    id: "math",
     icon: Sigma,
     title: "Discrete Mathematics",
-    subtitle: "Logic & Computation",
-    description:
-      "Boolean algebra, propositional and predicate logic, proof techniques, set theory, combinatorics, and graph theory. These aren't abstract courses — they directly inform algorithm design, circuit analysis, and formal verification of system behavior.",
+    description: "Formal logic, set theory, combinatorics — the language underneath every algorithm and every proof.",
     topics: [
-      "Boolean Algebra",
-      "Logic Gates",
-      "Combinatorics",
-      "Set Theory",
-      "Proof Techniques",
-      "Finite Automata",
+      "Propositional & Predicate Logic",
+      "Set Theory & Relations",
+      "Combinatorics & Counting",
+      "Graph Theory (Formal)",
+      "Number Theory & Modular Arithmetic",
     ],
-    span: "md:col-span-1 md:row-span-1",
   },
   {
+    id: "physics",
     icon: Atom,
     title: "Physics & Calculus",
-    subtitle: "Applied Engineering Math",
-    description:
-      "Electrostatics, magnetism, kinematics, and multi-variable calculus applied to sensor calibration, motor torque calculations, and trajectory planning for autonomous systems. PID controller tuning is fundamentally a calculus problem — understanding derivatives and integrals is non-negotiable.",
+    description: "Mechanics, kinematics, and calculus for robotics — from PID control tuning to trajectory optimization.",
     topics: [
-      "Electrostatics",
-      "Magnetism",
-      "Calculus I-III",
-      "Kinematics",
-      "Differential Equations",
-      "Signal Processing",
+      "Newtonian Mechanics & Dynamics",
+      "Differential Equations for Control",
+      "Linear Algebra & Transformations",
+      "Signal Processing Fundamentals",
+      "Numerical Methods & Integration",
     ],
-    span: "md:col-span-1 md:row-span-1",
   },
 ];
 
@@ -66,10 +56,10 @@ export default function TheoryBentoBox() {
     const ctx = gsap.context(() => {
       gsap.utils.toArray<HTMLElement>(".theory-card").forEach((el, i) => {
         gsap.from(el, {
-          y: 30,
+          y: 40,
           opacity: 0,
           duration: 0.8,
-          delay: i * 0.12,
+          delay: i * 0.15,
           ease: "power3.out",
           scrollTrigger: {
             trigger: el,
@@ -84,86 +74,104 @@ export default function TheoryBentoBox() {
   }, []);
 
   return (
-    <section
-      id="section-theory"
-      ref={sectionRef}
-      className="py-24 bg-background overflow-hidden"
-    >
+    <section id="section-theory" ref={sectionRef} className="py-24 md:py-32 bg-background border-t-4 border-foreground overflow-hidden">
       <div className="container mx-auto px-6 md:px-12 lg:px-20">
-        {/* Section header */}
+        {/* Header */}
         <div className="flex items-center gap-3 mb-4">
-          <div className="flex items-center justify-center w-10 h-10 rounded-lg bg-primary/10">
-            <BookOpen size={20} className="text-primary" />
+          <div className="flex items-center justify-center w-10 h-10 bg-foreground text-background">
+            <BookOpen size={20} />
           </div>
-          <h2 className="text-3xl md:text-4xl font-black tracking-tight text-foreground">
-            The Algorithmic Foundation
-          </h2>
+          <div>
+            <span className="font-script text-xl text-primary -rotate-2 inline-block">Theoretical.</span>
+            <h2 className="text-3xl md:text-4xl font-black uppercase tracking-tighter text-foreground leading-[0.9]">
+              Algorithmic Theory
+            </h2>
+          </div>
         </div>
-        <p className="text-muted-foreground max-w-xl mb-16">
-          Tools change, but math doesn&apos;t. The science behind the code.
+        <p className="text-sm font-mono uppercase tracking-[0.1em] text-foreground/50 max-w-xl mb-16">
+          The formal foundations behind every system I build.
         </p>
 
         {/* Bento grid */}
-        <div className="grid grid-cols-1 md:grid-cols-3 gap-6 auto-rows-auto">
-          {cards.map((card) => {
+        <div className="grid grid-cols-1 lg:grid-cols-3 gap-0">
+          {cards.map((card, idx) => {
             const Icon = card.icon;
             return (
               <div
-                key={card.title}
-                className={`theory-card rounded-2xl border border-border bg-card p-8 ${card.span}`}
+                key={card.id}
+                className={`theory-card border-4 border-foreground ${idx > 0 ? "lg:border-l-0" : ""} ${idx > 0 ? "border-t-0 lg:border-t-4" : ""}`}
               >
-                <div className="flex items-center gap-3 mb-2">
-                  <div className="flex items-center justify-center w-10 h-10 rounded-lg bg-secondary/10">
-                    <Icon size={20} className="text-secondary" />
-                  </div>
-                  <div>
-                    <h3 className="text-lg font-extrabold text-card-foreground">
+                {/* Card header */}
+                <div className="px-6 py-4 border-b-4 border-foreground">
+                  <div className="flex items-center gap-3">
+                    <div className="flex items-center justify-center w-10 h-10 bg-foreground text-background">
+                      <Icon size={20} />
+                    </div>
+                    <h3 className="text-base font-black uppercase tracking-tight text-foreground">
                       {card.title}
                     </h3>
-                    <span className="text-xs font-mono text-muted-foreground">
-                      {card.subtitle}
-                    </span>
                   </div>
                 </div>
 
-                <p className="text-sm text-muted-foreground leading-relaxed mt-4 mb-6">
-                  {card.description}
-                </p>
+                {/* Card body */}
+                <div className="px-6 py-5">
+                  <p className="text-sm text-foreground/60 leading-relaxed mb-6 border-l-4 border-accent pl-4">
+                    {card.description}
+                  </p>
 
-                <div className="flex flex-wrap gap-1.5">
-                  {card.topics.map((topic) => (
-                    <Badge
-                      key={topic}
-                      variant="secondary"
-                      className="text-[11px]"
-                    >
-                      {topic}
-                    </Badge>
-                  ))}
+                  <div className="space-y-0">
+                    {card.topics.map((topic, tIdx) => (
+                      <div
+                        key={topic}
+                        className={`flex items-start gap-3 py-3 ${
+                          tIdx < card.topics.length - 1 ? "border-b border-foreground/10" : ""
+                        }`}
+                      >
+                        <span className="w-1.5 h-1.5 bg-foreground mt-1.5 shrink-0" />
+                        <span className="text-sm text-foreground/70">{topic}</span>
+                      </div>
+                    ))}
+                  </div>
+                </div>
+
+                {/* Card footer */}
+                <div className="flex items-center gap-2 px-6 py-3 border-t-2 border-foreground/10">
+                  <span className="h-2 w-2 bg-accent" />
+                  <span className="text-[10px] font-black uppercase tracking-[0.2em] text-foreground/40">
+                    {card.topics.length} topics covered
+                  </span>
                 </div>
               </div>
             );
           })}
         </div>
 
-        {/* Complexity notation callout */}
-        <div className="mt-12 grid grid-cols-2 md:grid-cols-4 gap-4">
-          {[
-            { notation: "O(1)", label: "Hash Lookups" },
-            { notation: "O(log n)", label: "Binary Search" },
-            { notation: "O(n)", label: "Linear Scans" },
-            { notation: "O(n log n)", label: "Merge Sort" },
-          ].map((item) => (
-            <div
-              key={item.notation}
-              className="rounded-xl border border-border bg-card p-4 text-center"
-            >
-              <span className="text-2xl font-black font-mono text-secondary">
-                {item.notation}
-              </span>
-              <p className="text-xs text-muted-foreground mt-1">{item.label}</p>
-            </div>
-          ))}
+        {/* Complexity callout */}
+        <div className="mt-12 border-4 border-foreground p-6">
+          <div className="flex items-center gap-3 mb-3 pb-3 border-b-2 border-foreground/20">
+            <ArrowRight size={18} className="text-foreground" />
+            <span className="text-sm font-black uppercase tracking-tight text-foreground">
+              Complexity Notation
+            </span>
+          </div>
+          <div className="grid grid-cols-2 md:grid-cols-4 gap-0">
+            {[
+              { notation: "O(1)", label: "Constant" },
+              { notation: "O(log n)", label: "Logarithmic" },
+              { notation: "O(n)", label: "Linear" },
+              { notation: "O(n log n)", label: "Linearithmic" },
+            ].map((item, idx) => (
+              <div
+                key={item.notation}
+                className={`p-4 border-2 border-foreground/10 ${idx > 0 ? "border-l-0 md:border-l-2" : ""} ${idx >= 2 ? "border-t-0 md:border-t-2" : ""}`}
+              >
+                <span className="text-xl font-mono font-bold text-foreground block">{item.notation}</span>
+                <span className="text-[10px] font-black uppercase tracking-[0.15em] text-foreground/40">
+                  {item.label}
+                </span>
+              </div>
+            ))}
+          </div>
         </div>
       </div>
     </section>

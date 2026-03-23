@@ -32,89 +32,82 @@ export default function AnalogMechanics() {
   return (
     <section
       ref={sectionRef}
-      className="relative py-28 overflow-hidden bg-primary text-primary-foreground"
+      className="relative py-24 md:py-32 overflow-hidden bg-foreground text-background"
     >
       {/* Grain overlay */}
       <div className="absolute inset-0 opacity-[0.03] bg-[url('data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHdpZHRoPSIzMDAiIGhlaWdodD0iMzAwIj48ZmlsdGVyIGlkPSJhIj48ZmVUdXJidWxlbmNlIHR5cGU9ImZyYWN0YWxOb2lzZSIgYmFzZUZyZXF1ZW5jeT0iLjc1Ii8+PC9maWx0ZXI+PHJlY3Qgd2lkdGg9IjEwMCUiIGhlaWdodD0iMTAwJSIgZmlsdGVyPSJ1cmwoI2EpIi8+PC9zdmc+')]" />
 
-      {/* Decorative elements */}
-      <div className="absolute top-12 right-16 w-48 h-48 border border-primary-foreground/10 rounded-full" />
-      <div className="absolute bottom-16 left-12 w-32 h-32 border border-primary-foreground/10 rotate-45" />
-
       <div className="container relative z-10 mx-auto px-6 md:px-12 lg:px-20">
         <div className="max-w-3xl mx-auto">
-          <div className="analog-reveal flex items-center gap-3 mb-8">
-            <div className="h-px w-10 bg-primary-foreground/20" />
-            <span className="text-xs font-semibold uppercase tracking-widest text-primary-foreground/60">
-              Beyond the Screen
+          <div className="analog-reveal mb-8">
+            <span className="font-script text-2xl md:text-3xl text-primary -rotate-2 inline-block mb-3">
+              Beyond the screen.
             </span>
-            <div className="h-px w-10 bg-primary-foreground/20" />
           </div>
 
-          <h2 className="analog-reveal text-3xl md:text-5xl font-black tracking-tight mb-8">
-            An Appreciation for
-            <br />
-            Analog Engineering.
+          <h2 className="analog-reveal text-3xl md:text-5xl font-black uppercase tracking-tighter mb-8 leading-[0.9]">
+            An Appreciation for{" "}
+            <span className="bg-background text-foreground px-3 pt-3 pb-1 inline-block">
+              Analog
+            </span>{" "}
+            Engineering.
           </h2>
 
-          <p className="analog-reveal text-lg text-primary-foreground/80 leading-relaxed mb-6">
-            My engineering instinct wasn&apos;t born in a code editor. It started with an
-            obsession for how mechanical things work — the kind of curiosity that makes
-            you take apart a carburetor just to understand the Venturi effect, or trace
-            the entire cooling circuit of a vintage air-cooled engine.
-          </p>
+          <div className="analog-reveal border-l-8 border-accent pl-6 mb-6">
+            <p className="text-lg text-background/80 leading-relaxed">
+              My engineering instinct wasn&apos;t born in a code editor. It started with an
+              obsession for how mechanical things work — the kind of curiosity that makes
+              you take apart a carburetor just to understand the Venturi effect.
+            </p>
+          </div>
 
-          <p className="analog-reveal text-base text-primary-foreground/70 leading-relaxed mb-8">
+          <p className="analog-reveal text-sm font-mono text-background/50 leading-relaxed mb-8 tracking-wide">
             There&apos;s an engineering philosophy embedded in machines like the Volkswagen
             Beetle — where every component has exactly one job and the entire system is
-            debuggable with hand tools. Or the Mercedes-Benz W123, a car so
-            over-engineered for durability that specimens from the 1970s are still daily
-            drivers across continents. The mechanical purity of vintage Japanese
-            motorcycles — Honda CB series, Yamaha SR400 — where simplicity and
-            reliability weren&apos;t trade-offs, they were design goals.
-          </p>
-
-          <p className="analog-reveal text-base text-primary-foreground/70 leading-relaxed mb-10">
-            This isn&apos;t nostalgia; it&apos;s a design principle. Write code like those
-            engineers built machines: every module with a clear purpose, interfaces so
-            clean they&apos;re self-documenting, and resilience built into the architecture
-            rather than patched on after failure. Systems built to last.
+            debuggable with hand tools. The Mercedes-Benz W123, so over-engineered for
+            durability that specimens from the 1970s are still daily drivers. Write code
+            like those engineers built machines: every module with a clear purpose,
+            interfaces so clean they&apos;re self-documenting, resilience built into
+            the architecture.
           </p>
 
           {/* Three pillars */}
-          <div className="analog-reveal grid grid-cols-1 md:grid-cols-3 gap-6">
-            <div className="rounded-xl border border-primary-foreground/10 p-5">
-              <Cog size={20} className="text-secondary mb-3" />
-              <h4 className="text-sm font-extrabold text-primary-foreground mb-2">
-                Simplicity as Strength
-              </h4>
-              <p className="text-xs text-primary-foreground/60 leading-relaxed">
-                The Beetle principle — systems where every component has exactly one
-                purpose and nothing is superfluous.
-              </p>
-            </div>
-
-            <div className="rounded-xl border border-primary-foreground/10 p-5">
-              <Car size={20} className="text-secondary mb-3" />
-              <h4 className="text-sm font-extrabold text-primary-foreground mb-2">
-                Engineered for Durability
-              </h4>
-              <p className="text-xs text-primary-foreground/60 leading-relaxed">
-                The W123 approach — over-engineer the foundation so the system
-                outlasts its expected lifecycle by decades.
-              </p>
-            </div>
-
-            <div className="rounded-xl border border-primary-foreground/10 p-5">
-              <Wrench size={20} className="text-secondary mb-3" />
-              <h4 className="text-sm font-extrabold text-primary-foreground mb-2">
-                Mechanical Purity
-              </h4>
-              <p className="text-xs text-primary-foreground/60 leading-relaxed">
-                The vintage Honda/Yamaha ethos — simplicity and reliability as design
-                goals, not compromises.
-              </p>
-            </div>
+          <div className="analog-reveal grid grid-cols-1 md:grid-cols-3 gap-0">
+            {[
+              {
+                icon: Cog,
+                title: "Simplicity as Strength",
+                text: "The Beetle principle — systems where every component has exactly one purpose and nothing is superfluous.",
+              },
+              {
+                icon: Car,
+                title: "Engineered for Durability",
+                text: "The W123 approach — over-engineer the foundation so the system outlasts its expected lifecycle by decades.",
+              },
+              {
+                icon: Wrench,
+                title: "Mechanical Purity",
+                text: "The vintage Honda/Yamaha ethos — simplicity and reliability as design goals, not compromises.",
+              },
+            ].map((pillar, idx) => {
+              const Icon = pillar.icon;
+              return (
+                <div
+                  key={pillar.title}
+                  className={`border-4 border-background/20 p-5 ${idx > 0 ? "border-t-0 md:border-t-4 md:border-l-0" : ""}`}
+                >
+                  <div className="flex items-center justify-center w-8 h-8 bg-background text-foreground mb-3">
+                    <Icon size={16} />
+                  </div>
+                  <h4 className="text-sm font-black uppercase tracking-tight text-background mb-2">
+                    {pillar.title}
+                  </h4>
+                  <p className="text-xs text-background/50 leading-relaxed">
+                    {pillar.text}
+                  </p>
+                </div>
+              );
+            })}
           </div>
         </div>
       </div>

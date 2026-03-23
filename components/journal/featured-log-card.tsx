@@ -4,7 +4,6 @@ import { useEffect, useRef } from "react";
 import gsap from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
 import { ArrowRight, Clock, Tag } from "lucide-react";
-import { Badge } from "@/components/ui/badge";
 import type { JournalEntry } from "@/lib/types";
 
 gsap.registerPlugin(ScrollTrigger);
@@ -35,21 +34,29 @@ export default function FeaturedLogCard({ entry }: FeaturedLogCardProps) {
   }, []);
 
   return (
-    <section ref={cardRef} className="py-16 bg-background">
+    <section ref={cardRef} className="py-24 md:py-32 bg-background border-t-4 border-foreground">
       <div className="container mx-auto px-6 md:px-12 lg:px-20">
-        <div className="featured-inner relative rounded-2xl border-2 border-secondary bg-card overflow-hidden">
+        {/* Section label */}
+        <span className="font-script text-accent text-lg mb-2 block">pinned</span>
+        <h2 className="text-3xl md:text-4xl font-black uppercase tracking-tighter text-foreground mb-12">
+          <span className="bg-foreground text-background px-3 pt-3 pb-1 inline-block">
+            FEATURED LOG
+          </span>
+        </h2>
+
+        <div className="featured-inner border-4 border-foreground">
           <div className="flex flex-col lg:flex-row">
             {/* Left decorative panel */}
-            <div className="hidden lg:flex lg:w-1/3 bg-primary items-center justify-center p-12">
+            <div className="hidden lg:flex lg:w-1/3 bg-foreground text-background items-center justify-center p-12">
               <div className="text-center space-y-4">
-                <div className="text-6xl font-black text-secondary leading-none">
+                <div className="text-6xl font-black uppercase tracking-tighter leading-none">
                   Featured
                 </div>
-                <div className="text-sm uppercase tracking-[0.3em] text-primary-foreground/50">
+                <div className="text-[10px] uppercase tracking-[0.3em] text-background/50 font-mono">
                   Research Paper
                 </div>
-                <div className="mx-auto h-px w-16 bg-secondary/30" />
-                <div className="font-mono text-xs text-primary-foreground/40">
+                <div className="mx-auto h-1 w-16 bg-accent" />
+                <div className="font-mono text-xs text-background/40">
                   {entry.date}
                 </div>
               </div>
@@ -58,23 +65,20 @@ export default function FeaturedLogCard({ entry }: FeaturedLogCardProps) {
             {/* Content */}
             <div className="flex-1 p-8 md:p-12 lg:p-16">
               <div className="flex items-center gap-3 mb-6">
-                <Badge
-                  variant="outline"
-                  className="border-secondary text-secondary-foreground bg-secondary/10 text-xs tracking-widest uppercase"
-                >
+                <span className="px-2 py-0.5 border-2 border-accent text-[10px] font-black uppercase tracking-[0.1em] text-accent">
                   Featured Log
-                </Badge>
-                <span className="flex items-center gap-1.5 text-xs text-muted-foreground">
+                </span>
+                <span className="flex items-center gap-1.5 text-xs text-foreground/50 font-mono">
                   <Clock size={12} />
                   {entry.readTime} read
                 </span>
               </div>
 
-              <h2 className="text-3xl md:text-4xl lg:text-5xl font-black tracking-tight text-foreground leading-tight mb-6">
+              <h3 className="text-3xl md:text-4xl lg:text-5xl font-black uppercase tracking-tighter text-foreground leading-tight mb-6">
                 {entry.title}
-              </h2>
+              </h3>
 
-              <p className="text-base md:text-lg text-muted-foreground leading-relaxed mb-8 max-w-2xl">
+              <p className="text-base md:text-lg text-foreground/60 leading-relaxed mb-8 max-w-2xl border-l-8 border-accent pl-6">
                 {entry.excerpt}
               </p>
 
@@ -82,7 +86,7 @@ export default function FeaturedLogCard({ entry }: FeaturedLogCardProps) {
                 {entry.tags.map((tag) => (
                   <span
                     key={tag}
-                    className="flex items-center gap-1 rounded-md bg-muted px-2.5 py-1 text-xs font-semibold text-muted-foreground"
+                    className="flex items-center gap-1 px-2 py-0.5 border-2 border-foreground/30 text-[10px] font-black uppercase tracking-[0.1em] text-foreground/60"
                   >
                     <Tag size={10} />
                     {tag}
@@ -90,7 +94,7 @@ export default function FeaturedLogCard({ entry }: FeaturedLogCardProps) {
                 ))}
               </div>
 
-              <button className="group inline-flex items-center gap-2 bg-primary text-primary-foreground px-6 py-3 font-bold text-sm tracking-wide transition-colors duration-300 hover:bg-secondary hover:text-secondary-foreground">
+              <button className="group inline-flex items-center gap-2 bg-foreground text-background px-6 py-3 font-black text-xs uppercase tracking-[0.15em] transition-colors duration-300 hover:bg-accent hover:text-foreground border-4 border-foreground">
                 Read Documentation
                 <ArrowRight
                   size={16}

@@ -8,76 +8,78 @@ import type { Project } from "@/lib/types";
 
 gsap.registerPlugin(ScrollTrigger);
 
-interface ProjectChallengeProps {
+interface ProjectChallengeSolutionProps {
   project: Project;
 }
 
-export default function ProjectChallengeSolution({
-  project,
-}: ProjectChallengeProps) {
+export default function ProjectChallengeSolution({ project }: ProjectChallengeSolutionProps) {
   const ref = useRef<HTMLElement>(null);
 
   useEffect(() => {
     const ctx = gsap.context(() => {
-      gsap.utils
-        .toArray<HTMLElement>(".challenge-card")
-        .forEach((card, i) => {
-          gsap.from(card, {
-            y: 30,
-            opacity: 0,
-            duration: 0.7,
-            delay: i * 0.15,
-            ease: "power3.out",
-            scrollTrigger: {
-              trigger: card,
-              start: "top 88%",
-              toggleActions: "play none none none",
-            },
-          });
-        });
+      gsap.from(".cs-card", {
+        y: 40,
+        opacity: 0,
+        duration: 0.8,
+        stagger: 0.2,
+        ease: "power3.out",
+        scrollTrigger: {
+          trigger: ref.current,
+          start: "top 80%",
+        },
+      });
     }, ref);
     return () => ctx.revert();
   }, []);
 
   return (
-    <section ref={ref} className="py-24 bg-muted/40">
+    <section ref={ref} className="py-24 md:py-32 bg-background border-t-4 border-foreground">
       <div className="container mx-auto px-6 md:px-12 lg:px-20">
-        <p className="text-xs tracking-widest uppercase text-muted-foreground mb-3">
-          Problem → Solution
-        </p>
-        <h2 className="text-3xl md:text-4xl font-black tracking-tight text-foreground mb-12">
-          Engineering Decisions
-        </h2>
+        {/* Header */}
+        <div className="mb-12">
+          <span className="font-script text-accent text-lg">// problem → solution</span>
+          <h2 className="text-3xl md:text-5xl font-black uppercase tracking-tighter mt-1">
+            <span className="bg-foreground text-background px-3 pt-3 pb-1 inline-block">Challenge</span>{" "}
+            &amp; Resolution
+          </h2>
+        </div>
 
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
+        {/* Two column grid */}
+        <div className="grid md:grid-cols-2">
           {/* Challenge */}
-          <div className="challenge-card rounded-2xl border border-border bg-card p-8">
-            <div className="flex items-center gap-3 mb-6">
-              <div className="flex items-center justify-center w-10 h-10 rounded-lg bg-red-500/10">
-                <AlertTriangle size={18} className="text-red-500" />
+          <div className="cs-card border-4 border-foreground md:border-r-0">
+            <div className="flex items-center gap-3 p-4 border-b-4 border-foreground bg-foreground/5">
+              <div className="w-10 h-10 bg-foreground text-background flex items-center justify-center">
+                <AlertTriangle size={20} />
               </div>
-              <h3 className="text-xl font-extrabold tracking-tight text-foreground">
-                {project.challenge.title}
+              <h3 className="text-sm font-black uppercase tracking-[0.15em]">
+                The Challenge
               </h3>
             </div>
-            <p className="text-sm text-muted-foreground leading-relaxed">
-              {project.challenge.description}
-            </p>
+            <div className="p-6">
+              <h4 className="text-xs font-black uppercase tracking-[0.1em] mb-2">{project.challenge.title}</h4>
+              <p className="text-sm text-foreground/70 leading-relaxed">
+                {project.challenge.description}
+              </p>
+            </div>
           </div>
 
           {/* Solution */}
-          <div className="challenge-card rounded-2xl border border-border bg-card p-8">
-            <div className="flex items-center gap-3 mb-6">
-              <div className="flex items-center justify-center w-10 h-10 rounded-lg bg-green-500/10">
-                <Lightbulb size={18} className="text-green-500" />
+          <div className="cs-card border-4 border-foreground max-md:border-t-0">
+            <div className="flex items-center gap-3 p-4 border-b-4 border-foreground bg-foreground/5">
+              <div className="w-10 h-10 bg-foreground text-background flex items-center justify-center">
+                <Lightbulb size={20} />
               </div>
-              <h3 className="text-xl font-extrabold tracking-tight text-foreground">
-                {project.solution.title}
+              <h3 className="text-sm font-black uppercase tracking-[0.15em]">
+                The Solution
               </h3>
             </div>
-            <p className="text-sm text-muted-foreground leading-relaxed">
-              {project.solution.description}
-            </p>
+            <div className="p-6">
+              <h4 className="text-xs font-black uppercase tracking-[0.1em] mb-2">{project.solution.title}</h4>
+              <p className="text-sm text-foreground/70 leading-relaxed">
+                {project.solution.description}
+              </p>
+            </div>
           </div>
         </div>
       </div>

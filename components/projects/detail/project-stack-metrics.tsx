@@ -3,7 +3,7 @@
 import { useEffect, useRef } from "react";
 import gsap from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
-import { Badge } from "@/components/ui/badge";
+import { Layers, BarChart3 } from "lucide-react";
 import type { Project } from "@/lib/types";
 
 gsap.registerPlugin(ScrollTrigger);
@@ -12,85 +12,89 @@ interface ProjectStackMetricsProps {
   project: Project;
 }
 
-export default function ProjectStackMetrics({
-  project,
-}: ProjectStackMetricsProps) {
+export default function ProjectStackMetrics({ project }: ProjectStackMetricsProps) {
   const ref = useRef<HTMLElement>(null);
 
   useEffect(() => {
     const ctx = gsap.context(() => {
-      gsap.utils
-        .toArray<HTMLElement>(".stack-metric-item")
-        .forEach((item, i) => {
-          gsap.from(item, {
-            y: 20,
-            opacity: 0,
-            duration: 0.5,
-            delay: i * 0.05,
-            ease: "power3.out",
-            scrollTrigger: {
-              trigger: ref.current,
-              start: "top 85%",
-              toggleActions: "play none none none",
-            },
-          });
-        });
+      gsap.from(".sm-reveal", {
+        y: 30,
+        opacity: 0,
+        duration: 0.8,
+        stagger: 0.1,
+        ease: "power3.out",
+        scrollTrigger: {
+          trigger: ref.current,
+          start: "top 80%",
+        },
+      });
     }, ref);
     return () => ctx.revert();
   }, []);
 
   return (
-    <section ref={ref} className="py-24 bg-background">
+    <section ref={ref} className="py-24 md:py-32 bg-background border-t-4 border-foreground">
       <div className="container mx-auto px-6 md:px-12 lg:px-20">
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-16">
+        {/* Header */}
+        <div className="sm-reveal mb-12">
+          <span className="font-script text-accent text-lg">// architecture</span>
+          <h2 className="text-3xl md:text-5xl font-black uppercase tracking-tighter mt-1">
+            <span className="bg-foreground text-background px-3 pt-3 pb-1 inline-block">Stack</span>{" "}
+            &amp; Metrics
+          </h2>
+        </div>
+
+        <div className="grid md:grid-cols-2 gap-0">
           {/* Tech Stack */}
-          <div>
-            <p className="text-xs tracking-widest uppercase text-muted-foreground mb-3">
-              Technology
-            </p>
-            <h2 className="text-3xl md:text-4xl font-black tracking-tight text-foreground mb-8">
-              The Stack
-            </h2>
-            <div className="flex flex-wrap gap-3">
+          <div className="sm-reveal border-4 border-foreground md:border-r-0">
+            <div className="flex items-center gap-3 p-4 border-b-4 border-foreground bg-foreground/5">
+              <div className="w-10 h-10 bg-foreground text-background flex items-center justify-center">
+                <Layers size={20} />
+              </div>
+              <h3 className="text-sm font-black uppercase tracking-[0.15em]">
+                Tech Stack
+              </h3>
+            </div>
+            <div className="p-6 flex flex-wrap gap-2">
               {project.stack.map((tech) => (
-                <div
+                <span
                   key={tech.name}
-                  className="stack-metric-item rounded-xl border border-border bg-card px-5 py-3"
+                  className="px-3 py-1 border-2 border-foreground/30 text-[10px] font-black uppercase tracking-[0.1em] text-foreground/70 hover:border-foreground hover:text-foreground transition-colors"
                 >
-                  <span className="text-sm font-semibold text-foreground">
-                    {tech.name}
-                  </span>
-                </div>
+                  {tech.name}
+                </span>
               ))}
             </div>
           </div>
 
           {/* Key Metrics */}
-          {project.keyMetrics && (
-            <div>
-              <p className="text-xs tracking-widest uppercase text-muted-foreground mb-3">
-                Performance
-              </p>
-              <h2 className="text-3xl md:text-4xl font-black tracking-tight text-foreground mb-8">
-                Key Metrics
-              </h2>
-              <div className="grid grid-cols-2 gap-4">
-                {project.keyMetrics.map((metric) => (
-                  <div
-                    key={metric.label}
-                    className="stack-metric-item rounded-xl border border-border bg-card p-5"
-                  >
-                    <p className="text-2xl font-black text-foreground mb-1">
-                      {metric.value}
-                    </p>
-                    <p className="text-[11px] tracking-widest uppercase text-muted-foreground font-semibold">
-                      {metric.label}
-                    </p>
-                  </div>
-                ))}
+          <div className="sm-reveal border-4 border-foreground max-md:border-t-0">
+            <div className="flex items-center gap-3 p-4 border-b-4 border-foreground bg-foreground/5">
+              <div className="w-10 h-10 bg-foreground text-background flex items-center justify-center">
+                <BarChart3 size={20} />
               </div>
+              <h3 className="text-sm font-black uppercase tracking-[0.15em]">
+                Key Metrics
+              </h3>
             </div>
-          )}
+            <div className="divide-y-4 divide-foreground">
+              {project.keyMetrics?.map((m) => (
+                <div key={m.label} className="p-4 flex items-center justify-between">
+                  <span className="text-xs font-mono uppercase tracking-[0.1em] text-foreground/50">
+                    {m.label}
+                  </span>
+                  <span className="text-lg font-black tracking-tight">
+                    {m.value}
+                  </span>
+                </div>
+              ))}
+              {!project.keyMetrics?.length && (
+                <div className="p-6 text-xs font-mono text-foreground/30 uppercase tracking-[0.15em]">
+                  No metrics recorded
+                </div>
+              )}
+            </div>
+          </div>
         </div>
       </div>
     </section>

@@ -30,15 +30,16 @@ export default function ExplainerShowcase() {
   }, []);
 
   return (
-    <section ref={sectionRef} className="py-24 bg-muted/30">
+    <section ref={sectionRef} className="py-24 md:py-32 bg-background border-t-4 border-foreground">
       <div className="container mx-auto px-6 md:px-12 lg:px-20">
         <div className="explainer-reveal mb-12">
-          <h2 className="text-3xl md:text-4xl font-black tracking-tight text-foreground mb-4">
-            Article Components Preview
+          <span className="font-script text-accent text-lg mb-2 block">components</span>
+          <h2 className="text-3xl md:text-4xl font-black uppercase tracking-tighter text-foreground mb-4">
+            ARTICLE COMPONENTS PREVIEW
           </h2>
-          <p className="text-muted-foreground max-w-xl">
-            Specialized components designed for breaking down complex academic
-            concepts with clarity — the building blocks inside every research log.
+          <p className="text-foreground/50 max-w-xl font-mono text-xs tracking-[0.15em] uppercase">
+            Specialized components for breaking down complex academic
+            concepts — the building blocks inside every research log.
           </p>
         </div>
 

@@ -3,8 +3,6 @@
 import { useEffect, useRef } from "react";
 import gsap from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
-import { Badge } from "@/components/ui/badge";
-import { Button } from "@/components/ui/button";
 import {
   Server,
   Database,
@@ -18,9 +16,6 @@ import type { Project } from "@/lib/types";
 import Link from "next/link";
 
 gsap.registerPlugin(ScrollTrigger);
-
-const softwareIcons = [Server, Database, Globe];
-const hardwareIcons = [Cpu, Radio, Navigation];
 
 interface CaseStudyCardProps {
   project: Project;
@@ -62,17 +57,15 @@ export default function CaseStudyCard({
     return () => ctx.revert();
   }, []);
 
-  const icons =
-    project.category === "software" ? softwareIcons : hardwareIcons;
   const isSoftware = project.category === "software";
 
   const visual = (
-    <div className="case-study-visual flex items-center justify-center p-8 md:p-12">
+    <div className="case-study-visual flex items-center justify-center p-8 md:p-12 bg-foreground/5">
       <div className="relative w-full max-w-sm aspect-square">
-        {/* Blueprint grid background */}
-        <div className="absolute inset-0 rounded-2xl bg-primary/5 dark:bg-primary/10 border border-border overflow-hidden">
+        {/* Blueprint grid */}
+        <div className="absolute inset-0 border-4 border-foreground overflow-hidden">
           <svg
-            className="absolute inset-0 w-full h-full opacity-20"
+            className="absolute inset-0 w-full h-full opacity-10"
             xmlns="http://www.w3.org/2000/svg"
           >
             <defs>
@@ -94,60 +87,61 @@ export default function CaseStudyCard({
             <rect width="100%" height="100%" fill={`url(#grid-${project.slug})`} />
           </svg>
 
-          {/* Architecture diagram nodes */}
-          <div className="absolute inset-0 flex flex-col items-center justify-center gap-6 p-8">
+          <div className="absolute inset-0 flex flex-col items-center justify-center gap-4 p-8">
             {isSoftware ? (
               <>
-                {/* Frontend layer */}
-                <div className="flex items-center gap-3 rounded-lg border border-border bg-card px-4 py-2.5">
-                  <Globe size={16} className="text-primary" />
-                  <span className="text-xs font-semibold tracking-wide uppercase text-foreground">
+                <div className="flex items-center gap-3 border-4 border-foreground bg-background px-4 py-2.5">
+                  <div className="w-6 h-6 bg-foreground text-background flex items-center justify-center">
+                    <Globe size={12} />
+                  </div>
+                  <span className="text-[10px] font-black uppercase tracking-[0.15em] text-foreground">
                     Next.js Frontend
                   </span>
                 </div>
-                {/* Connection line */}
-                <div className="w-px h-6 bg-border" />
-                {/* API layer */}
-                <div className="flex items-center gap-3 rounded-lg border border-border bg-card px-4 py-2.5">
-                  <Server size={16} className="text-primary" />
-                  <span className="text-xs font-semibold tracking-wide uppercase text-foreground">
+                <div className="w-1 h-6 bg-foreground" />
+                <div className="flex items-center gap-3 border-4 border-foreground bg-background px-4 py-2.5">
+                  <div className="w-6 h-6 bg-foreground text-background flex items-center justify-center">
+                    <Server size={12} />
+                  </div>
+                  <span className="text-[10px] font-black uppercase tracking-[0.15em] text-foreground">
                     Nest.js API
                   </span>
                 </div>
-                {/* Connection line */}
-                <div className="w-px h-6 bg-border" />
-                {/* Database layer */}
-                <div className="flex items-center gap-3 rounded-lg border border-border bg-card px-4 py-2.5">
-                  <Database size={16} className="text-primary" />
-                  <span className="text-xs font-semibold tracking-wide uppercase text-foreground">
+                <div className="w-1 h-6 bg-foreground" />
+                <div className="flex items-center gap-3 border-4 border-foreground bg-background px-4 py-2.5">
+                  <div className="w-6 h-6 bg-foreground text-background flex items-center justify-center">
+                    <Database size={12} />
+                  </div>
+                  <span className="text-[10px] font-black uppercase tracking-[0.15em] text-foreground">
                     Prisma + PostgreSQL
                   </span>
                 </div>
               </>
             ) : (
               <>
-                {/* Sensor layer */}
-                <div className="flex items-center gap-3 rounded-lg border border-border bg-card px-4 py-2.5">
-                  <Radio size={16} className="text-primary" />
-                  <span className="text-xs font-semibold tracking-wide uppercase text-foreground">
+                <div className="flex items-center gap-3 border-4 border-foreground bg-background px-4 py-2.5">
+                  <div className="w-6 h-6 bg-foreground text-background flex items-center justify-center">
+                    <Radio size={12} />
+                  </div>
+                  <span className="text-[10px] font-black uppercase tracking-[0.15em] text-foreground">
                     Sensor Fusion
                   </span>
                 </div>
-                {/* Connection line */}
-                <div className="w-px h-6 bg-border" />
-                {/* Processing layer */}
-                <div className="flex items-center gap-3 rounded-lg border border-border bg-card px-4 py-2.5">
-                  <Cpu size={16} className="text-primary" />
-                  <span className="text-xs font-semibold tracking-wide uppercase text-foreground">
+                <div className="w-1 h-6 bg-foreground" />
+                <div className="flex items-center gap-3 border-4 border-foreground bg-background px-4 py-2.5">
+                  <div className="w-6 h-6 bg-foreground text-background flex items-center justify-center">
+                    <Cpu size={12} />
+                  </div>
+                  <span className="text-[10px] font-black uppercase tracking-[0.15em] text-foreground">
                     ROS2 / SLAM
                   </span>
                 </div>
-                {/* Connection line */}
-                <div className="w-px h-6 bg-border" />
-                {/* Actuation layer */}
-                <div className="flex items-center gap-3 rounded-lg border border-border bg-card px-4 py-2.5">
-                  <Navigation size={16} className="text-primary" />
-                  <span className="text-xs font-semibold tracking-wide uppercase text-foreground">
+                <div className="w-1 h-6 bg-foreground" />
+                <div className="flex items-center gap-3 border-4 border-foreground bg-background px-4 py-2.5">
+                  <div className="w-6 h-6 bg-foreground text-background flex items-center justify-center">
+                    <Navigation size={12} />
+                  </div>
+                  <span className="text-[10px] font-black uppercase tracking-[0.15em] text-foreground">
                     Path Planning
                   </span>
                 </div>
@@ -161,32 +155,32 @@ export default function CaseStudyCard({
 
   const content = (
     <div className="case-study-content flex flex-col justify-center p-8 md:p-12">
-      <p className="text-xs tracking-widest uppercase text-muted-foreground mb-3">
+      <span className="text-[10px] font-black uppercase tracking-[0.2em] text-foreground/40 font-mono mb-3">
         {project.subtitle}
-      </p>
-      <h3 className="text-2xl md:text-3xl font-black tracking-tight text-foreground mb-4">
+      </span>
+      <h3 className="text-2xl md:text-3xl font-black uppercase tracking-tighter text-foreground mb-4">
         {project.title}
       </h3>
-      <p className="text-sm text-muted-foreground leading-relaxed mb-6">
+      <p className="text-sm text-foreground/50 leading-relaxed mb-6 border-l-8 border-accent pl-6">
         {project.description}
       </p>
 
       {/* Challenge */}
       <div className="mb-4">
-        <h4 className="text-xs font-semibold tracking-widest uppercase text-foreground/70 mb-1.5">
+        <h4 className="text-[10px] font-black uppercase tracking-[0.15em] text-foreground/60 mb-1.5">
           {project.challenge.title}
         </h4>
-        <p className="text-sm text-muted-foreground leading-relaxed">
+        <p className="text-sm text-foreground/50 leading-relaxed">
           {project.challenge.description}
         </p>
       </div>
 
       {/* Solution */}
       <div className="mb-6">
-        <h4 className="text-xs font-semibold tracking-widest uppercase text-foreground/70 mb-1.5">
+        <h4 className="text-[10px] font-black uppercase tracking-[0.15em] text-foreground/60 mb-1.5">
           {project.solution.title}
         </h4>
-        <p className="text-sm text-muted-foreground leading-relaxed">
+        <p className="text-sm text-foreground/50 leading-relaxed">
           {project.solution.description}
         </p>
       </div>
@@ -194,24 +188,20 @@ export default function CaseStudyCard({
       {/* Stack */}
       <div className="flex flex-wrap gap-2 mb-6">
         {project.stack.map((tech) => (
-          <Badge
+          <span
             key={tech.name}
-            variant="secondary"
-            className="text-[11px] tracking-wider uppercase font-semibold"
+            className="px-2 py-0.5 border-2 border-foreground/30 text-[10px] font-black uppercase tracking-[0.1em] text-foreground/60"
           >
             {tech.name}
-          </Badge>
+          </span>
         ))}
       </div>
 
       <Link href={`/projects/${project.slug}`}>
-        <Button
-          variant="default"
-          className="w-fit cursor-pointer font-semibold"
-        >
+        <button className="group inline-flex items-center gap-2 bg-foreground text-background px-6 py-3 font-black text-xs uppercase tracking-[0.15em] transition-colors duration-300 hover:bg-accent hover:text-foreground border-4 border-foreground cursor-pointer">
           View Full Case Study
-          <ArrowRight size={16} className="ml-2" />
-        </Button>
+          <ArrowRight size={16} className="transition-transform duration-300 group-hover:translate-x-1" />
+        </button>
       </Link>
     </div>
   );
@@ -219,7 +209,7 @@ export default function CaseStudyCard({
   return (
     <div
       ref={ref}
-      className="rounded-2xl border border-border bg-card overflow-hidden"
+      className="border-4 border-foreground overflow-hidden"
     >
       <div
         className={`grid grid-cols-1 md:grid-cols-2 ${

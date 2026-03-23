@@ -16,55 +16,54 @@ export default function ProjectFeatures({ project }: ProjectFeaturesProps) {
   const ref = useRef<HTMLElement>(null);
 
   useEffect(() => {
+    if (!project.features?.length) return;
     const ctx = gsap.context(() => {
-      gsap.utils
-        .toArray<HTMLElement>(".feature-item")
-        .forEach((item, i) => {
-          gsap.from(item, {
-            x: -20,
-            opacity: 0,
-            duration: 0.5,
-            delay: i * 0.06,
-            ease: "power3.out",
-            scrollTrigger: {
-              trigger: ref.current,
-              start: "top 85%",
-              toggleActions: "play none none none",
-            },
-          });
-        });
+      gsap.from(".feat-item", {
+        x: -20,
+        opacity: 0,
+        duration: 0.6,
+        stagger: 0.08,
+        ease: "power3.out",
+        scrollTrigger: {
+          trigger: ref.current,
+          start: "top 80%",
+        },
+      });
     }, ref);
     return () => ctx.revert();
-  }, []);
+  }, [project.features]);
 
-  if (!project.features || project.features.length === 0) return null;
+  if (!project.features?.length) return null;
 
   return (
-    <section ref={ref} className="py-24 bg-muted/40">
+    <section ref={ref} className="py-24 md:py-32 bg-foreground text-background border-t-4 border-background">
       <div className="container mx-auto px-6 md:px-12 lg:px-20">
-        <div className="max-w-3xl">
-          <p className="text-xs tracking-widest uppercase text-muted-foreground mb-3">
-            Capabilities
-          </p>
-          <h2 className="text-3xl md:text-4xl font-black tracking-tight text-foreground mb-10">
-            Feature Breakdown
+        {/* Header */}
+        <div className="mb-12">
+          <span className="font-script text-accent text-lg">// capabilities</span>
+          <h2 className="text-3xl md:text-5xl font-black uppercase tracking-tighter mt-1">
+            <span className="bg-background text-foreground px-3 pt-3 pb-1 inline-block">Key</span>{" "}
+            Features
           </h2>
+        </div>
 
-          <div className="space-y-4">
-            {project.features.map((feature, i) => (
-              <div
-                key={i}
-                className="feature-item flex items-start gap-4 rounded-xl border border-border bg-card p-5"
-              >
-                <div className="flex items-center justify-center w-7 h-7 rounded-md bg-primary/10 dark:bg-primary/20 flex-shrink-0 mt-0.5">
-                  <Check size={14} className="text-primary" />
-                </div>
-                <span className="text-sm font-medium text-foreground leading-relaxed">
-                  {feature}
-                </span>
+        {/* Feature grid */}
+        <div className="grid sm:grid-cols-2 lg:grid-cols-3 gap-0 border-4 border-background">
+          {project.features.map((feature, i) => (
+            <div
+              key={i}
+              className={`feat-item p-5 flex items-start gap-3 border-background ${
+                i % 3 !== 2 ? "lg:border-r-4" : ""
+              } ${i % 2 !== 1 ? "max-lg:border-r-4 max-sm:border-r-0" : ""} ${
+                i >= (project.features!.length > 3 ? 3 : project.features!.length) ? "" : ""
+              } ${i < project.features!.length - (project.features!.length % 3 || 3) ? "border-b-4" : "max-lg:border-b-4 last:border-b-0"}`}
+            >
+              <div className="w-6 h-6 bg-background text-foreground flex-shrink-0 flex items-center justify-center mt-0.5">
+                <Check size={14} strokeWidth={3} />
               </div>
-            ))}
-          </div>
+              <span className="text-sm text-background/80 leading-relaxed">{feature}</span>
+            </div>
+          ))}
         </div>
       </div>
     </section>

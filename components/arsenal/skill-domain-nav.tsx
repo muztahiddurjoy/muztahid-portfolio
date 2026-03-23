@@ -48,7 +48,7 @@ export default function SkillDomainNav() {
   return (
     <div
       ref={navRef}
-      className="sticky top-0 z-50 bg-background/95 backdrop-blur-sm border-b border-border"
+      className="sticky top-0 z-50 bg-background/95 backdrop-blur-sm border-b-4 border-foreground"
     >
       <div className="container mx-auto px-6 md:px-12 lg:px-20">
         <div className="flex items-center gap-2 overflow-x-auto py-4 scrollbar-hide">
@@ -56,10 +56,10 @@ export default function SkillDomainNav() {
             <button
               key={id}
               onClick={() => scrollToSection(id)}
-              className={`domain-btn flex items-center gap-2 px-5 py-2.5 text-sm font-bold tracking-wide whitespace-nowrap transition-all duration-200 border-2 ${
+              className={`domain-btn flex items-center gap-2 px-5 py-2.5 text-[11px] font-black uppercase tracking-[0.15em] whitespace-nowrap transition-all duration-200 border-4 ${
                 active === id
-                  ? "bg-primary text-primary-foreground border-primary"
-                  : "bg-transparent text-foreground/70 border-border hover:border-foreground/30 hover:text-foreground"
+                  ? "bg-foreground text-background border-foreground"
+                  : "bg-transparent text-foreground/70 border-foreground/20 hover:border-foreground hover:text-foreground"
               }`}
             >
               <Icon size={16} />

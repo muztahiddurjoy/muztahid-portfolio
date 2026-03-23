@@ -30,36 +30,35 @@ export default function PhilosophySplit() {
   }, []);
 
   return (
-    <section ref={sectionRef} className="py-24 bg-background overflow-hidden">
+    <section ref={sectionRef} className="py-24 md:py-32 bg-background border-t-4 border-foreground overflow-hidden">
       <div className="container mx-auto px-6 md:px-12 lg:px-20">
-        {/* Section header */}
+        {/* Brutalist header */}
         <div className="mb-16">
-          <h2 className="phil-reveal text-3xl md:text-4xl font-black tracking-tight text-foreground mb-4">
-            How I Think About Problems
-          </h2>
-          <div className="phil-reveal flex items-center gap-3">
-            <div className="h-px w-10 bg-border" />
-            <span className="text-xs font-semibold uppercase tracking-widest text-muted-foreground">
-              Core Philosophy
+          <span className="phil-reveal font-script text-2xl md:text-3xl text-primary -rotate-2 inline-block mb-3">
+            Core thinking.
+          </span>
+          <h2 className="phil-reveal text-3xl md:text-5xl font-black uppercase tracking-tighter text-foreground leading-[0.9]">
+            How I Think About{" "}
+            <span className="bg-foreground text-background px-3 pt-3 pb-1 inline-block">
+              Problems
             </span>
-            <div className="h-px w-10 bg-border" />
-          </div>
+          </h2>
         </div>
 
         {/* Two-column split */}
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-8 lg:gap-16">
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-0 md:gap-0">
           {/* Left - First Principles */}
-          <div className="phil-reveal rounded-2xl border border-border bg-card p-8">
-            <div className="flex items-center gap-3 mb-6">
-              <div className="flex items-center justify-center w-10 h-10 rounded-lg bg-primary/10 dark:bg-primary/20">
-                <BookOpen size={20} className="text-primary dark:text-primary" />
+          <div className="phil-reveal border-4 border-foreground p-8">
+            <div className="flex items-center gap-3 mb-6 border-b-4 border-foreground pb-4">
+              <div className="flex items-center justify-center w-10 h-10 bg-foreground text-background">
+                <BookOpen size={20} />
               </div>
-              <h3 className="text-xl font-extrabold text-card-foreground">
+              <h3 className="text-xl font-black uppercase tracking-tight text-foreground">
                 First Principles
               </h3>
             </div>
 
-            <p className="text-sm text-muted-foreground leading-relaxed mb-4">
+            <p className="text-sm text-foreground/70 leading-relaxed mb-4">
               My academic foundation isn&apos;t decorative — it&apos;s load-bearing. Deep dives
               into discrete mathematics, integral calculus, and electrostatics don&apos;t just
               live in a transcript; they inform every line of code I write. Understanding
@@ -67,29 +66,20 @@ export default function PhilosophySplit() {
               right data structure before writing a single function signature.
             </p>
 
-            <p className="text-sm text-muted-foreground leading-relaxed mb-6">
+            <p className="text-sm text-foreground/60 leading-relaxed mb-6">
               This is why I build data structures from scratch in Java — hash tables with
               custom hashing, linked lists with manual pointer management, balanced BSTs
               with rotation logic. Not because libraries don&apos;t exist, but because
               understanding O(n) vs O(log n) in your bones, not just on a whiteboard,
-              changes how you architect everything above it. Time and space complexity
-              aren&apos;t abstract concepts to me; they&apos;re design constraints I feel in my code.
+              changes how you architect everything above it.
             </p>
 
-            <div className="flex flex-wrap gap-2">
-              {[
-                "Discrete Mathematics",
-                "Calculus",
-                "Electrostatics",
-                "Data Structures",
-                "Algorithm Analysis",
-                "Java Internals",
-              ].map((item) => (
+            <div className="flex flex-wrap gap-2 pt-4 border-t-2 border-foreground/20">
+              {["Discrete Mathematics", "Calculus", "Electrostatics", "Data Structures", "Algorithm Analysis", "Java Internals"].map((item) => (
                 <span
                   key={item}
-                  className="inline-flex items-center rounded-md bg-primary/10 dark:bg-primary/20 px-2.5 py-1 text-[11px] font-semibold text-primary dark:text-primary"
+                  className="px-2 py-0.5 border-2 border-foreground/30 text-[10px] font-black uppercase tracking-[0.1em]"
                 >
-                  <span className="w-1.5 h-1.5 rounded-full bg-primary mr-1.5" />
                   {item}
                 </span>
               ))}
@@ -97,26 +87,24 @@ export default function PhilosophySplit() {
           </div>
 
           {/* Right - System Architecture */}
-          <div className="phil-reveal rounded-2xl border border-border bg-card p-8">
-            <div className="flex items-center gap-3 mb-6">
-              <div className="flex items-center justify-center w-10 h-10 rounded-lg bg-secondary/20 dark:bg-secondary/20">
-                <Server size={20} className="text-secondary-foreground dark:text-secondary" />
+          <div className="phil-reveal border-4 border-foreground border-t-0 md:border-t-4 md:border-l-0 p-8">
+            <div className="flex items-center gap-3 mb-6 border-b-4 border-foreground pb-4">
+              <div className="flex items-center justify-center w-10 h-10 bg-foreground text-background">
+                <Server size={20} />
               </div>
-              <h3 className="text-xl font-extrabold text-card-foreground">
+              <h3 className="text-xl font-black uppercase tracking-tight text-foreground">
                 System Architecture
               </h3>
             </div>
 
-            <p className="text-sm text-muted-foreground leading-relaxed mb-4">
+            <p className="text-sm text-foreground/70 leading-relaxed mb-4">
               Theory without production is academic trivia. The real test is translating
               algorithmic thinking into systems that serve thousands of users without
               breaking a sweat. When I design a Next.js frontend, the component tree
-              isn&apos;t random — it mirrors how I think about graph traversal. When I
-              structure a database schema for a startup like Appbaksho, normalization
-              decisions are informed by the same set theory I studied in discrete math.
+              isn&apos;t random — it mirrors how I think about graph traversal.
             </p>
 
-            <p className="text-sm text-muted-foreground leading-relaxed mb-6">
+            <p className="text-sm text-foreground/60 leading-relaxed mb-6">
               At BOT Engineers, this philosophy drives every architecture decision:
               choosing between server components and client components is a caching and
               rendering cost analysis. Designing API routes is about understanding
@@ -125,20 +113,12 @@ export default function PhilosophySplit() {
               drawer — it&apos;s the scaffolding for every production system I ship.
             </p>
 
-            <div className="flex flex-wrap gap-2">
-              {[
-                "Next.js Architecture",
-                "Database Design",
-                "API Design",
-                "CI/CD Pipelines",
-                "Cloud Infrastructure",
-                "Cost Optimization",
-              ].map((item) => (
+            <div className="flex flex-wrap gap-2 pt-4 border-t-2 border-foreground/20">
+              {["Next.js Architecture", "Database Design", "API Design", "CI/CD Pipelines", "Cloud Infrastructure", "Cost Optimization"].map((item) => (
                 <span
                   key={item}
-                  className="inline-flex items-center rounded-md bg-secondary/20 px-2.5 py-1 text-[11px] font-semibold text-foreground"
+                  className="px-2 py-0.5 border-2 border-foreground/30 text-[10px] font-black uppercase tracking-[0.1em]"
                 >
-                  <span className="w-1.5 h-1.5 rounded-full bg-secondary mr-1.5" />
                   {item}
                 </span>
               ))}

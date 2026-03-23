@@ -2,14 +2,14 @@
 
 import { notFound } from "next/navigation";
 import type { Project } from "@/lib/types";
-import ProjectDetailHero from "@/components/projects/detail/project-detail-hero";
-import ProjectOverview from "@/components/projects/detail/project-overview";
-import ProjectChallengeSolution from "@/components/projects/detail/project-challenge-solution";
-import ProjectStackMetrics from "@/components/projects/detail/project-stack-metrics";
-import ProjectFeatures from "@/components/projects/detail/project-features";
-import CodeSnippetBlock from "@/components/projects/code-snippet-modal";
-import ProjectNavigation from "@/components/projects/detail/project-navigation";
-import Footer from "@/components/home/footer";
+import ProjectDetailHero from "./project-detail-hero";
+import ProjectOverview from "./project-overview";
+import ProjectChallengeSolution from "./project-challenge-solution";
+import ProjectStackMetrics from "./project-stack-metrics";
+import ProjectFeatures from "./project-features";
+import ProjectNavigation from "./project-navigation";
+import CodeSnippetModal from "../code-snippet-modal";
+import Footer from "@/components/layout/footer";
 
 interface ProjectDetailClientProps {
   slug: string;
@@ -17,44 +17,39 @@ interface ProjectDetailClientProps {
 }
 
 export default function ProjectDetailClient({ slug, projects }: ProjectDetailClientProps) {
-  const projectIndex = projects.findIndex((p) => p.slug === slug);
-  const project = projects[projectIndex];
+  const project = projects.find((p) => p.slug === slug);
+  if (!project) return notFound();
 
-  if (!project) {
-    notFound();
-  }
-
-  const prev = projectIndex > 0 ? projects[projectIndex - 1] : null;
-  const next =
-    projectIndex < projects.length - 1 ? projects[projectIndex + 1] : null;
+  const currentIndex = projects.indexOf(project);
+  const prevProject = currentIndex > 0 ? projects[currentIndex - 1] : null;
+  const nextProject = currentIndex < projects.length - 1 ? projects[currentIndex + 1] : null;
 
   return (
-    <>
+    <main className="min-h-screen bg-background text-foreground">
       <ProjectDetailHero project={project} />
       <ProjectOverview project={project} />
       <ProjectChallengeSolution project={project} />
       <ProjectStackMetrics project={project} />
       <ProjectFeatures project={project} />
 
-      {/* Code snippet section */}
+      {/* Code Preview */}
       {project.codeSnippet && (
-        <section className="py-24 bg-background">
+        <section className="py-24 md:py-32 bg-background border-t-4 border-foreground">
           <div className="container mx-auto px-6 md:px-12 lg:px-20">
-            <p className="text-xs tracking-widest uppercase text-muted-foreground mb-3">
-              Under the Hood
-            </p>
-            <h2 className="text-3xl md:text-4xl font-black tracking-tight text-foreground mb-8">
-              Code Preview
-            </h2>
-            <div className="max-w-3xl">
-              <CodeSnippetBlock snippet={project.codeSnippet} />
+            <div className="mb-12">
+              <span className="font-script text-accent text-lg">// source code</span>
+              <h2 className="text-3xl md:text-5xl font-black uppercase tracking-tighter mt-1">
+                <span className="bg-foreground text-background px-3 pt-3 pb-1 inline-block">Code</span>{" "}
+                Preview
+              </h2>
             </div>
+            <CodeSnippetModal snippet={project.codeSnippet} />
           </div>
         </section>
       )}
 
-      <ProjectNavigation prev={prev} next={next} />
+      <ProjectNavigation prevProject={prevProject} nextProject={nextProject} />
       <Footer />
-    </>
+    </main>
   );
 }

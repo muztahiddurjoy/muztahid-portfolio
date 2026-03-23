@@ -29,19 +29,18 @@ export default function TerminalFooter() {
   }, []);
 
   return (
-    <footer ref={footerRef} className="border-t border-border bg-background">
+    <footer ref={footerRef} className="border-t-4 border-foreground bg-background">
       <div className="container mx-auto px-6 md:px-12 lg:px-20 py-10">
         <div className="footer-reveal text-center mb-4">
-          <p className="text-sm font-semibold tracking-tight">
+          <p className="text-sm font-black uppercase tracking-[0.15em]">
             Engineered from scratch by Muztahid Rahman. &copy; 2026.
           </p>
         </div>
 
-        <div className="footer-reveal flex items-center justify-center gap-2 font-mono text-[11px] text-muted-foreground">
-          <span className="inline-block w-1.5 h-1.5 rounded-full bg-green-500" />
+        <div className="footer-reveal flex items-center justify-center gap-2 font-mono text-[10px] uppercase tracking-[0.1em] text-foreground/40">
+          <span className="w-2 h-2 bg-accent" />
           <span>
-            Rendered via Next.js 16 &middot; styled with Tailwind v4 &middot;
-            animated by GSAP &middot; components by Shadcn UI
+            Next.js 16 &middot; Tailwind v4 &middot; GSAP &middot; Custom Components
           </span>
         </div>
       </div>

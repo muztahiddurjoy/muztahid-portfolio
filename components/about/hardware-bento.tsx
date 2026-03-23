@@ -4,16 +4,15 @@ import { useEffect, useRef } from "react";
 import gsap from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
 import { Cpu, Navigation, Printer } from "lucide-react";
-import { Badge } from "@/components/ui/badge";
 
 gsap.registerPlugin(ScrollTrigger);
 
 const gridItems = [
   {
     icon: Cpu,
-    title: "Microcontrollers & Embedded Systems",
+    title: "Microcontrollers & Embedded",
     description:
-      "Low-level is where the interesting problems live. I program ESP32 and STM32 microcontrollers for real-time control systems — motor drivers for robotics, sensor fusion pipelines, and communication buses (I2C, SPI, UART). For the Mongol-tori rover, I wrote bare-metal firmware that handles PWM generation, encoder feedback, and PID control loops running at microsecond precision. This isn't Arduino hobbyist territory — it's production embedded C/C++ with strict timing constraints and limited memory budgets.",
+      "Low-level is where the interesting problems live. I program ESP32 and STM32 microcontrollers for real-time control systems — motor drivers for robotics, sensor fusion pipelines, and communication buses (I2C, SPI, UART). For the Mongol-tori rover, I wrote bare-metal firmware with PWM generation, encoder feedback, and PID control loops running at microsecond precision.",
     tags: ["ESP32", "STM32", "C/C++", "PID Control", "I2C/SPI/UART", "Firmware"],
     span: "lg:col-span-2",
   },
@@ -21,7 +20,7 @@ const gridItems = [
     icon: Navigation,
     title: "Autonomous Navigation & SLAM",
     description:
-      "Making a machine understand and navigate an unstructured environment is one of the hardest problems in robotics. With the BRACU Mongol-tori team, I work on ROS2-based navigation stacks that fuse LiDAR point clouds, IMU data, and wheel odometry to build real-time maps of unknown terrain. We implement SLAM algorithms that localize the rover while simultaneously mapping the environment — and then plan collision-free paths through it. The software stack runs on ROS2 Humble with custom C++ nodes for maximum throughput.",
+      "Making a machine navigate unstructured environments is one of the hardest problems in robotics. With BRACU Mongol-tori, I work on ROS2-based navigation stacks fusing LiDAR point clouds, IMU data, and wheel odometry to build real-time maps of unknown terrain.",
     tags: ["ROS2", "SLAM", "LiDAR", "IMU Fusion", "Path Planning", "C++ Nodes"],
     span: "lg:col-span-1",
   },
@@ -29,8 +28,8 @@ const gridItems = [
     icon: Printer,
     title: "Rapid Prototyping & 3D Printing",
     description:
-      "Ideas that stay in CAD files are just daydreams. I use Bambu Lab printers and slicer workflows to go from concept to physical part in hours, not weeks. Whether it's custom mounting brackets for LiDAR sensors, protective housings for electronics bays, or structural chassis components, rapid prototyping closes the loop between digital design and physical validation. Understanding layer adhesion, infill strategies, and material properties (PLA, PETG, TPU) means I can design parts that are manufacturable from the start.",
-    tags: ["Bambu Lab", "3D Printing", "CAD", "PLA/PETG/TPU", "Slicer Workflows"],
+      "Ideas that stay in CAD files are just daydreams. I use Bambu Lab printers and slicer workflows to go from concept to physical part in hours. Custom mounting brackets for LiDAR sensors, protective housings for electronics bays, or structural chassis components.",
+    tags: ["Bambu Lab", "3D Printing", "CAD", "PLA/PETG/TPU", "Slicer"],
     span: "lg:col-span-1",
   },
 ];
@@ -60,43 +59,52 @@ export default function HardwareBento() {
   }, []);
 
   return (
-    <section ref={sectionRef} className="py-24 bg-card overflow-hidden">
+    <section ref={sectionRef} className="py-24 md:py-32 bg-muted/10 border-t-4 border-foreground overflow-hidden">
       <div className="container mx-auto px-6 md:px-12 lg:px-20">
-        <h2 className="text-3xl md:text-4xl font-black tracking-tight text-foreground mb-4">
-          The Hardware &amp; Prototyping Lab
+        <span className="font-script text-2xl md:text-3xl text-primary -rotate-2 inline-block mb-3">
+          Where code meets metal.
+        </span>
+        <h2 className="text-3xl md:text-5xl font-black uppercase tracking-tighter text-foreground mb-4 leading-[0.9]">
+          Hardware &amp;{" "}
+          <span className="bg-foreground text-background px-3 pt-3 pb-1 inline-block">
+            Prototyping Lab
+          </span>
         </h2>
-        <p className="text-muted-foreground max-w-xl mb-16">
-          Where software meets the physical world. Most developers never touch firmware
-          or a soldering iron — this is what sets my work apart.
+        <p className="text-sm font-mono uppercase tracking-[0.1em] text-foreground/50 max-w-xl mb-16">
+          Most developers never touch firmware or a soldering iron — this is what sets my work apart.
         </p>
 
-        {/* Bento grid */}
-        <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
-          {gridItems.map((item) => {
+        <div className="grid grid-cols-1 lg:grid-cols-2 gap-0">
+          {gridItems.map((item, idx) => {
             const Icon = item.icon;
             return (
               <div
                 key={item.title}
-                className={`bento-card rounded-2xl border border-border bg-background p-8 ${item.span}`}
+                className={`bento-card border-4 border-foreground ${idx > 0 ? "border-t-0 lg:border-t-4" : ""} ${idx === 1 ? "lg:border-l-0" : ""} ${idx === 2 ? "lg:border-t-0" : ""} ${item.span}`}
               >
-                <div className="flex items-center gap-3 mb-5">
-                  <div className="flex items-center justify-center w-10 h-10 rounded-lg bg-primary/10 dark:bg-primary/20">
-                    <Icon size={20} className="text-primary dark:text-primary" />
+                {/* Card header */}
+                <div className="flex items-center gap-3 p-5 border-b-4 border-foreground">
+                  <div className="flex items-center justify-center w-10 h-10 bg-foreground text-background">
+                    <Icon size={20} />
                   </div>
-                  <h3 className="text-lg font-extrabold text-foreground">
+                  <h3 className="text-base font-black uppercase tracking-tight text-foreground">
                     {item.title}
                   </h3>
                 </div>
 
-                <p className="text-sm text-muted-foreground leading-relaxed mb-6">
-                  {item.description}
-                </p>
+                {/* Card body */}
+                <div className="p-6">
+                  <p className="text-sm text-foreground/60 leading-relaxed mb-6">
+                    {item.description}
+                  </p>
+                </div>
 
-                <div className="flex flex-wrap gap-1.5">
+                {/* Card footer — tags */}
+                <div className="flex flex-wrap gap-1.5 px-6 pb-5 pt-3 border-t-2 border-foreground/20">
                   {item.tags.map((tag) => (
-                    <Badge key={tag} variant="secondary" className="text-[11px]">
+                    <span key={tag} className="px-2 py-0.5 border-2 border-foreground/30 text-[10px] font-black uppercase tracking-[0.1em]">
                       {tag}
-                    </Badge>
+                    </span>
                   ))}
                 </div>
               </div>

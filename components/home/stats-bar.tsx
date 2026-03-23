@@ -30,17 +30,21 @@ export default function StatsBar() {
   return (
     <section
       ref={ref}
-      className="w-full border-y border-border bg-background"
+      className="w-full border-y-4 border-foreground bg-background"
     >
       <div className="container mx-auto px-6 md:px-12 lg:px-20">
-        <div className="flex flex-col sm:flex-row items-center justify-between gap-6 py-6 sm:py-5">
+        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 divide-y sm:divide-y-0 sm:divide-x divide-foreground/20">
           {stats.map(({ icon: Icon, label }) => (
             <div
               key={label}
-              className="stat-item flex items-center gap-3 text-sm font-medium text-foreground/80"
+              className="stat-item flex items-center gap-3 py-5 sm:px-4 lg:px-6 first:pl-0 last:pr-0"
             >
-              <Icon size={16} className="shrink-0 text-secondary dark:text-primary" />
-              <span>{label}</span>
+              <div className="w-8 h-8 flex items-center justify-center bg-foreground text-background shrink-0">
+                <Icon size={14} strokeWidth={2.5} />
+              </div>
+              <span className="text-xs font-black uppercase tracking-[0.1em] text-foreground/80 leading-tight">
+                {label}
+              </span>
             </div>
           ))}
         </div>

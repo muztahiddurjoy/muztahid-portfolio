@@ -36,38 +36,6 @@ function LiveClock() {
   );
 }
 
-function RadarPing() {
-  return (
-    <div className="relative w-full aspect-square max-w-45">
-      {/* Radar rings */}
-      <div className="absolute inset-0 rounded-full border border-primary-foreground/10" />
-      <div className="absolute inset-[15%] rounded-full border border-primary-foreground/10" />
-      <div className="absolute inset-[30%] rounded-full border border-primary-foreground/10" />
-      <div className="absolute inset-[45%] rounded-full border border-primary-foreground/8" />
-
-      {/* Crosshairs */}
-      <div className="absolute top-0 bottom-0 left-1/2 w-px bg-primary-foreground/8" />
-      <div className="absolute left-0 right-0 top-1/2 h-px bg-primary-foreground/8" />
-
-      {/* Center dot (Dhaka) */}
-      <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2">
-        <span className="relative flex h-3 w-3">
-          <span className="absolute inline-flex h-full w-full animate-ping rounded-full bg-secondary opacity-75" />
-          <span className="relative inline-flex h-3 w-3 rounded-full bg-secondary" />
-        </span>
-      </div>
-
-      {/* Sweep line */}
-      <div className="absolute inset-0 animate-spin" style={{ animationDuration: "4s" }}>
-        <div
-          className="absolute top-1/2 left-1/2 h-px origin-left bg-linear-to-r from-secondary/60 to-transparent"
-          style={{ width: "50%" }}
-        />
-      </div>
-    </div>
-  );
-}
-
 export default function TelemetryDashboard() {
   const sectionRef = useRef<HTMLElement>(null);
 
@@ -91,80 +59,90 @@ export default function TelemetryDashboard() {
   }, []);
 
   return (
-    <section ref={sectionRef} className="py-20 bg-background">
+    <section ref={sectionRef} className="py-24 md:py-32 bg-background border-t-4 border-foreground">
       <div className="container mx-auto px-6 md:px-12 lg:px-20">
-        <div className="flex items-center gap-3 mb-10">
-          <div className="h-px w-10 bg-foreground/20" />
-          <span className="text-xs font-semibold uppercase tracking-widest text-muted-foreground">
-            Live Telemetry
-          </span>
+        <div className="flex items-center gap-3 mb-4">
+          <div className="flex items-center justify-center w-10 h-10 bg-foreground text-background">
+            <Activity size={20} />
+          </div>
+          <div>
+            <span className="font-script text-xl text-primary -rotate-2 inline-block">Live.</span>
+            <h2 className="text-3xl md:text-4xl font-black uppercase tracking-tighter text-foreground leading-[0.9]">
+              Telemetry
+            </h2>
+          </div>
         </div>
+        <p className="text-sm font-mono uppercase tracking-[0.1em] text-foreground/50 max-w-xl mb-16">
+          Real-time operational data and location telemetry.
+        </p>
 
-        <div className="grid grid-cols-1 md:grid-cols-3 gap-5">
-          {/* Widget A — Coordinates */}
-          <div className="telem-card rounded-xl border border-border bg-card p-6 flex flex-col items-center justify-center gap-5">
-            <div className="flex items-center gap-2 w-full">
-              <MapPin size={14} className="text-muted-foreground" />
-              <span className="text-xs font-semibold uppercase tracking-widest text-muted-foreground">
+        <div className="grid grid-cols-1 md:grid-cols-3 gap-0">
+          {/* Coordinates */}
+          <div className="telem-card border-4 border-foreground p-6 flex flex-col justify-between gap-6">
+            <div className="flex items-center gap-2 pb-3 border-b-4 border-foreground">
+              <MapPin size={14} className="text-foreground/60" />
+              <span className="text-[10px] font-black uppercase tracking-[0.2em] text-foreground/50">
                 Coordinates
               </span>
             </div>
-            <RadarPing />
             <div className="text-center">
-              <p className="text-xl font-black tracking-tight">
+              <p className="text-xl font-black uppercase tracking-tight">
                 Dhaka, Bangladesh
               </p>
-              <p className="text-xs font-mono text-muted-foreground mt-1">
+              <p className="text-xs font-mono text-foreground/40 mt-1">
                 23.8103° N, 90.4125° E
               </p>
             </div>
+            <div className="flex items-center justify-center gap-2">
+              <span className="w-2 h-2 bg-accent" />
+              <span className="text-[10px] font-black uppercase tracking-[0.2em] text-foreground/40">
+                Position locked
+              </span>
+            </div>
           </div>
 
-          {/* Widget B — Local Chronometer */}
-          <div className="telem-card rounded-xl border border-border bg-card p-6 flex flex-col items-center justify-center gap-5">
-            <div className="flex items-center gap-2 w-full">
-              <Clock size={14} className="text-muted-foreground" />
-              <span className="text-xs font-semibold uppercase tracking-widest text-muted-foreground">
+          {/* Chronometer */}
+          <div className="telem-card border-4 border-foreground border-l-0 p-6 flex flex-col items-center justify-between gap-6 max-md:border-l-4 max-md:border-t-0">
+            <div className="flex items-center gap-2 pb-3 border-b-4 border-foreground w-full">
+              <Clock size={14} className="text-foreground/60" />
+              <span className="text-[10px] font-black uppercase tracking-[0.2em] text-foreground/50">
                 Local Chronometer
               </span>
             </div>
             <LiveClock />
             <div className="text-center">
-              <p className="text-sm font-semibold">BST (GMT+6)</p>
-              <p className="text-xs text-muted-foreground mt-0.5">
+              <p className="text-sm font-black uppercase">BST (GMT+6)</p>
+              <p className="text-xs text-foreground/40 mt-0.5">
                 Bangladesh Standard Time
               </p>
             </div>
           </div>
 
-          {/* Widget C — Operational Status */}
-          <div className="telem-card rounded-xl border border-border bg-card p-6 flex flex-col justify-between gap-5">
-            <div className="flex items-center gap-2">
-              <Activity size={14} className="text-muted-foreground" />
-              <span className="text-xs font-semibold uppercase tracking-widest text-muted-foreground">
+          {/* Status */}
+          <div className="telem-card border-4 border-foreground border-l-0 p-6 flex flex-col justify-between gap-5 max-md:border-l-4 max-md:border-t-0">
+            <div className="flex items-center gap-2 pb-3 border-b-4 border-foreground">
+              <Activity size={14} className="text-foreground/60" />
+              <span className="text-[10px] font-black uppercase tracking-[0.2em] text-foreground/50">
                 Operational Status
               </span>
             </div>
             <div>
               <div className="flex items-center gap-2 mb-3">
-                <span className="relative flex h-2.5 w-2.5">
-                  <span className="absolute inline-flex h-full w-full animate-ping rounded-full bg-green-400 opacity-75" />
-                  <span className="relative inline-flex h-2.5 w-2.5 rounded-full bg-green-500" />
-                </span>
-                <span className="text-xs font-mono uppercase tracking-wider text-green-600">
+                <span className="w-2 h-2 bg-accent" />
+                <span className="text-xs font-mono uppercase tracking-wider text-accent">
                   System Nominal
                 </span>
               </div>
-              <p className="text-lg font-bold tracking-tight leading-snug">
-                Active — Leading engineering at BOT Engineers &amp; navigating
+              <p className="text-base font-black tracking-tight leading-snug">
+                Active — Leading engineering at BOT Engineers & navigating
                 campus at BRAC University.
               </p>
             </div>
-            <div className="flex flex-wrap gap-2">
+            <div className="flex flex-wrap gap-1.5">
               {["Robotics", "Web Systems", "Embedded"].map((tag) => (
                 <span
                   key={tag}
-                  className="px-2.5 py-1 rounded text-[10px] font-semibold uppercase tracking-widest border border-border text-muted-foreground"
+                  className="px-2 py-0.5 border-2 border-foreground/30 text-[10px] font-black uppercase tracking-[0.1em]"
                 >
                   {tag}
                 </span>

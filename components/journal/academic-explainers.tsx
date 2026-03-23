@@ -11,16 +11,18 @@ interface MathBlockProps {
 
 export function MathBlock({ label, children }: MathBlockProps) {
   return (
-    <div className="my-8 rounded-2xl border border-border bg-primary p-6 md:p-8">
+    <div className="my-8 border-4 border-foreground p-6 md:p-8">
       {label && (
-        <div className="flex items-center gap-2 mb-4">
-          <BookOpen size={14} className="text-secondary" />
-          <span className="text-xs font-bold uppercase tracking-[0.2em] text-secondary">
+        <div className="flex items-center gap-2 mb-4 border-b-4 border-foreground pb-3">
+          <div className="w-6 h-6 bg-foreground text-background flex items-center justify-center">
+            <BookOpen size={12} />
+          </div>
+          <span className="text-[10px] font-black uppercase tracking-[0.2em] text-foreground">
             {label}
           </span>
         </div>
       )}
-      <div className="font-mono text-sm md:text-base leading-relaxed text-primary-foreground/90 whitespace-pre-wrap">
+      <div className="font-mono text-sm md:text-base leading-relaxed text-foreground/80 whitespace-pre-wrap">
         {children}
       </div>
     </div>
@@ -43,27 +45,31 @@ export function CodeCompare({
   customCode,
 }: CodeCompareProps) {
   return (
-    <div className="my-8 grid grid-cols-1 md:grid-cols-2 gap-4">
-      <div className="rounded-2xl border border-border bg-muted overflow-hidden">
-        <div className="flex items-center gap-2 px-4 py-3 bg-border/50 border-b border-border">
-          <Code size={14} className="text-muted-foreground" />
-          <span className="text-xs font-bold uppercase tracking-widest text-muted-foreground">
+    <div className="my-8 grid grid-cols-1 md:grid-cols-2">
+      <div className="border-4 border-foreground overflow-hidden md:border-r-0">
+        <div className="flex items-center gap-2 px-4 py-3 bg-foreground/5 border-b-4 border-foreground">
+          <div className="w-5 h-5 bg-foreground text-background flex items-center justify-center">
+            <Code size={10} />
+          </div>
+          <span className="text-[10px] font-black uppercase tracking-[0.15em] text-foreground/60">
             {standardLabel}
           </span>
         </div>
-        <pre className="p-4 text-xs md:text-sm font-mono text-foreground leading-relaxed overflow-x-auto">
+        <pre className="p-4 text-xs md:text-sm font-mono text-foreground/80 leading-relaxed overflow-x-auto">
           <code>{standardCode}</code>
         </pre>
       </div>
 
-      <div className="rounded-2xl border-2 border-secondary bg-primary overflow-hidden">
-        <div className="flex items-center gap-2 px-4 py-3 bg-secondary/10 border-b border-secondary/20">
-          <Code size={14} className="text-secondary" />
-          <span className="text-xs font-bold uppercase tracking-widest text-secondary">
+      <div className="border-4 border-foreground overflow-hidden max-md:border-t-0">
+        <div className="flex items-center gap-2 px-4 py-3 bg-accent/10 border-b-4 border-foreground">
+          <div className="w-5 h-5 bg-accent text-foreground flex items-center justify-center">
+            <Code size={10} />
+          </div>
+          <span className="text-[10px] font-black uppercase tracking-[0.15em] text-accent">
             {customLabel}
           </span>
         </div>
-        <pre className="p-4 text-xs md:text-sm font-mono text-primary-foreground/90 leading-relaxed overflow-x-auto">
+        <pre className="p-4 text-xs md:text-sm font-mono text-foreground/80 leading-relaxed overflow-x-auto">
           <code>{customCode}</code>
         </pre>
       </div>
@@ -78,14 +84,16 @@ interface TLDRBoxProps {
 
 export function TLDRBox({ children }: TLDRBoxProps) {
   return (
-    <div className="my-8 rounded-2xl border-2 border-secondary/40 bg-secondary/5 p-6 md:p-8">
-      <div className="flex items-center gap-2 mb-3">
-        <Lightbulb size={16} className="text-secondary-foreground" />
-        <span className="text-xs font-black uppercase tracking-[0.2em] text-secondary-foreground">
+    <div className="my-8 border-4 border-accent p-6 md:p-8">
+      <div className="flex items-center gap-2 mb-3 border-b-4 border-accent pb-3">
+        <div className="w-6 h-6 bg-accent text-foreground flex items-center justify-center">
+          <Lightbulb size={12} />
+        </div>
+        <span className="text-[10px] font-black uppercase tracking-[0.2em] text-foreground">
           TL;DR
         </span>
       </div>
-      <div className="text-sm md:text-base text-foreground/80 leading-relaxed">
+      <div className="text-sm md:text-base text-foreground/70 leading-relaxed">
         {children}
       </div>
     </div>

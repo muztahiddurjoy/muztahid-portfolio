@@ -3,8 +3,7 @@
 import { useEffect, useRef } from "react";
 import gsap from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
-import { Mail, Linkedin } from "lucide-react";
-import { Button } from "@/components/ui/button";
+import { Mail, Linkedin, ArrowRight } from "lucide-react";
 
 gsap.registerPlugin(ScrollTrigger);
 
@@ -33,49 +32,43 @@ export default function AboutCTA() {
   return (
     <section
       ref={ref}
-      className="relative py-32 overflow-hidden bg-secondary text-secondary-foreground"
+      className="relative py-24 md:py-32 overflow-hidden bg-foreground text-background border-t-4 border-background/20"
     >
-      {/* Decorative shapes */}
-      <div className="absolute top-0 right-0 w-80 h-80 rounded-full bg-secondary-foreground/5 -translate-y-1/2 translate-x-1/3" />
-      <div className="absolute bottom-0 left-0 w-60 h-60 rounded-full bg-secondary-foreground/5 translate-y-1/2 -translate-x-1/4" />
+      <div className="container relative z-10 mx-auto px-6 md:px-12 lg:px-20 text-center max-w-3xl">
+        <span className="about-cta-reveal font-script text-3xl md:text-4xl text-primary -rotate-2 inline-block mb-4">
+          Let&apos;s connect.
+        </span>
 
-      <div className="container relative z-10 mx-auto px-6 md:px-12 lg:px-20 text-center max-w-2xl">
-        <h2 className="about-cta-reveal text-4xl md:text-6xl font-black tracking-tight mb-6">
-          Let&apos;s build
-          <br />
-          something robust.
+        <h2 className="about-cta-reveal text-4xl md:text-6xl font-black uppercase tracking-tighter mb-6 leading-[0.85]">
+          Let&apos;s Build Something{" "}
+          <span className="bg-background text-foreground px-3 pt-3 pb-1 inline-block">
+            Robust
+          </span>
         </h2>
 
-        <p className="about-cta-reveal text-lg text-secondary-foreground/70 leading-relaxed mb-12">
-          Whether you need a scalable web platform, an embedded firmware solution,
-          or a full autonomous navigation stack — I&apos;m ready to talk engineering.
+        <p className="about-cta-reveal text-sm font-mono uppercase tracking-[0.15em] text-background/50 leading-relaxed mb-12 max-w-xl mx-auto">
+          Whether you need a scalable web platform, embedded firmware, or an autonomous navigation stack — I&apos;m ready to talk engineering.
         </p>
 
-        <div className="about-cta-reveal flex flex-wrap justify-center gap-4">
-          <Button
-            size="lg"
-            className="bg-secondary-foreground text-secondary font-semibold transition-colors duration-300 hover:bg-secondary-foreground/85"
-            asChild
+        <div className="about-cta-reveal flex flex-col sm:flex-row flex-wrap justify-center gap-4">
+          <a
+            href="mailto:muztahid@example.com"
+            className="group inline-flex items-center gap-3 bg-background text-foreground px-8 py-4 border-4 border-background font-black uppercase tracking-[0.1em] text-sm hover:bg-transparent hover:text-background transition-colors"
           >
-            <a href="mailto:muztahid@example.com">
-              <Mail className="mr-2" size={16} />
-              Send an Email
-            </a>
-          </Button>
-          <Button
-            size="lg"
-            className="border-2 border-secondary-foreground/30 bg-transparent text-secondary-foreground font-semibold transition-colors duration-300 hover:bg-oxford hover:text-tan hover:border-secondary-foreground/50"
-            asChild
+            <Mail size={16} />
+            Send an Email
+            <ArrowRight size={14} className="group-hover:translate-x-1 transition-transform" />
+          </a>
+          <a
+            href="https://linkedin.com/in/muztahiddurjoy"
+            target="_blank"
+            rel="noopener noreferrer"
+            className="group inline-flex items-center gap-3 bg-transparent text-background px-8 py-4 border-4 border-background font-black uppercase tracking-[0.1em] text-sm hover:bg-background hover:text-foreground transition-colors"
           >
-            <a
-              href="https://linkedin.com/in/muztahiddurjoy"
-              target="_blank"
-              rel="noopener noreferrer"
-            >
-              <Linkedin className="mr-2" size={16} />
-              Connect on LinkedIn
-            </a>
-          </Button>
+            <Linkedin size={16} />
+            Connect on LinkedIn
+            <ArrowRight size={14} className="group-hover:translate-x-1 transition-transform" />
+          </a>
         </div>
       </div>
     </section>

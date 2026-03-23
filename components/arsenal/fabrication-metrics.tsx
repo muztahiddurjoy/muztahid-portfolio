@@ -1,73 +1,74 @@
 "use client";
 
-import { useEffect, useRef, useState, useCallback } from "react";
+import { useEffect, useRef, useState } from "react";
 import gsap from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
-import { Wrench, Printer, Cog, ChevronLeft, ChevronRight } from "lucide-react";
-import { Badge } from "@/components/ui/badge";
+import { Ruler, Printer, PenTool, Wrench, ChevronLeft, ChevronRight } from "lucide-react";
 
 gsap.registerPlugin(ScrollTrigger);
 
 const specSheets = [
   {
+    id: "3d-printing",
     icon: Printer,
-    title: "3D Printing & Additive Manufacturing",
+    title: "3D Printing & Prototyping",
+    description: "FDM and resin-based additive manufacturing for mechanical enclosures, sensor mounts, and custom robot chassis.",
     specs: [
-      { label: "Platform", value: "Bambu Lab X1 Carbon" },
-      { label: "Slicer", value: "Bambu Studio / OrcaSlicer" },
+      { label: "Layer Height", value: "0.12 – 0.28mm" },
+      { label: "Nozzle Temp", value: "190 – 250 °C" },
+      { label: "Bed Temp", value: "50 – 110 °C" },
+      { label: "Infill Range", value: "15 – 100%" },
       { label: "Materials", value: "PLA, PETG, TPU, ABS" },
-      { label: "Layer Height", value: "0.08–0.28mm adaptive" },
-      { label: "Infill Strategy", value: "Gyroid / adaptive cubic" },
-      { label: "Tolerance", value: "±0.1mm on precision parts" },
+      { label: "Post-Process", value: "Sanding, acetone vapor, heat-set inserts" },
     ],
-    description:
-      "From concept to physical part in hours. Custom mounting brackets for LiDAR sensors, protective housings for electronics bays, and structural chassis components are designed with manufacturability in mind from the start. Multi-material prints allow functional prototypes with embedded wiring channels and snap-fit assemblies.",
+    tags: ["Cura", "PrusaSlicer", "OctoPrint"],
   },
   {
-    icon: Cog,
-    title: "Mechanical Design & CAD",
+    id: "cad",
+    icon: PenTool,
+    title: "CAD & Mechanical Design",
+    description: "Parametric 3D modeling for robotics assemblies, enclosures, and custom PCB mounting solutions.",
     specs: [
-      { label: "CAD Tools", value: "SolidWorks / Fusion 360" },
-      { label: "Analysis", value: "FEA stress simulation" },
-      { label: "Output", value: "STL, STEP, DXF" },
-      { label: "Tolerance Stack", value: "GD&T fundamentals" },
-      { label: "Assembly", value: "Press-fit, heat-set inserts" },
-      { label: "Fasteners", value: "M2–M6 metric hardware" },
+      { label: "Primary Tool", value: "SolidWorks / Fusion 360" },
+      { label: "Tolerance", value: "± 0.1mm standard" },
+      { label: "Export Formats", value: "STL, STEP, IGES" },
+      { label: "Assembly Size", value: "Up to 200+ parts" },
+      { label: "Simulation", value: "FEA stress analysis" },
+      { label: "PCB Integration", value: "KiCad footprint alignment" },
     ],
-    description:
-      "Parametric modeling with full constraint trees ensures parts can be iterated rapidly. Designs account for thermal expansion, material creep, and assembly sequence from the first sketch. Every part has a purpose, every tolerance is justified.",
+    tags: ["SolidWorks", "Fusion 360", "KiCad"],
   },
   {
+    id: "analog",
     icon: Wrench,
-    title: "Analog Mechanical Inspiration",
+    title: "Analog & Mechanical Assembly",
+    description: "Hand soldering, wire harness routing, and mechanical assembly for sensor integration and motor mounting.",
     specs: [
-      { label: "Philosophy", value: "Over-engineer, then simplify" },
-      { label: "Reference", value: "Mercedes W123, Honda CB series" },
-      { label: "Principle", value: "Mechanical redundancy" },
-      { label: "Material Feel", value: "Metal > Plastic when possible" },
-      { label: "Maintenance", value: "Design for serviceability" },
-      { label: "Longevity", value: "30+ year lifecycle target" },
+      { label: "Soldering", value: "SMD down to 0402 packages" },
+      { label: "Crimping", value: "JST, Molex, Dupont connectors" },
+      { label: "Wire Gauge", value: "AWG 16 – 30" },
+      { label: "Fasteners", value: "M2 – M8 metric hardware" },
+      { label: "Adhesives", value: "Epoxy, cyanoacrylate, thermal paste" },
+      { label: "Testing", value: "Multimeter, logic analyzer, oscilloscope" },
     ],
-    description:
-      "Classic Japanese motorcycles and vintage Mercedes diesels share a design philosophy: build it right, build it once, make it serviceable. This informs modern hardware builds — every cable has a strain relief, every connector has a locking mechanism, and every enclosure opens without destroying itself.",
+    tags: ["Hand Assembly", "Quality Control", "Prototyping"],
   },
 ];
 
 export default function FabricationMetrics() {
   const sectionRef = useRef<HTMLElement>(null);
-  const carouselRef = useRef<HTMLDivElement>(null);
   const [activeIndex, setActiveIndex] = useState(0);
 
   useEffect(() => {
     const ctx = gsap.context(() => {
       gsap.from(".fab-header", {
-        y: 25,
+        y: 30,
         opacity: 0,
         duration: 0.8,
         ease: "power3.out",
         scrollTrigger: {
-          trigger: sectionRef.current,
-          start: "top 80%",
+          trigger: ".fab-header",
+          start: "top 85%",
           toggleActions: "play none none none",
         },
       });
@@ -76,138 +77,121 @@ export default function FabricationMetrics() {
     return () => ctx.revert();
   }, []);
 
-  const scrollTo = useCallback(
-    (index: number) => {
-      const clamped = Math.max(0, Math.min(index, specSheets.length - 1));
-      setActiveIndex(clamped);
-      if (carouselRef.current) {
-        const cards = carouselRef.current.children;
-        if (cards[clamped]) {
-          (cards[clamped] as HTMLElement).scrollIntoView({
-            behavior: "smooth",
-            block: "nearest",
-            inline: "center",
-          });
-        }
-      }
-    },
-    []
-  );
+  const goTo = (dir: "prev" | "next") => {
+    setActiveIndex((prev) =>
+      dir === "next"
+        ? (prev + 1) % specSheets.length
+        : (prev - 1 + specSheets.length) % specSheets.length
+    );
+  };
+
+  const sheet = specSheets[activeIndex];
+  const Icon = sheet.icon;
 
   return (
-    <section
-      id="section-prototyping"
-      ref={sectionRef}
-      className="py-24 bg-card overflow-hidden"
-    >
+    <section id="section-fabrication" ref={sectionRef} className="py-24 md:py-32 bg-background border-t-4 border-foreground overflow-hidden">
       <div className="container mx-auto px-6 md:px-12 lg:px-20">
-        {/* Section header */}
-        <div className="fab-header flex items-center justify-between mb-16">
-          <div>
-            <div className="flex items-center gap-3 mb-4">
-              <div className="flex items-center justify-center w-10 h-10 rounded-lg bg-primary/10">
-                <Wrench size={20} className="text-primary" />
-              </div>
-              <h2 className="text-3xl md:text-4xl font-black tracking-tight text-foreground">
-                The Prototyping Deck
-              </h2>
-            </div>
-            <p className="text-muted-foreground max-w-xl">
-              Physical fabrication capabilities — from 3D printing to mechanical
-              design philosophy.
-            </p>
+        {/* Header */}
+        <div className="fab-header flex items-center gap-3 mb-4">
+          <div className="flex items-center justify-center w-10 h-10 bg-foreground text-background">
+            <Ruler size={20} />
           </div>
+          <div>
+            <span className="font-script text-xl text-primary -rotate-2 inline-block">Fabrication.</span>
+            <h2 className="text-3xl md:text-4xl font-black uppercase tracking-tighter text-foreground leading-[0.9]">
+              Physical Build Specs
+            </h2>
+          </div>
+        </div>
+        <p className="text-sm font-mono uppercase tracking-[0.1em] text-foreground/50 max-w-xl mb-16">
+          Precision specifications for physical prototyping and assembly.
+        </p>
 
-          {/* Carousel controls */}
-          <div className="hidden md:flex items-center gap-2">
+        {/* Carousel navigation */}
+        <div className="flex items-center justify-between mb-6 pb-4 border-b-4 border-foreground">
+          <div className="flex items-center gap-3">
+            {specSheets.map((s, idx) => (
+              <button
+                key={s.id}
+                onClick={() => setActiveIndex(idx)}
+                className={`px-3 py-1.5 text-xs font-black uppercase tracking-[0.15em] border-4 transition-colors duration-150 ${
+                  idx === activeIndex
+                    ? "bg-foreground text-background border-foreground"
+                    : "bg-background text-foreground border-foreground/20 hover:border-foreground"
+                }`}
+              >
+                {s.title.split(" ")[0]}
+              </button>
+            ))}
+          </div>
+          <div className="flex items-center gap-1">
             <button
-              onClick={() => scrollTo(activeIndex - 1)}
-              disabled={activeIndex === 0}
-              className="flex items-center justify-center w-10 h-10 rounded-lg border border-border bg-background text-foreground/70 hover:text-foreground disabled:opacity-30 transition-all"
-              aria-label="Previous slide"
+              onClick={() => goTo("prev")}
+              className="flex items-center justify-center w-10 h-10 border-4 border-foreground hover:bg-foreground hover:text-background transition-colors duration-150"
             >
               <ChevronLeft size={18} />
             </button>
             <button
-              onClick={() => scrollTo(activeIndex + 1)}
-              disabled={activeIndex === specSheets.length - 1}
-              className="flex items-center justify-center w-10 h-10 rounded-lg border border-border bg-background text-foreground/70 hover:text-foreground disabled:opacity-30 transition-all"
-              aria-label="Next slide"
+              onClick={() => goTo("next")}
+              className="flex items-center justify-center w-10 h-10 border-4 border-foreground hover:bg-foreground hover:text-background transition-colors duration-150"
             >
               <ChevronRight size={18} />
             </button>
           </div>
         </div>
 
-        {/* Horizontal carousel */}
-        <div
-          ref={carouselRef}
-          className="flex gap-6 overflow-x-auto snap-x snap-mandatory scrollbar-hide pb-4 -mx-6 px-6"
-        >
-          {specSheets.map((sheet, idx) => {
-            const Icon = sheet.icon;
-            return (
-              <div
-                key={sheet.title}
-                className={`snap-center shrink-0 w-85 md:w-105 rounded-2xl border-2 bg-background p-8 transition-all duration-300 ${
-                  activeIndex === idx
-                    ? "border-secondary/60 shadow-[0_0_25px_rgba(210,180,140,0.1)]"
-                    : "border-border"
-                }`}
-                onClick={() => setActiveIndex(idx)}
-              >
-                {/* Card header */}
-                <div className="flex items-center gap-3 mb-6">
-                  <div className="flex items-center justify-center w-10 h-10 rounded-lg bg-secondary/10">
-                    <Icon size={20} className="text-secondary" />
-                  </div>
-                  <h3 className="text-base font-extrabold text-foreground leading-tight">
-                    {sheet.title}
-                  </h3>
-                </div>
+        {/* Spec sheet card */}
+        <div className="border-4 border-foreground">
+          {/* Card header */}
+          <div className="flex items-center gap-3 px-6 py-4 border-b-4 border-foreground">
+            <div className="flex items-center justify-center w-10 h-10 bg-foreground text-background">
+              <Icon size={20} />
+            </div>
+            <div>
+              <h3 className="text-lg font-black uppercase tracking-tight text-foreground">
+                {sheet.title}
+              </h3>
+              <p className="text-xs text-foreground/50">{sheet.description}</p>
+            </div>
+          </div>
 
-                {/* Spec table */}
-                <div className="rounded-lg border border-border overflow-hidden mb-6">
-                  {sheet.specs.map((spec, i) => (
-                    <div
-                      key={spec.label}
-                      className={`flex items-center justify-between px-4 py-2.5 text-xs ${
-                        i % 2 === 0 ? "bg-muted/40" : "bg-background"
-                      }`}
-                    >
-                      <span className="font-bold text-foreground/70">
-                        {spec.label}
-                      </span>
-                      <span className="text-muted-foreground text-right">
-                        {spec.value}
-                      </span>
-                    </div>
-                  ))}
-                </div>
-
-                {/* Description */}
-                <p className="text-xs text-muted-foreground leading-relaxed">
-                  {sheet.description}
-                </p>
+          {/* Spec rows */}
+          <div className="divide-y-2 divide-foreground/10">
+            {sheet.specs.map((spec) => (
+              <div key={spec.label} className="flex items-center justify-between px-6 py-4">
+                <span className="text-xs font-black uppercase tracking-[0.1em] text-foreground/50">
+                  {spec.label}
+                </span>
+                <span className="text-sm font-mono text-foreground">{spec.value}</span>
               </div>
-            );
-          })}
+            ))}
+          </div>
+
+          {/* Tags footer */}
+          <div className="flex items-center gap-2 px-6 py-3 border-t-4 border-foreground">
+            {sheet.tags.map((tag) => (
+              <span key={tag} className="px-2 py-0.5 border-2 border-foreground/30 text-[10px] font-black uppercase tracking-[0.1em]">
+                {tag}
+              </span>
+            ))}
+          </div>
         </div>
 
-        {/* Pagination dots */}
-        <div className="flex items-center justify-center gap-2 mt-8">
-          {specSheets.map((_, idx) => (
-            <button
-              key={idx}
-              onClick={() => scrollTo(idx)}
-              className={`w-2 h-2 rounded-full transition-all duration-300 ${
-                activeIndex === idx
-                  ? "w-6 bg-secondary"
-                  : "bg-border hover:bg-muted-foreground/40"
-              }`}
-              aria-label={`Go to slide ${idx + 1}`}
-            />
-          ))}
+        {/* Page indicator */}
+        <div className="flex items-center gap-2 mt-6">
+          <span className="text-[10px] font-black uppercase tracking-[0.2em] text-foreground/40">
+            {String(activeIndex + 1).padStart(2, "0")} / {String(specSheets.length).padStart(2, "0")}
+          </span>
+          <div className="flex gap-1 ml-2">
+            {specSheets.map((_, idx) => (
+              <span
+                key={idx}
+                className={`w-6 h-1.5 transition-colors duration-150 ${
+                  idx === activeIndex ? "bg-foreground" : "bg-foreground/20"
+                }`}
+              />
+            ))}
+          </div>
         </div>
       </div>
     </section>

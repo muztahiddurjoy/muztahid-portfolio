@@ -44,16 +44,15 @@ export default function ProjectsGrid({ projects }: ProjectsGridProps) {
       <ProjectFilterNav activeFilter={filter} onFilterChange={setFilter} />
 
       <div ref={gridRef}>
-        {/* Spotlights */}
         {filteredSpotlights.length > 0 && (
-          <section className="filtered-section py-24 bg-background">
+          <section className="filtered-section py-24 md:py-32 bg-background border-t-4 border-foreground">
             <div className="container mx-auto px-6 md:px-12 lg:px-20 space-y-12">
               <div>
-                <p className="text-xs tracking-widest uppercase text-muted-foreground mb-3">
-                  Deep Dives
-                </p>
-                <h2 className="text-3xl md:text-4xl font-black tracking-tight text-foreground">
-                  Flagship Systems
+                <span className="font-script text-accent text-lg mb-2 block">deep dives</span>
+                <h2 className="text-3xl md:text-4xl font-black uppercase tracking-tighter text-foreground">
+                  <span className="bg-foreground text-background px-3 pt-3 pb-1 inline-block">
+                    FLAGSHIP SYSTEMS
+                  </span>
                 </h2>
               </div>
               {filteredSpotlights.map((project, i) => (
@@ -67,7 +66,6 @@ export default function ProjectsGrid({ projects }: ProjectsGridProps) {
           </section>
         )}
 
-        {/* Bento Grid */}
         {filteredBentos.length > 0 && (
           <div className="filtered-section">
             <BentoGridProjects projects={filteredBentos} />

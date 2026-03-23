@@ -13,7 +13,6 @@ export default function ArsenalHero() {
   const scrambleText = useCallback((el: HTMLElement, finalText: string) => {
     let iteration = 0;
     const totalIterations = finalText.length * 3;
-
     const interval = setInterval(() => {
       el.textContent = finalText
         .split("")
@@ -22,7 +21,6 @@ export default function ArsenalHero() {
           return SCRAMBLE_CHARS[Math.floor(Math.random() * SCRAMBLE_CHARS.length)];
         })
         .join("");
-
       iteration++;
       if (iteration > totalIterations) {
         clearInterval(interval);
@@ -33,7 +31,6 @@ export default function ArsenalHero() {
 
   useEffect(() => {
     const ctx = gsap.context(() => {
-      // Blinking cursor
       gsap.to(cursorRef.current, {
         opacity: 0,
         duration: 0.5,
@@ -42,7 +39,6 @@ export default function ArsenalHero() {
         ease: "steps(1)",
       });
 
-      // Subtitle and other elements fade in
       gsap.from(".arsenal-subtitle", {
         y: 20,
         opacity: 0,
@@ -61,10 +57,9 @@ export default function ArsenalHero() {
       });
     }, containerRef);
 
-    // Scramble effect after short delay
     const timer = setTimeout(() => {
       if (headlineRef.current) {
-        scrambleText(headlineRef.current, "Infrastructure & Capabilities.");
+        scrambleText(headlineRef.current, "INFRASTRUCTURE & CAPABILITIES.");
       }
     }, 400);
 
@@ -82,7 +77,7 @@ export default function ArsenalHero() {
       {/* Grain overlay */}
       <div className="absolute inset-0 opacity-[0.03] bg-[url('data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHdpZHRoPSIzMDAiIGhlaWdodD0iMzAwIj48ZmlsdGVyIGlkPSJhIj48ZmVUdXJidWxlbmNlIHR5cGU9ImZyYWN0YWxOb2lzZSIgYmFzZUZyZXF1ZW5jeT0iLjc1Ii8+PC9maWx0ZXI+PHJlY3Qgd2lkdGg9IjEwMCUiIGhlaWdodD0iMTAwJSIgZmlsdGVyPSJ1cmwoI2EpIi8+PC9zdmc+')]" />
 
-      {/* Grid lines decorative */}
+      {/* Grid lines */}
       <div className="absolute inset-0 opacity-[0.04]">
         {Array.from({ length: 8 }).map((_, i) => (
           <div
@@ -96,34 +91,26 @@ export default function ArsenalHero() {
       <div className="container relative z-10 mx-auto px-6 md:px-12 lg:px-20 py-24">
         {/* Terminal-style prefix */}
         <div className="flex items-center gap-2 mb-8">
-          <span className="text-secondary font-mono text-sm tracking-wider">
-            ~/arsenal
-          </span>
+          <span className="text-secondary font-mono text-sm tracking-wider">~/arsenal</span>
           <span className="text-primary-foreground/40 font-mono text-sm">$</span>
-          <span className="text-primary-foreground/60 font-mono text-sm">
-            cat capabilities.md
-          </span>
-          <span
-            ref={cursorRef}
-            className="inline-block w-2.5 h-5 bg-secondary ml-1"
-          />
+          <span className="text-primary-foreground/60 font-mono text-sm">cat capabilities.md</span>
+          <span ref={cursorRef} className="inline-block w-2.5 h-5 bg-secondary ml-1" />
         </div>
 
-        {/* Main headline with scramble effect */}
+        {/* Main headline with scramble */}
         <h1
           ref={headlineRef}
-          className="text-5xl md:text-7xl lg:text-[5.5rem] font-black tracking-tight leading-[0.95] text-primary-foreground mb-8"
+          className="text-5xl md:text-7xl lg:text-[5.5rem] font-black uppercase tracking-tighter leading-[0.9] text-primary-foreground mb-8"
         >
           &nbsp;
         </h1>
 
-        <p className="arsenal-subtitle text-lg md:text-xl max-w-2xl text-primary-foreground/70 leading-relaxed mb-12">
-          The languages, frameworks, and physical tooling I use to push logic
-          into production.
+        <p className="arsenal-subtitle text-sm md:text-base font-mono uppercase tracking-[0.15em] max-w-2xl text-primary-foreground/50 leading-relaxed mb-12">
+          The languages, frameworks, and physical tooling I use to push logic into production.
         </p>
 
         {/* Quick stats row */}
-        <div className="arsenal-detail flex flex-wrap gap-8 border-t border-primary-foreground/10 pt-8">
+        <div className="arsenal-detail flex flex-wrap gap-8 border-t-4 border-primary-foreground/10 pt-8">
           {[
             { label: "Domains", value: "4" },
             { label: "Technologies", value: "20+" },
@@ -133,7 +120,7 @@ export default function ArsenalHero() {
               <span className="text-3xl md:text-4xl font-black text-secondary">
                 {stat.value}
               </span>
-              <span className="text-xs uppercase tracking-[0.2em] text-primary-foreground/50 mt-1">
+              <span className="text-[10px] font-black uppercase tracking-[0.2em] text-primary-foreground/50 mt-1">
                 {stat.label}
               </span>
             </div>

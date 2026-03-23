@@ -23,7 +23,6 @@ export default function HardwareWorkflow({ steps }: HardwareWorkflowProps) {
       const track = trackRef.current;
       if (!track) return;
 
-      // Horizontal scroll
       const totalWidth = track.scrollWidth - track.offsetWidth;
       gsap.to(track, {
         x: -totalWidth,
@@ -38,7 +37,6 @@ export default function HardwareWorkflow({ steps }: HardwareWorkflowProps) {
         },
       });
 
-      // Fade-in each card
       gsap.utils.toArray<HTMLElement>(".hw-step-card").forEach((card, i) => {
         gsap.from(card, {
           opacity: 0,
@@ -58,48 +56,46 @@ export default function HardwareWorkflow({ steps }: HardwareWorkflowProps) {
   }, []);
 
   return (
-    <section ref={ref} className="py-24 bg-background overflow-hidden">
+    <section ref={ref} className="py-24 md:py-32 bg-background border-t-4 border-foreground overflow-hidden">
       <div className="container mx-auto px-6 md:px-12 lg:px-20 mb-12">
-        <p className="text-xs tracking-widest uppercase text-muted-foreground mb-3">
-          Physical Prototyping
-        </p>
-        <h2 className="text-3xl md:text-4xl font-black tracking-tight text-foreground">
-          Hardware Workflow
+        <span className="font-script text-accent text-lg mb-2 block">physical prototyping</span>
+        <h2 className="text-3xl md:text-4xl font-black uppercase tracking-tighter text-foreground">
+          HARDWARE WORKFLOW
         </h2>
       </div>
 
-      <div ref={trackRef} className="flex gap-8 pl-6 md:pl-12 lg:pl-20 pr-20 w-max">
+      <div ref={trackRef} className="flex gap-0 pl-6 md:pl-12 lg:pl-20 pr-20 w-max">
         {steps.map((step, i) => {
           const Icon = stepIcons[i];
           return (
             <div
               key={step.step}
-              className="hw-step-card w-[340px] md:w-[420px] flex-shrink-0 rounded-2xl border border-border bg-card p-8"
+              className={`hw-step-card w-[340px] md:w-[420px] flex-shrink-0 border-4 border-foreground p-8 ${i > 0 ? "border-l-0" : ""}`}
             >
-              <div className="flex items-center gap-4 mb-6">
-                <div className="flex items-center justify-center w-12 h-12 rounded-xl bg-primary/10 dark:bg-primary/20">
-                  <Icon size={22} className="text-primary" />
+              <div className="flex items-center gap-4 mb-6 border-b-4 border-foreground pb-6">
+                <div className="w-12 h-12 bg-foreground text-background flex items-center justify-center">
+                  <Icon size={22} />
                 </div>
                 <div>
-                  <p className="text-[10px] tracking-widest uppercase text-muted-foreground">
+                  <p className="text-[10px] tracking-[0.2em] uppercase text-foreground/40 font-mono">
                     Step {step.step}
                   </p>
-                  <h3 className="text-xl font-extrabold tracking-tight text-foreground">
+                  <h3 className="text-xl font-black uppercase tracking-tighter text-foreground">
                     {step.title}
                   </h3>
                 </div>
               </div>
-              <p className="text-sm text-muted-foreground leading-relaxed">
+              <p className="text-sm text-foreground/50 leading-relaxed">
                 {step.description}
               </p>
 
-              {/* Progress indicator */}
-              <div className="mt-6 flex items-center gap-2">
+              {/* Progress */}
+              <div className="mt-6 flex items-center gap-1">
                 {steps.map((_, j) => (
                   <div
                     key={j}
-                    className={`h-1 flex-1 rounded-full ${
-                      j <= i ? "bg-primary" : "bg-border"
+                    className={`h-1 flex-1 ${
+                      j <= i ? "bg-foreground" : "bg-foreground/20"
                     }`}
                   />
                 ))}

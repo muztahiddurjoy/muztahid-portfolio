@@ -40,7 +40,7 @@ export default function Navbar() {
       className={cn(
         "fixed top-0 left-0 right-0 z-50 transition-all duration-300",
         scrolled
-          ? "bg-background/90 backdrop-blur-md border-b border-border shadow-sm"
+          ? "bg-background/95 backdrop-blur-md border-b-4 border-foreground"
           : "bg-transparent"
       )}
     >
@@ -53,17 +53,17 @@ export default function Navbar() {
         >
           <span
             className={cn(
-              "flex items-center justify-center w-8 h-8 rounded-lg text-sm font-black tracking-tight transition-colors duration-300",
+              "flex items-center justify-center w-9 h-9 text-sm font-black tracking-tight transition-colors duration-300 border-2",
               scrolled || !isHeroPage(pathname)
-                ? "bg-primary text-primary-foreground"
-                : "bg-primary-foreground text-primary"
+                ? "bg-foreground text-background border-foreground"
+                : "bg-primary-foreground text-primary border-primary-foreground"
             )}
           >
             MR
           </span>
           <span
             className={cn(
-              "hidden sm:block text-sm font-bold tracking-wide transition-colors duration-300",
+              "hidden sm:block text-sm font-black uppercase tracking-[0.15em] transition-colors duration-300",
               scrolled || !isHeroPage(pathname)
                 ? "text-foreground"
                 : "text-primary-foreground"
@@ -74,21 +74,20 @@ export default function Navbar() {
         </Link>
 
         {/* Desktop nav */}
-        <ul className="hidden md:flex items-center gap-1">
+        <ul className="hidden md:flex items-center gap-0.5">
           {NAV_LINKS.map(({ href, label }) => (
             <li key={href}>
               <Link
                 href={href}
                 className={cn(
-                  "relative px-3.5 py-2 text-sm font-medium rounded-md transition-colors duration-200",
-                  "after:absolute after:bottom-1 after:left-3.5 after:right-3.5 after:h-px after:rounded-full after:transition-opacity after:duration-200",
+                  "relative px-4 py-2 text-xs font-black uppercase tracking-[0.15em] transition-colors duration-200",
                   isActive(href)
                     ? scrolled || !isHeroPage(pathname)
-                      ? "text-foreground after:bg-primary after:opacity-100"
-                      : "text-primary-foreground after:bg-primary-foreground after:opacity-100"
+                      ? "text-background bg-foreground"
+                      : "text-primary bg-primary-foreground"
                     : scrolled || !isHeroPage(pathname)
-                    ? "text-muted-foreground hover:text-foreground after:opacity-0"
-                    : "text-primary-foreground/70 hover:text-primary-foreground after:opacity-0"
+                    ? "text-foreground/70 hover:text-foreground hover:bg-foreground/5"
+                    : "text-primary-foreground/70 hover:text-primary-foreground hover:bg-primary-foreground/5"
                 )}
               >
                 {label}
@@ -102,14 +101,14 @@ export default function Navbar() {
           <Link
             href="/contact"
             className={cn(
-              "inline-flex items-center gap-1.5 px-4 py-2 rounded-lg text-sm font-semibold transition-all duration-200",
+              "inline-flex items-center gap-1.5 px-5 py-2.5 text-xs font-black uppercase tracking-[0.15em] transition-all duration-200 border-2",
               scrolled || !isHeroPage(pathname)
-                ? "bg-primary text-primary-foreground hover:bg-primary/90"
-                : "bg-primary-foreground text-primary hover:bg-primary-foreground/90"
+                ? "bg-foreground text-background border-foreground hover:bg-transparent hover:text-foreground"
+                : "bg-primary-foreground text-primary border-primary-foreground hover:bg-transparent hover:text-primary-foreground"
             )}
           >
             Let&apos;s Talk
-            <ArrowUpRight size={14} />
+            <ArrowUpRight size={14} strokeWidth={3} />
           </Link>
         </div>
 
@@ -118,54 +117,54 @@ export default function Navbar() {
           <SheetTrigger asChild>
             <button
               className={cn(
-                "md:hidden flex items-center justify-center w-9 h-9 rounded-lg transition-colors duration-200",
+                "md:hidden flex items-center justify-center w-10 h-10 border-2 transition-colors duration-200",
                 scrolled || !isHeroPage(pathname)
-                  ? "text-foreground hover:bg-muted"
-                  : "text-primary-foreground hover:bg-primary-foreground/10"
+                  ? "text-foreground border-foreground hover:bg-foreground hover:text-background"
+                  : "text-primary-foreground border-primary-foreground hover:bg-primary-foreground hover:text-primary"
               )}
               aria-label="Toggle navigation menu"
             >
-              {mobileOpen ? <X size={20} /> : <Menu size={20} />}
+              {mobileOpen ? <X size={20} strokeWidth={3} /> : <Menu size={20} strokeWidth={3} />}
             </button>
           </SheetTrigger>
-          <SheetContent side="right" className="w-72 bg-background px-0">
-            <SheetHeader className="px-6 pb-4 border-b border-border">
-              <SheetTitle className="text-left text-base font-black tracking-tight text-foreground">
+          <SheetContent side="right" className="w-80 bg-background px-0 border-l-4 border-foreground rounded-none">
+            <SheetHeader className="px-6 pb-4 border-b-4 border-foreground">
+              <SheetTitle className="text-left text-xs font-black uppercase tracking-[0.2em] text-foreground">
                 Navigation
               </SheetTitle>
             </SheetHeader>
 
-            <ul className="flex flex-col py-4">
+            <ul className="flex flex-col py-2">
               {NAV_LINKS.map(({ href, label }) => (
                 <li key={href}>
                   <Link
                     href={href}
                     onClick={() => setMobileOpen(false)}
                     className={cn(
-                      "flex items-center gap-3 px-6 py-3.5 text-sm font-medium transition-colors duration-150",
+                      "flex items-center gap-3 px-6 py-4 text-sm font-black uppercase tracking-[0.1em] transition-colors duration-150 border-b-2 border-foreground/10",
                       isActive(href)
-                        ? "text-foreground bg-muted font-semibold"
-                        : "text-muted-foreground hover:text-foreground hover:bg-muted/50"
+                        ? "text-background bg-foreground"
+                        : "text-foreground/70 hover:text-foreground hover:bg-muted/30"
                     )}
                   >
                     {isActive(href) && (
-                      <span className="w-1.5 h-1.5 rounded-full bg-primary" />
+                      <span className="w-2 h-2 bg-accent" />
                     )}
-                    {!isActive(href) && <span className="w-1.5" />}
+                    {!isActive(href) && <span className="w-2" />}
                     {label}
                   </Link>
                 </li>
               ))}
             </ul>
 
-            <div className="px-6 pt-2">
+            <div className="px-6 pt-4">
               <Link
                 href="/contact"
                 onClick={() => setMobileOpen(false)}
-                className="flex items-center justify-center gap-2 w-full py-3 rounded-lg bg-primary text-primary-foreground text-sm font-semibold hover:bg-primary/90 transition-colors duration-200"
+                className="flex items-center justify-center gap-2 w-full py-3.5 bg-foreground text-background text-xs font-black uppercase tracking-[0.15em] border-4 border-foreground hover:bg-transparent hover:text-foreground transition-colors duration-200"
               >
                 Let&apos;s Talk
-                <ArrowUpRight size={14} />
+                <ArrowUpRight size={14} strokeWidth={3} />
               </Link>
             </div>
           </SheetContent>
@@ -175,7 +174,6 @@ export default function Navbar() {
   );
 }
 
-/** True when the user is on a page that starts with the Oxford-blue hero */
 function isHeroPage(pathname: string) {
   return pathname === "/";
 }

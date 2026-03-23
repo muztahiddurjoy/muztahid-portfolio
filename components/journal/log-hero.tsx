@@ -1,94 +1,99 @@
 "use client";
 
-import { useEffect, useRef, useCallback } from "react";
+import { useEffect, useRef, useCallback, useState } from "react";
 import gsap from "gsap";
 
 const MATH_SYMBOLS = [
-  "O(n)", "O(1)", "O(log n)", "∫", "∑", "∂", "Δ", "λ", "θ(n²)",
-  "π", "∞", "≈", "∈", "⊂", "∀", "∃", "{ }", "[ ]", "=>",
-  "f(x)", "lim", "∇", "⊕", "∧", "∨",
+  "∑", "∫", "∂", "∇", "∞", "√", "π", "θ",
+  "λ", "Ω", "Δ", "φ", "ε", "σ", "μ", "β",
 ];
 
-const SCRAMBLE_CHARS = "!@#$%^&*()_+-=[]{}|;:,.<>?/~`01";
+const SCRAMBLE_CHARS = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789!@#$%^&*";
 
 export default function LogHero() {
-  const containerRef = useRef<HTMLDivElement>(null);
+  const containerRef = useRef<HTMLElement>(null);
   const headlineRef = useRef<HTMLHeadingElement>(null);
   const symbolsRef = useRef<HTMLDivElement>(null);
   const cursorRef = useRef<HTMLSpanElement>(null);
+  const [, setTick] = useState(0);
 
-  const scrambleText = useCallback((el: HTMLElement, finalText: string) => {
-    let iteration = 0;
-    const totalIterations = finalText.length * 3;
+  const scrambleText = useCallback(
+    (el: HTMLElement, finalText: string, duration = 1200) => {
+      const length = finalText.length;
+      const interval = duration / (length * 2);
+      let frame = 0;
+      const totalFrames = length * 2;
 
-    const interval = setInterval(() => {
-      el.textContent = finalText
-        .split("")
-        .map((char, index) => {
-          if (index < iteration / 3) return char;
-          return SCRAMBLE_CHARS[Math.floor(Math.random() * SCRAMBLE_CHARS.length)];
-        })
-        .join("");
-
-      iteration++;
-      if (iteration > totalIterations) {
-        clearInterval(interval);
-        el.textContent = finalText;
-      }
-    }, 30);
-  }, []);
+      const run = () => {
+        if (frame >= totalFrames) {
+          el.textContent = finalText;
+          return;
+        }
+        const progress = frame / totalFrames;
+        const revealed = Math.floor(progress * length);
+        let text = "";
+        for (let i = 0; i < length; i++) {
+          if (i < revealed) {
+            text += finalText[i];
+          } else {
+            text += SCRAMBLE_CHARS[Math.floor(Math.random() * SCRAMBLE_CHARS.length)];
+          }
+        }
+        el.textContent = text;
+        frame++;
+        setTimeout(run, interval);
+      };
+      run();
+    },
+    []
+  );
 
   useEffect(() => {
     const ctx = gsap.context(() => {
-      // Blinking cursor
-      gsap.to(cursorRef.current, {
-        opacity: 0,
-        duration: 0.5,
-        repeat: -1,
-        yoyo: true,
-        ease: "steps(1)",
-      });
+      // Floating math symbols
+      if (symbolsRef.current) {
+        gsap.utils.toArray<HTMLElement>(".math-sym").forEach((sym, i) => {
+          gsap.to(sym, {
+            y: `random(-40, 40)`,
+            x: `random(-20, 20)`,
+            opacity: gsap.utils.random(0.08, 0.25),
+            duration: gsap.utils.random(4, 8),
+            repeat: -1,
+            yoyo: true,
+            ease: "sine.inOut",
+            delay: i * 0.15,
+          });
+        });
+      }
 
-      // Subtitle and meta elements
+      // Blinking cursor
+      if (cursorRef.current) {
+        gsap.to(cursorRef.current, {
+          opacity: 0,
+          duration: 0.5,
+          repeat: -1,
+          yoyo: true,
+          ease: "steps(1)",
+        });
+      }
+
+      // Reveal hero text
       gsap.from(".log-hero-text", {
         y: 20,
         opacity: 0,
         duration: 0.8,
         stagger: 0.12,
         ease: "power3.out",
-        delay: 0.3,
+        delay: 1.4,
       });
-
-      // Floating math symbols — slow fade cycle
-      if (symbolsRef.current) {
-        const symbols = symbolsRef.current.querySelectorAll(".math-sym");
-        symbols.forEach((sym, i) => {
-          gsap.set(sym, { opacity: 0 });
-          gsap.to(sym, {
-            opacity: 0.12,
-            duration: 2,
-            delay: i * 0.4,
-            ease: "power1.inOut",
-            yoyo: true,
-            repeat: -1,
-            repeatDelay: 1 + Math.random() * 2,
-          });
-          gsap.to(sym, {
-            y: -10 - Math.random() * 15,
-            duration: 3 + Math.random() * 2,
-            ease: "sine.inOut",
-            yoyo: true,
-            repeat: -1,
-          });
-        });
-      }
     }, containerRef);
 
+    // Scramble headline
     const timer = setTimeout(() => {
       if (headlineRef.current) {
-        scrambleText(headlineRef.current, "System Logs & Research.");
+        scrambleText(headlineRef.current, "SYSTEM LOGS", 1200);
       }
-    }, 400);
+    }, 300);
 
     return () => {
       ctx.revert();
@@ -99,22 +104,8 @@ export default function LogHero() {
   return (
     <section
       ref={containerRef}
-      className="relative min-h-[85vh] flex items-center overflow-hidden bg-primary"
+      className="relative min-h-[85vh] flex items-center overflow-hidden bg-foreground text-background border-b-4 border-background"
     >
-      {/* Grain overlay */}
-      <div className="absolute inset-0 opacity-[0.03] bg-[url('data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHdpZHRoPSIzMDAiIGhlaWdodD0iMzAwIj48ZmlsdGVyIGlkPSJhIj48ZmVUdXJidWxlbmNlIHR5cGU9ImZyYWN0YWxOb2lzZSIgYmFzZUZyZXF1ZW5jeT0iLjc1Ii8+PC9maWx0ZXI+PHJlY3Qgd2lkdGg9IjEwMCUiIGhlaWdodD0iMTAwJSIgZmlsdGVyPSJ1cmwoI2EpIi8+PC9zdmc+')]" />
-
-      {/* Decorative grid lines */}
-      <div className="absolute inset-0 opacity-[0.04]">
-        {Array.from({ length: 8 }).map((_, i) => (
-          <div
-            key={i}
-            className="absolute top-0 bottom-0 w-px bg-primary-foreground"
-            style={{ left: `${(i + 1) * 12.5}%` }}
-          />
-        ))}
-      </div>
-
       {/* Floating math symbols */}
       <div
         ref={symbolsRef}
@@ -123,7 +114,7 @@ export default function LogHero() {
         {MATH_SYMBOLS.slice(0, 16).map((sym, i) => (
           <span
             key={i}
-            className="math-sym absolute font-mono text-primary-foreground text-lg md:text-2xl"
+            className="math-sym absolute font-mono text-background text-lg md:text-2xl"
             style={{
               left: `${8 + (i % 8) * 12}%`,
               top: `${10 + Math.floor(i / 8) * 45 + (i % 3) * 12}%`,
@@ -135,46 +126,54 @@ export default function LogHero() {
       </div>
 
       <div className="container relative z-10 mx-auto px-6 md:px-12 lg:px-20 py-24">
-        {/* Terminal-style prefix */}
+        {/* Terminal prefix */}
         <div className="flex items-center gap-2 mb-8">
-          <span className="text-secondary font-mono text-sm tracking-wider">
+          <span className="font-mono text-xs tracking-[0.15em] text-background/50 uppercase">
             ~/system-logs
           </span>
-          <span className="text-primary-foreground/40 font-mono text-sm">$</span>
-          <span className="text-primary-foreground/60 font-mono text-sm">
+          <span className="text-background/30 font-mono text-sm">$</span>
+          <span className="text-background/50 font-mono text-xs tracking-[0.15em]">
             cat research.md
           </span>
           <span
             ref={cursorRef}
-            className="inline-block w-2.5 h-5 bg-secondary ml-1"
+            className="inline-block w-2.5 h-5 bg-accent ml-1"
           />
         </div>
 
-        {/* Main headline with scramble effect */}
+        {/* Script annotation */}
+        <span className="font-script text-accent text-lg md:text-xl mb-3 block log-hero-text">
+          research archive
+        </span>
+
+        {/* Giant headline with scramble */}
         <h1
           ref={headlineRef}
-          className="text-5xl md:text-7xl lg:text-[5.5rem] font-black tracking-tight leading-[0.95] text-primary-foreground mb-8"
+          className="text-5xl md:text-7xl lg:text-[5.5rem] font-black uppercase tracking-tighter leading-[0.95] text-background mb-8"
         >
           &nbsp;
         </h1>
 
-        <p className="log-hero-text text-lg md:text-xl max-w-2xl text-primary-foreground/70 leading-relaxed mb-12">
+        <p className="log-hero-text text-lg md:text-xl max-w-2xl text-background/60 leading-relaxed mb-12 border-l-8 border-accent pl-6">
           Documenting algorithmic theory, architectural decisions, and hardware
           mechanics.
         </p>
 
-        {/* Quick stats row */}
-        <div className="log-hero-text flex flex-wrap gap-8 border-t border-primary-foreground/10 pt-8">
+        {/* Stats row */}
+        <div className="log-hero-text flex flex-wrap gap-0 border-t-4 border-background pt-0">
           {[
             { label: "Research Logs", value: "7" },
             { label: "Domains Covered", value: "4" },
             { label: "Avg. Read Time", value: "15 min" },
-          ].map((stat) => (
-            <div key={stat.label} className="flex flex-col">
-              <span className="text-3xl md:text-4xl font-black text-secondary">
+          ].map((stat, i) => (
+            <div
+              key={stat.label}
+              className={`flex flex-col py-6 px-6 ${i > 0 ? "border-l-4 border-background max-md:border-l-0 max-md:border-t-4" : ""}`}
+            >
+              <span className="text-3xl md:text-4xl font-black text-accent">
                 {stat.value}
               </span>
-              <span className="text-xs uppercase tracking-[0.2em] text-primary-foreground/50 mt-1">
+              <span className="text-[10px] uppercase tracking-[0.2em] text-background/40 font-mono mt-1">
                 {stat.label}
               </span>
             </div>

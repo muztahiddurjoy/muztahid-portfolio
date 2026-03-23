@@ -1,22 +1,32 @@
 "use client";
 
 import { useEffect, useRef } from "react";
+import Link from "next/link";
 import gsap from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
-import { ArrowRight, Mail, Github, Linkedin } from "lucide-react";
-import { Button } from "@/components/ui/button";
+import { Mail, ArrowRight, MessageSquare } from "lucide-react";
 
 gsap.registerPlugin(ScrollTrigger);
 
-export default function ContactCTA() {
+interface SiteSettings {
+  email?: string;
+  name?: string;
+  [key: string]: unknown;
+}
+
+interface ContactCTAProps {
+  siteSettings?: SiteSettings | null;
+}
+
+export default function ContactCTA({ siteSettings }: ContactCTAProps) {
   const ref = useRef<HTMLElement>(null);
 
   useEffect(() => {
     const ctx = gsap.context(() => {
-      gsap.from(".cta-reveal", {
+      gsap.from(".cta-el", {
         y: 30,
         opacity: 0,
-        duration: 0.8,
+        duration: 0.9,
         stagger: 0.12,
         ease: "power3.out",
         scrollTrigger: {
@@ -26,79 +36,45 @@ export default function ContactCTA() {
         },
       });
     }, ref);
-
     return () => ctx.revert();
   }, []);
 
   return (
-    <section
-      ref={ref}
-      className="relative py-28 overflow-hidden bg-secondary text-secondary-foreground"
-    >
-      {/* Decorative shapes */}
-      <div className="absolute top-0 right-0 w-80 h-80 rounded-full bg-secondary-foreground/5 -translate-y-1/2 translate-x-1/3" />
-      <div className="absolute bottom-0 left-0 w-60 h-60 rounded-full bg-secondary-foreground/5 translate-y-1/2 -translate-x-1/4" />
+    <section ref={ref} className="py-24 md:py-32 bg-foreground text-background border-t-4 border-background/20">
+      <div className="container mx-auto px-6 md:px-12 lg:px-20 max-w-5xl text-center">
+        {/* Script accent */}
+        <span className="cta-el font-script text-3xl md:text-4xl text-primary -rotate-2 inline-block mb-4">
+          Let&apos;s build something.
+        </span>
 
-      <div className="container relative z-10 mx-auto px-6 md:px-12 lg:px-20 text-center max-w-2xl">
-        <h2 className="cta-reveal text-3xl md:text-5xl font-black tracking-tight mb-5">
-          Let&apos;s Build Something
-          <br />
-          Together.
+        {/* Heavy heading */}
+        <h2 className="cta-el text-4xl sm:text-5xl md:text-6xl lg:text-7xl font-black uppercase tracking-tighter leading-[0.85] mb-6">
+          Got a Project?
         </h2>
-        <p className="cta-reveal text-lg text-secondary-foreground/70 leading-relaxed mb-10">
-          Whether it&apos;s a scalable web platform, an autonomous robot, or anything
-          in between — I&apos;m always open to discussing ambitious engineering
-          challenges.
+
+        <p className="cta-el text-sm md:text-base font-mono uppercase tracking-[0.15em] text-background/60 mb-12 max-w-xl mx-auto">
+          Drop a line and let&apos;s talk hardware, software, or anything in between.
         </p>
 
-        <div className="cta-reveal flex flex-wrap justify-center gap-4 mb-12">
-          <Button
-            size="lg"
-            className="bg-secondary-foreground text-secondary font-semibold transition-colors duration-300 hover:bg-secondary-foreground/85"
-            asChild
+        {/* CTA buttons */}
+        <div className="cta-el flex flex-col sm:flex-row items-center justify-center gap-4">
+          <Link
+            href={`mailto:${siteSettings?.email ?? "hello@example.com"}`}
+            className="group flex items-center gap-3 bg-background text-foreground px-8 py-4 border-4 border-background font-black uppercase tracking-[0.1em] text-sm hover:bg-transparent hover:text-background transition-colors"
           >
-            <a href="mailto:muztahid@example.com">
-              <Mail className="mr-2" size={16} />
-              Get In Touch
-            </a>
-          </Button>
-          <Button
-            variant="outline"
-            size="lg"
-            className="border-secondary-foreground/20 text-secondary-foreground bg-transparent font-semibold transition-colors duration-300 hover:bg-secondary-foreground/10"
-          >
-            View Resume
-            <ArrowRight className="ml-2" size={16} />
-          </Button>
-        </div>
+            <Mail className="w-5 h-5" />
+            Send Email
+            <ArrowRight className="w-4 h-4 group-hover:translate-x-1 transition-transform" />
+          </Link>
 
-        {/* Social icons */}
-        <div className="cta-reveal flex items-center justify-center gap-6">
-          <a
-            href="https://github.com/muztahiddurjoy"
-            target="_blank"
-            rel="noopener noreferrer"
-            aria-label="GitHub"
-            className="text-secondary-foreground/50 transition-colors duration-200 hover:text-secondary-foreground"
+          <Link
+            href="/contact"
+            className="group flex items-center gap-3 bg-transparent text-background px-8 py-4 border-4 border-background font-black uppercase tracking-[0.1em] text-sm hover:bg-background hover:text-foreground transition-colors"
           >
-            <Github size={20} />
-          </a>
-          <a
-            href="https://linkedin.com/in/muztahiddurjoy"
-            target="_blank"
-            rel="noopener noreferrer"
-            aria-label="LinkedIn"
-            className="text-secondary-foreground/50 transition-colors duration-200 hover:text-secondary-foreground"
-          >
-            <Linkedin size={20} />
-          </a>
-          <a
-            href="mailto:muztahid@example.com"
-            aria-label="Email"
-            className="text-secondary-foreground/50 transition-colors duration-200 hover:text-secondary-foreground"
-          >
-            <Mail size={20} />
-          </a>
+            <MessageSquare className="w-5 h-5" />
+            Contact Page
+            <ArrowRight className="w-4 h-4 group-hover:translate-x-1 transition-transform" />
+          </Link>
         </div>
       </div>
     </section>

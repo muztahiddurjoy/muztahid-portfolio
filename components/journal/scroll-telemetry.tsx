@@ -28,10 +28,10 @@ export default function ScrollTelemetry() {
   }, []);
 
   return (
-    <div className="fixed top-0 left-0 right-0 z-[100] h-[3px] bg-border/30">
+    <div className="fixed top-0 left-0 right-0 z-[100] h-1 bg-foreground/10">
       <div
         ref={barRef}
-        className="h-full w-full bg-secondary origin-left"
+        className="h-full w-full bg-accent origin-left"
         style={{ transform: "scaleX(0)" }}
       />
     </div>

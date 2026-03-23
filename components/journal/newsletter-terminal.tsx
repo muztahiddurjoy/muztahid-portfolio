@@ -40,33 +40,34 @@ export default function NewsletterTerminal() {
   };
 
   return (
-    <section ref={sectionRef} className="py-24 bg-primary">
+    <section ref={sectionRef} className="py-24 md:py-32 bg-foreground text-background border-t-4 border-background">
       <div className="container mx-auto px-6 md:px-12 lg:px-20">
         <div className="terminal-reveal max-w-2xl mx-auto">
           {/* Terminal chrome */}
-          <div className="rounded-t-xl border border-primary-foreground/10 bg-primary-foreground/5 px-4 py-3 flex items-center gap-2">
-            <span className="h-3 w-3 rounded-full bg-red-500/60" />
-            <span className="h-3 w-3 rounded-full bg-yellow-500/60" />
-            <span className="h-3 w-3 rounded-full bg-green-500/60" />
-            <span className="ml-3 text-xs font-mono text-primary-foreground/40">
+          <div className="border-4 border-background border-b-0 px-4 py-3 flex items-center gap-3">
+            <span className="h-3 w-3 bg-background" />
+            <span className="h-3 w-3 bg-background/60" />
+            <span className="h-3 w-3 bg-background/30" />
+            <span className="ml-3 text-[10px] font-mono text-background/40 uppercase tracking-[0.15em]">
               subscribe@system-logs ~ %
             </span>
           </div>
 
           {/* Terminal body */}
-          <div className="rounded-b-xl border border-t-0 border-primary-foreground/10 bg-primary p-6 md:p-8">
+          <div className="border-4 border-background p-6 md:p-8">
             <div className="terminal-reveal mb-6">
-              <h3 className="text-2xl md:text-3xl font-black text-primary-foreground tracking-tight mb-2">
-                Subscribe to System Logs.
+              <span className="font-script text-accent text-lg mb-2 block">subscribe</span>
+              <h3 className="text-2xl md:text-3xl font-black uppercase tracking-tighter text-background mb-2">
+                SUBSCRIBE TO SYSTEM LOGS
               </h3>
-              <p className="text-sm text-primary-foreground/50 font-mono">
+              <p className="text-xs text-background/40 font-mono uppercase tracking-[0.15em]">
                 // Receive new research entries directly.
               </p>
             </div>
 
             <form onSubmit={handleSubmit} className="terminal-reveal space-y-4">
-              <div className="flex items-center gap-2 border-2 border-primary-foreground/15 rounded-lg px-4 py-3 transition-colors duration-200 focus-within:border-secondary focus-within:shadow-[0_0_0_3px_rgba(210,180,140,0.1)]">
-                <span className="text-secondary font-mono text-sm flex-shrink-0">
+              <div className="flex items-center gap-2 border-4 border-background px-4 py-3">
+                <span className="text-accent font-mono text-sm flex-shrink-0">
                   &gt;
                 </span>
                 <input
@@ -75,22 +76,22 @@ export default function NewsletterTerminal() {
                   value={email}
                   onChange={(e) => setEmail(e.target.value)}
                   placeholder="enter_email_address_"
-                  className="flex-1 bg-transparent text-primary-foreground font-mono text-sm placeholder:text-primary-foreground/30 outline-none caret-secondary"
+                  className="flex-1 bg-transparent text-background font-mono text-sm placeholder:text-background/30 outline-none caret-accent"
                   required
                 />
               </div>
 
               <button
                 type="submit"
-                className="w-full bg-secondary text-secondary-foreground font-bold text-sm tracking-wide py-3 px-6 transition-colors duration-300 hover:bg-secondary/80"
+                className="w-full bg-background text-foreground font-black text-xs uppercase tracking-[0.15em] py-3 px-6 transition-colors duration-300 hover:bg-accent hover:text-foreground border-4 border-background"
               >
                 Execute Subscription
               </button>
             </form>
 
             {status === "success" && (
-              <div className="terminal-reveal mt-4 font-mono text-xs text-green-400">
-                <span className="text-secondary">&gt;</span> subscription.status
+              <div className="terminal-reveal mt-4 font-mono text-xs text-accent">
+                <span className="text-accent">&gt;</span> subscription.status
                 = &quot;active&quot; ✓
               </div>
             )}

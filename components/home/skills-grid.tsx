@@ -8,11 +8,7 @@ import type { SkillCategory } from "@/lib/types";
 
 gsap.registerPlugin(ScrollTrigger);
 
-const iconMap: Record<string, LucideIcon> = {
-  Globe,
-  Cpu,
-  Box,
-};
+const iconMap: Record<string, LucideIcon> = { Globe, Cpu, Box };
 
 interface SkillsGridProps {
   categories: SkillCategory[];
@@ -38,47 +34,68 @@ export default function SkillsGrid({ categories }: SkillsGridProps) {
         });
       });
     }, ref);
-
     return () => ctx.revert();
   }, []);
 
   return (
-    <section ref={ref} className="py-24 bg-muted/40">
+    <section ref={ref} className="py-24 md:py-32 bg-muted/20 border-t-4 border-foreground">
       <div className="container mx-auto px-6 md:px-12 lg:px-20">
-        <h2 className="text-3xl md:text-4xl font-black tracking-tight text-foreground mb-4">
-          Engineering Arsenal
-        </h2>
-        <p className="text-muted-foreground max-w-xl mb-12">
-          Tools and technologies across the software-hardware continuum.
-        </p>
+        {/* Brutalist Header */}
+        <div className="relative mb-16 max-w-4xl">
+          <span className="font-script text-3xl md:text-4xl text-primary absolute -top-8 left-0 md:-top-10 -rotate-3 z-10">
+            Tools of the trade.
+          </span>
+          <h2 className="text-4xl sm:text-5xl md:text-6xl lg:text-7xl font-black uppercase tracking-tighter leading-[0.85] mt-6">
+            <span className="text-foreground">Engineering</span>{" "}
+            <span className="bg-foreground text-background px-3 pt-3 pb-1 md:px-5 md:pt-4 md:pb-2 inline-block">
+              Arsenal
+            </span>
+          </h2>
+          <p className="mt-6 text-sm md:text-base font-bold uppercase tracking-wide text-foreground/80 leading-snug max-w-2xl border-l-8 border-accent pl-5">
+            Tools and technologies across the software-hardware continuum.
+          </p>
+        </div>
 
-        <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
+        <div className="grid grid-cols-1 md:grid-cols-3 gap-6 md:gap-8">
           {categories.map(({ icon, title, skills }) => {
             const Icon = iconMap[icon] || Globe;
             return (
-            <div
-              key={title}
-              className="skill-cell rounded-2xl border border-border bg-card p-6 flex flex-col gap-5"
-            >
-              <div className="flex items-center gap-3">
-                <div className="flex items-center justify-center w-10 h-10 rounded-lg bg-primary/10 dark:bg-primary/20">
-                  <Icon size={18} className="text-primary dark:text-primary" />
+              <div
+                key={title}
+                className="skill-cell group border-4 border-foreground bg-background flex flex-col"
+              >
+                {/* Card Header */}
+                <div className="flex items-center gap-4 border-b-4 border-foreground p-5 bg-muted/20">
+                  <div className="w-10 h-10 flex items-center justify-center bg-foreground text-background">
+                    <Icon size={18} strokeWidth={2.5} />
+                  </div>
+                  <h3 className="text-lg md:text-xl font-black uppercase tracking-tight text-foreground leading-none">
+                    {title}
+                  </h3>
                 </div>
-                <h3 className="text-lg font-extrabold text-card-foreground">{title}</h3>
-              </div>
 
-              <ul className="flex flex-col gap-2">
-                {skills.map((s) => (
-                  <li
-                    key={s}
-                    className="flex items-center gap-2 text-sm text-muted-foreground"
-                  >
-                    <span className="w-1.5 h-1.5 rounded-full bg-secondary shrink-0" />
-                    {s}
-                  </li>
-                ))}
-              </ul>
-            </div>
+                {/* Skills List */}
+                <div className="p-5 flex-grow">
+                  <ul className="flex flex-col gap-2.5">
+                    {skills.map((s) => (
+                      <li
+                        key={s}
+                        className="flex items-center gap-3 text-sm font-bold text-foreground/70"
+                      >
+                        <span className="w-2 h-0.5 bg-foreground/30 shrink-0" />
+                        {s}
+                      </li>
+                    ))}
+                  </ul>
+                </div>
+
+                {/* Card Footer */}
+                <div className="border-t-4 border-foreground p-4 bg-background">
+                  <span className="text-[10px] font-black uppercase tracking-[0.2em] text-foreground/40">
+                    {skills.length} technologies
+                  </span>
+                </div>
+              </div>
             );
           })}
         </div>

@@ -4,7 +4,6 @@ import { useEffect, useRef } from "react";
 import gsap from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
 import { Briefcase, Rocket, Lightbulb, GraduationCap, type LucideIcon } from "lucide-react";
-import { Badge } from "@/components/ui/badge";
 import type { ExperienceEntry } from "@/lib/types";
 
 gsap.registerPlugin(ScrollTrigger);
@@ -25,7 +24,6 @@ export default function ExperienceTimeline({ experiences }: ExperienceTimelinePr
 
   useEffect(() => {
     const ctx = gsap.context(() => {
-      // Animate the vertical line drawing
       gsap.from(".timeline-line", {
         scaleY: 0,
         transformOrigin: "top",
@@ -38,7 +36,6 @@ export default function ExperienceTimeline({ experiences }: ExperienceTimelinePr
         },
       });
 
-      // Stagger-reveal each card
       gsap.utils.toArray<HTMLElement>(".timeline-card").forEach((card) => {
         gsap.from(card, {
           opacity: 0,
@@ -53,7 +50,6 @@ export default function ExperienceTimeline({ experiences }: ExperienceTimelinePr
         });
       });
 
-      // Pop the dots
       gsap.utils.toArray<HTMLElement>(".timeline-dot").forEach((dot) => {
         gsap.from(dot, {
           scale: 0,
@@ -72,19 +68,27 @@ export default function ExperienceTimeline({ experiences }: ExperienceTimelinePr
   }, []);
 
   return (
-    <section ref={sectionRef} className="py-24 bg-background overflow-hidden">
+    <section ref={sectionRef} className="py-24 md:py-32 bg-background overflow-hidden border-t-4 border-foreground">
       <div className="container mx-auto px-6 md:px-12 lg:px-20">
-        <h2 className="text-3xl md:text-4xl font-black tracking-tight text-foreground mb-4">
-          Experience &amp; Journey
-        </h2>
-        <p className="text-muted-foreground max-w-xl mb-16">
-          Key roles that shaped my engineering perspective across software and hardware.
-        </p>
+        {/* Brutalist Header */}
+        <div className="relative mb-16 md:mb-20 max-w-4xl">
+          <span className="font-script text-3xl md:text-4xl text-primary absolute -top-8 left-0 md:-top-10 -rotate-3 z-10">
+            The grind, documented.
+          </span>
+          <h2 className="text-4xl sm:text-5xl md:text-6xl lg:text-7xl font-black uppercase tracking-tighter leading-[0.85] mt-6">
+            <span className="text-foreground">Experience</span>{" "}
+            <span className="bg-foreground text-background px-3 pt-3 pb-1 md:px-5 md:pt-4 md:pb-2 inline-block">
+              &amp; Journey
+            </span>
+          </h2>
+          <p className="mt-6 text-sm md:text-base font-bold uppercase tracking-wide text-foreground/80 leading-snug max-w-2xl border-l-8 border-accent pl-5">
+            Key roles that shaped my engineering perspective across software and hardware.
+          </p>
+        </div>
 
         {/* Timeline container */}
         <div className="relative">
-          {/* Center line — visible on md+ */}
-          <div className="timeline-line absolute left-4 md:left-1/2 top-0 bottom-0 w-px bg-border md:-translate-x-px" />
+          <div className="timeline-line absolute left-4 md:left-1/2 top-0 bottom-0 w-px bg-foreground/20 md:-translate-x-px" />
 
           <div className="flex flex-col gap-16">
             {experiences.map((exp, idx) => {
@@ -96,32 +100,23 @@ export default function ExperienceTimeline({ experiences }: ExperienceTimelinePr
                   key={idx}
                   className="relative grid grid-cols-1 md:grid-cols-[1fr_auto_1fr] items-start gap-4 md:gap-8"
                 >
-                  {/* Left card or spacer */}
                   {isLeft ? (
-                    <div
-                      className="timeline-card ml-12 md:ml-0 md:text-right"
-                      data-side="left"
-                    >
-                      <TimelineContent exp={exp} Icon={Icon} align="right" />
+                    <div className="timeline-card ml-12 md:ml-0 md:text-right" data-side="left">
+                      <TimelineContent exp={exp} align="right" />
                     </div>
                   ) : (
                     <div className="hidden md:block" />
                   )}
 
-                  {/* Center dot */}
                   <div className="absolute left-4 md:relative md:left-auto flex items-start justify-center">
-                    <span className="timeline-dot relative z-10 flex h-8 w-8 items-center justify-center rounded-full border-2 border-primary bg-background">
-                      <Icon size={14} className="text-primary" />
+                    <span className="timeline-dot relative z-10 flex h-9 w-9 items-center justify-center border-4 border-foreground bg-background">
+                      <Icon size={14} className="text-foreground" strokeWidth={2.5} />
                     </span>
                   </div>
 
-                  {/* Right card or spacer */}
                   {!isLeft ? (
-                    <div
-                      className="timeline-card ml-12 md:ml-0"
-                      data-side="right"
-                    >
-                      <TimelineContent exp={exp} Icon={Icon} align="left" />
+                    <div className="timeline-card ml-12 md:ml-0" data-side="right">
+                      <TimelineContent exp={exp} align="left" />
                     </div>
                   ) : (
                     <div className="hidden md:block" />
@@ -141,29 +136,30 @@ function TimelineContent({
   align,
 }: {
   exp: ExperienceEntry;
-  Icon: React.ComponentType<{ size?: number; className?: string }>;
   align: "left" | "right";
 }) {
   return (
     <div
-      className={`rounded-2xl border border-border bg-card p-6 ${
+      className={`border-4 border-foreground bg-background p-6 ${
         align === "right" ? "md:mr-0" : "md:ml-0"
       }`}
     >
       <div
-        className={`flex flex-wrap items-center gap-2 mb-2 ${
+        className={`flex flex-wrap items-center gap-2 mb-3 ${
           align === "right" ? "md:justify-end" : ""
         }`}
       >
-        <span className="text-xs font-semibold uppercase tracking-widest text-muted-foreground">
+        <span className="px-2.5 py-1 border-2 border-foreground text-[10px] font-black uppercase tracking-[0.15em] text-foreground bg-muted/20">
           {exp.period}
         </span>
       </div>
-      <h3 className="text-lg font-extrabold text-card-foreground">{exp.role}</h3>
-      <p className="text-sm font-semibold text-primary/80 dark:text-primary/90 mb-3">
+      <h3 className="text-xl md:text-2xl font-black uppercase tracking-tight text-foreground leading-[0.95] mb-1">
+        {exp.role}
+      </h3>
+      <p className="text-sm font-bold text-foreground/60 uppercase tracking-wide mb-4">
         {exp.org}
       </p>
-      <p className="text-sm text-muted-foreground leading-relaxed mb-4">
+      <p className="text-sm font-bold text-foreground/75 leading-snug border-l-4 border-foreground/20 pl-4 mb-5">
         {exp.description}
       </p>
       <div
@@ -172,9 +168,12 @@ function TimelineContent({
         }`}
       >
         {exp.tags.map((tag) => (
-          <Badge key={tag} variant="secondary" className="text-[11px]">
+          <span
+            key={tag}
+            className="px-2 py-0.5 border-2 border-foreground/30 text-[10px] font-black uppercase tracking-[0.1em] text-foreground/70"
+          >
             {tag}
-          </Badge>
+          </span>
         ))}
       </div>
     </div>

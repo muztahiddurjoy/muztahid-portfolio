@@ -1,48 +1,53 @@
 "use client";
 
-import { Github, Linkedin, Mail } from "lucide-react";
+import { useEffect, useRef } from "react";
+import gsap from "gsap";
+import { ScrollTrigger } from "gsap/ScrollTrigger";
 
-export default function Footer() {
+gsap.registerPlugin(ScrollTrigger);
+
+interface SiteSettings {
+  name?: string;
+  [key: string]: unknown;
+}
+
+interface HomeFooterProps {
+  siteSettings?: SiteSettings | null;
+}
+
+export default function HomeFooter({ siteSettings }: HomeFooterProps) {
+  const ref = useRef<HTMLElement>(null);
+
+  useEffect(() => {
+    const ctx = gsap.context(() => {
+      gsap.from(".hf-el", {
+        y: 15,
+        opacity: 0,
+        duration: 0.7,
+        stagger: 0.1,
+        ease: "power3.out",
+        scrollTrigger: {
+          trigger: ref.current,
+          start: "top 95%",
+          toggleActions: "play none none none",
+        },
+      });
+    }, ref);
+    return () => ctx.revert();
+  }, []);
+
   return (
-    <footer className="border-t border-border bg-background">
-      <div className="container mx-auto px-6 md:px-12 lg:px-20 py-8 flex flex-col sm:flex-row items-center justify-between gap-4">
-        {/* Status line */}
-        <div className="flex items-center gap-2 text-sm text-muted-foreground">
-          <span className="relative flex h-2.5 w-2.5">
-            <span className="absolute inline-flex h-full w-full animate-ping rounded-full bg-green-400 opacity-75" />
-            <span className="relative inline-flex h-2.5 w-2.5 rounded-full bg-green-500" />
+    <footer ref={ref} className="py-8 bg-background border-t-4 border-foreground">
+      <div className="container mx-auto px-6 md:px-12 lg:px-20 flex flex-col sm:flex-row items-center justify-between gap-4">
+        <div className="hf-el flex items-center gap-3">
+          <span className="h-2 w-2 bg-accent" />
+          <span className="text-[11px] font-black uppercase tracking-[0.2em] text-foreground/50">
+            &copy; {new Date().getFullYear()} {siteSettings?.name ?? "Muztahid Rahman"}
           </span>
-          <span>Currently building at BOT Engineers.</span>
         </div>
-
-        {/* Social links */}
-        <div className="flex items-center gap-4">
-          <a
-            href="https://github.com/muztahiddurjoy"
-            target="_blank"
-            rel="noopener noreferrer"
-            aria-label="GitHub"
-            className="text-muted-foreground transition-colors duration-200 hover:text-foreground"
-          >
-            <Github size={18} />
-          </a>
-          <a
-            href="https://linkedin.com/in/muztahiddurjoy"
-            target="_blank"
-            rel="noopener noreferrer"
-            aria-label="LinkedIn"
-            className="text-muted-foreground transition-colors duration-200 hover:text-foreground"
-          >
-            <Linkedin size={18} />
-          </a>
-          <a
-            href="mailto:muztahid@example.com"
-            aria-label="Email"
-            className="text-muted-foreground transition-colors duration-200 hover:text-foreground"
-          >
-            <Mail size={18} />
-          </a>
-        </div>
+        <span className="hf-el text-[10px] font-mono uppercase tracking-[0.15em] text-foreground/30">
+          Built with precision.
+        </span>
       </div>
     </footer>
   );

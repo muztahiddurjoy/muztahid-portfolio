@@ -16,15 +16,15 @@ export default function ProjectOverview({ project }: ProjectOverviewProps) {
 
   useEffect(() => {
     const ctx = gsap.context(() => {
-      gsap.from(".overview-content", {
+      gsap.from(".overview-reveal", {
         y: 30,
         opacity: 0,
         duration: 0.8,
+        stagger: 0.15,
         ease: "power3.out",
         scrollTrigger: {
           trigger: ref.current,
-          start: "top 85%",
-          toggleActions: "play none none none",
+          start: "top 80%",
         },
       });
     }, ref);
@@ -32,18 +32,24 @@ export default function ProjectOverview({ project }: ProjectOverviewProps) {
   }, []);
 
   return (
-    <section ref={ref} className="py-24 bg-background">
+    <section ref={ref} className="py-24 md:py-32 bg-background border-t-4 border-foreground">
       <div className="container mx-auto px-6 md:px-12 lg:px-20">
-        <div className="overview-content max-w-3xl">
-          <p className="text-xs tracking-widest uppercase text-muted-foreground mb-3">
+        {/* Header */}
+        <div className="overview-reveal mb-10">
+          <span className="font-script text-accent text-lg">// deep dive</span>
+          <h2 className="text-3xl md:text-5xl font-black uppercase tracking-tighter mt-1">
+            <span className="bg-foreground text-background px-3 pt-3 pb-1 inline-block">Project</span>{" "}
             Overview
-          </p>
-          <h2 className="text-3xl md:text-4xl font-black tracking-tight text-foreground mb-6">
-            The Full Picture
           </h2>
-          <p className="text-lg text-muted-foreground leading-relaxed">
-            {project.longDescription}
-          </p>
+        </div>
+
+        {/* Description */}
+        <div className="overview-reveal max-w-3xl">
+          <div className="border-l-8 border-accent pl-6">
+            <p className="text-base md:text-lg text-foreground/70 leading-relaxed">
+              {project.longDescription || project.description}
+            </p>
+          </div>
         </div>
       </div>
     </section>

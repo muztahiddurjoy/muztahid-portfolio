@@ -3,107 +3,64 @@
 import { useEffect, useRef, useState } from "react";
 import gsap from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
-import { Cpu, Navigation, Radio, CircuitBoard, Activity } from "lucide-react";
-import { Badge } from "@/components/ui/badge";
+import { Cpu, Wifi, Terminal, Zap, ArrowRight, CircuitBoard } from "lucide-react";
 
 gsap.registerPlugin(ScrollTrigger);
 
-const processes = [
-  {
-    pid: "001",
-    name: "ros2_navigation_stack",
-    status: "RUNNING",
-    cpu: "34.2%",
-    detail: "Nav2 with DWB local planner, AMCL localization",
-  },
-  {
-    pid: "002",
-    name: "slam_toolbox_node",
-    status: "RUNNING",
-    cpu: "28.7%",
-    detail: "Async SLAM with loop closure, LiDAR-based mapping",
-  },
-  {
-    pid: "003",
-    name: "sensor_fusion_ekf",
-    status: "RUNNING",
-    cpu: "12.1%",
-    detail: "Extended Kalman Filter fusing IMU + wheel odometry",
-  },
-  {
-    pid: "004",
-    name: "lidar_scan_matcher",
-    status: "RUNNING",
-    cpu: "18.5%",
-    detail: "ICP-based scan matching for pose correction",
-  },
-  {
-    pid: "005",
-    name: "motor_control_pid",
-    status: "ACTIVE",
-    cpu: "8.3%",
-    detail: "Real-time PID loop at 1kHz for differential drive",
-  },
+interface Process {
+  pid: string;
+  name: string;
+  type: string;
+  status: "running" | "idle" | "paused";
+  memory: string;
+}
+
+const processes: Process[] = [
+  { pid: "001", name: "ros2_nav_stack", type: "NAVIGATION", status: "running", memory: "284MB" },
+  { pid: "002", name: "lidar_scan_node", type: "PERCEPTION", status: "running", memory: "156MB" },
+  { pid: "003", name: "motor_ctrl_pwm", type: "ACTUATION", status: "idle", memory: "42MB" },
+  { pid: "004", name: "slam_mapping", type: "MAPPING", status: "running", memory: "312MB" },
+  { pid: "005", name: "imu_fusion", type: "SENSOR", status: "running", memory: "68MB" },
+  { pid: "006", name: "path_planner_a*", type: "PLANNING", status: "paused", memory: "128MB" },
 ];
 
 const microcontrollers = [
   {
     name: "STM32F4",
-    arch: "ARM Cortex-M4",
-    use: "Motor control, encoder feedback, PWM generation",
-    freq: "168 MHz",
-  },
-  {
-    name: "ESP32",
-    arch: "Xtensa LX6",
-    use: "WiFi telemetry, sensor polling, I2C bus master",
-    freq: "240 MHz",
-  },
-  {
-    name: "STM32H7",
-    arch: "ARM Cortex-M7",
-    use: "High-freq sensor fusion, CAN bus communication",
-    freq: "480 MHz",
+    role: "Motor Control & PWM Generation",
+    specs: ["ARM Cortex-M4 @ 168MHz", "1MB Flash / 192KB SRAM", "12 PWM channels"],
+    protocols: ["UART", "SPI", "I2C", "CAN"],
   },
   {
     name: "ESP32-S3",
-    arch: "Xtensa LX7",
-    use: "Edge ML inference, BLE mesh networking",
-    freq: "240 MHz",
+    role: "Wireless Comms & Sensor Hub",
+    specs: ["Dual-core Xtensa @ 240MHz", "Wi-Fi 802.11 b/g/n", "BLE 5.0"],
+    protocols: ["MQTT", "WebSocket", "BLE GATT"],
+  },
+  {
+    name: "Raspberry Pi 4",
+    role: "High-level Compute & ROS2 Host",
+    specs: ["BCM2711 Quad-core @ 1.8GHz", "8GB LPDDR4", "USB 3.0 / Gigabit Eth"],
+    protocols: ["ROS2 DDS", "SSH", "GPIO"],
   },
 ];
 
 export default function HardwareTerminal() {
   const sectionRef = useRef<HTMLElement>(null);
-  const [visibleLines, setVisibleLines] = useState(0);
+  const [activePid, setActivePid] = useState<string | null>(null);
 
   useEffect(() => {
     const ctx = gsap.context(() => {
-      ScrollTrigger.create({
-        trigger: sectionRef.current,
-        start: "top 75%",
-        onEnter: () => {
-          // Typewriter effect for process lines
-          let line = 0;
-          const interval = setInterval(() => {
-            line++;
-            setVisibleLines(line);
-            if (line >= processes.length) clearInterval(interval);
-          }, 300);
-        },
-        once: true,
-      });
-
-      gsap.utils.toArray<HTMLElement>(".mcu-card").forEach((el, i) => {
+      gsap.utils.toArray<HTMLElement>(".hw-card").forEach((el, i) => {
         gsap.from(el, {
-          y: 20,
+          y: 40,
           opacity: 0,
-          duration: 0.6,
-          delay: i * 0.1,
-          ease: "power2.out",
+          duration: 0.8,
+          delay: i * 0.12,
+          ease: "power3.out",
           scrollTrigger: {
             trigger: el,
-            start: "top 88%",
+            start: "top 85%",
             toggleActions: "play none none none",
           },
         });
@@ -113,175 +70,136 @@ export default function HardwareTerminal() {
     return () => ctx.revert();
   }, []);
 
+  const statusColor = (status: Process["status"]) => {
+    if (status === "running") return "bg-accent";
+    if (status === "idle") return "bg-foreground/30";
+    return "bg-primary";
+  };
+
   return (
-    <section
-      id="section-embedded"
-      ref={sectionRef}
-      className="py-24 bg-card overflow-hidden"
-    >
+    <section id="section-hardware" ref={sectionRef} className="py-24 md:py-32 bg-foreground text-background border-t-4 border-background overflow-hidden">
       <div className="container mx-auto px-6 md:px-12 lg:px-20">
-        {/* Section header */}
+        {/* Header */}
         <div className="flex items-center gap-3 mb-4">
-          <div className="flex items-center justify-center w-10 h-10 rounded-lg bg-primary/10">
-            <Cpu size={20} className="text-primary" />
+          <div className="flex items-center justify-center w-10 h-10 bg-background text-foreground">
+            <Cpu size={20} />
           </div>
-          <h2 className="text-3xl md:text-4xl font-black tracking-tight text-foreground">
-            Robotics &amp; Embedded Console
-          </h2>
+          <div>
+            <span className="font-script text-xl text-primary -rotate-2 inline-block">Embedded.</span>
+            <h2 className="text-3xl md:text-4xl font-black uppercase tracking-tighter text-background leading-[0.9]">
+              Hardware & Robotics
+            </h2>
+          </div>
         </div>
-        <p className="text-muted-foreground max-w-xl mb-16">
-          Bare-metal programming, real-time operating systems, and autonomous
-          navigation stacks.
+        <p className="text-sm font-mono uppercase tracking-[0.1em] text-background/50 max-w-xl mb-16">
+          Real-time systems, sensor fusion, and autonomous navigation pipelines.
         </p>
 
-        {/* Terminal container */}
-        <div className="rounded-xl border-2 border-border bg-[#0a0e17] overflow-hidden">
-          {/* Terminal chrome */}
-          <div className="flex items-center gap-2 px-4 py-3 bg-[#0f1320] border-b border-white/5">
-            <div className="flex gap-1.5">
-              <div className="w-3 h-3 rounded-full bg-red-500/80" />
-              <div className="w-3 h-3 rounded-full bg-yellow-500/80" />
-              <div className="w-3 h-3 rounded-full bg-green-500/80" />
-            </div>
-            <span className="text-xs font-mono text-white/40 ml-3">
-              muz@rover:~/ros2_ws — bash
+        {/* Process table (terminal aesthetic) */}
+        <div className="hw-card border-4 border-background mb-12">
+          <div className="flex items-center gap-2 px-6 py-3 border-b-4 border-background">
+            <Terminal size={14} className="text-background/60" />
+            <span className="text-xs font-mono uppercase tracking-[0.15em] text-background/60">
+              process_table — active nodes
             </span>
           </div>
 
-          {/* Process table */}
-          <div className="p-5 font-mono text-sm">
-            {/* Header */}
-            <div className="text-green-400/80 mb-1">
-              $ ros2 node list --running
-            </div>
-            <div className="text-white/30 mb-3 text-xs">
-              ──────────────────────────────────────────────────────────
-            </div>
-
-            {/* Column headers */}
-            <div className="grid grid-cols-[60px_1fr_80px_70px] gap-2 text-xs text-white/40 mb-2 px-1">
-              <span>PID</span>
-              <span>PROCESS</span>
-              <span>STATUS</span>
-              <span>CPU</span>
-            </div>
-
-            {/* Process rows */}
-            {processes.map((proc, idx) => (
-              <div
-                key={proc.pid}
-                className={`grid grid-cols-[60px_1fr_80px_70px] gap-2 text-xs px-1 py-1.5 rounded transition-opacity duration-300 ${
-                  idx < visibleLines ? "opacity-100" : "opacity-0"
-                } ${idx % 2 === 0 ? "bg-white/2" : ""}`}
-              >
-                <span className="text-white/50">{proc.pid}</span>
-                <div className="flex flex-col">
-                  <span className="text-green-300">{proc.name}</span>
-                  <span className="text-white/25 text-[10px] mt-0.5">
-                    {proc.detail}
-                  </span>
-                </div>
-                <span
-                  className={
-                    proc.status === "RUNNING"
-                      ? "text-green-400"
-                      : "text-yellow-400"
-                  }
-                >
-                  {proc.status}
-                </span>
-                <span className="text-cyan-300/70">{proc.cpu}</span>
-              </div>
-            ))}
-
-            {/* Blinking cursor */}
-            <div className="mt-3 flex items-center gap-1">
-              <span className="text-green-400/80 text-xs">$</span>
-              <span className="w-2 h-4 bg-green-400/60 animate-pulse" />
-            </div>
+          <div className="overflow-x-auto">
+            <table className="w-full text-left">
+              <thead>
+                <tr className="border-b-2 border-background/20">
+                  {["PID", "PROCESS", "TYPE", "STATUS", "MEM"].map((h) => (
+                    <th key={h} className="px-6 py-3 text-[10px] font-black uppercase tracking-[0.2em] text-background/40">
+                      {h}
+                    </th>
+                  ))}
+                </tr>
+              </thead>
+              <tbody>
+                {processes.map((p) => (
+                  <tr
+                    key={p.pid}
+                    className={`border-b border-background/10 cursor-pointer transition-colors duration-150 ${
+                      activePid === p.pid ? "bg-background/10" : "hover:bg-background/5"
+                    }`}
+                    onClick={() => setActivePid(activePid === p.pid ? null : p.pid)}
+                  >
+                    <td className="px-6 py-3 font-mono text-sm text-background/60">{p.pid}</td>
+                    <td className="px-6 py-3 font-mono text-sm text-background">{p.name}</td>
+                    <td className="px-6 py-3">
+                      <span className="px-2 py-0.5 border-2 border-background/30 text-[10px] font-black uppercase tracking-[0.1em] text-background/70">
+                        {p.type}
+                      </span>
+                    </td>
+                    <td className="px-6 py-3">
+                      <div className="flex items-center gap-2">
+                        <span className={`w-2 h-2 ${statusColor(p.status)}`} />
+                        <span className="text-xs font-mono uppercase text-background/60">{p.status}</span>
+                      </div>
+                    </td>
+                    <td className="px-6 py-3 font-mono text-sm text-background/50">{p.memory}</td>
+                  </tr>
+                ))}
+              </tbody>
+            </table>
           </div>
         </div>
 
-        {/* Microcontroller Matrix */}
-        <h3 className="text-xl font-extrabold text-foreground mt-16 mb-6 flex items-center gap-2">
-          <CircuitBoard size={18} className="text-secondary" />
-          Microcontroller Matrix
-        </h3>
-
-        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
-          {microcontrollers.map((mcu) => (
+        {/* Microcontroller matrix */}
+        <div className="grid grid-cols-1 md:grid-cols-3 gap-0">
+          {microcontrollers.map((mcu, idx) => (
             <div
               key={mcu.name}
-              className="mcu-card rounded-xl border border-border bg-background p-5 group hover:border-secondary/50 transition-colors duration-300"
+              className={`hw-card border-4 border-background p-6 ${
+                idx > 0 ? "md:border-l-0" : ""
+              }`}
             >
-              {/* Chip SVG icon */}
-              <div className="flex items-center justify-between mb-4">
-                <svg
-                  viewBox="0 0 48 48"
-                  className="w-10 h-10 text-secondary/70 group-hover:text-secondary transition-colors"
-                  fill="none"
-                  stroke="currentColor"
-                  strokeWidth="1.5"
-                >
-                  <rect x="12" y="12" width="24" height="24" rx="2" />
-                  {/* Pins */}
-                  <line x1="18" y1="8" x2="18" y2="12" />
-                  <line x1="24" y1="8" x2="24" y2="12" />
-                  <line x1="30" y1="8" x2="30" y2="12" />
-                  <line x1="18" y1="36" x2="18" y2="40" />
-                  <line x1="24" y1="36" x2="24" y2="40" />
-                  <line x1="30" y1="36" x2="30" y2="40" />
-                  <line x1="8" y1="18" x2="12" y2="18" />
-                  <line x1="8" y1="24" x2="12" y2="24" />
-                  <line x1="8" y1="30" x2="12" y2="30" />
-                  <line x1="36" y1="18" x2="40" y2="18" />
-                  <line x1="36" y1="24" x2="40" y2="24" />
-                  <line x1="36" y1="30" x2="40" y2="30" />
-                  <circle cx="24" cy="24" r="4" />
-                </svg>
-                <span className="text-[10px] font-mono text-muted-foreground bg-muted px-2 py-0.5 rounded">
-                  {mcu.freq}
-                </span>
+              <div className="flex items-center gap-2 pb-4 mb-4 border-b-2 border-background/20">
+                <div className="flex items-center justify-center w-8 h-8 bg-background text-foreground">
+                  <CircuitBoard size={16} />
+                </div>
+                <h3 className="text-base font-black uppercase tracking-tight text-background">
+                  {mcu.name}
+                </h3>
               </div>
 
-              <h4 className="text-sm font-extrabold text-foreground">{mcu.name}</h4>
-              <p className="text-[11px] text-muted-foreground font-mono mt-0.5">
-                {mcu.arch}
+              <p className="text-xs font-mono text-background/50 uppercase tracking-[0.1em] mb-4">
+                {mcu.role}
               </p>
-              <p className="text-xs text-muted-foreground leading-relaxed mt-3">
-                {mcu.use}
-              </p>
+
+              <div className="space-y-2 mb-4">
+                {mcu.specs.map((spec) => (
+                  <div key={spec} className="flex items-start gap-2">
+                    <span className="w-1.5 h-1.5 bg-accent mt-1.5 shrink-0" />
+                    <span className="text-xs text-background/60">{spec}</span>
+                  </div>
+                ))}
+              </div>
+
+              <div className="flex flex-wrap gap-1 pt-3 border-t-2 border-background/10">
+                {mcu.protocols.map((proto) => (
+                  <span key={proto} className="px-2 py-0.5 border-2 border-background/30 text-[10px] font-black uppercase tracking-[0.1em] text-background/60">
+                    {proto}
+                  </span>
+                ))}
+              </div>
             </div>
           ))}
         </div>
 
         {/* Implementation callout */}
-        <div className="mt-8 rounded-xl border border-border bg-muted/40 p-6">
-          <div className="flex items-center gap-3 mb-3">
-            <Activity size={18} className="text-primary" />
-            <span className="text-sm font-extrabold text-foreground">
-              High-Frequency Control
+        <div className="mt-12 border-4 border-background p-6">
+          <div className="flex items-center gap-3 mb-3 pb-3 border-b-2 border-background/20">
+            <Zap size={18} className="text-background" />
+            <span className="text-sm font-black uppercase tracking-tight text-background">
+              Implementation Note
             </span>
           </div>
-          <p className="text-sm text-muted-foreground leading-relaxed max-w-2xl">
-            Line-following algorithms on STM32 run at 1kHz polling rates using
-            interrupt-driven sensor reads. PID tuning is performed with custom
-            serial telemetry dashboards, achieving sub-centimeter tracking
-            accuracy on competition courses.
+          <p className="text-sm text-background/60 leading-relaxed max-w-2xl">
+            All embedded code follows bare-metal or RTOS paradigms — no bloated frameworks. 
+            ROS2 nodes communicate via DDS middleware, sensor fusion uses complementary filters, 
+            and motor control runs interrupt-driven PWM at microsecond precision.
           </p>
-          <div className="flex flex-wrap gap-1.5 mt-4">
-            {[
-              "Interrupt-Driven I/O",
-              "PID Tuning",
-              "DMA Transfers",
-              "RTOS Tasks",
-              "CAN Bus",
-            ].map((tag) => (
-              <Badge key={tag} variant="secondary" className="text-[11px]">
-                {tag}
-              </Badge>
-            ))}
-          </div>
         </div>
       </div>
     </section>

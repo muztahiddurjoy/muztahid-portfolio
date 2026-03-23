@@ -23,41 +23,25 @@ export default function ProjectFilterNav({
   onFilterChange,
 }: ProjectFilterNavProps) {
   const ref = useRef<HTMLDivElement>(null);
-  const [isStuck, setIsStuck] = useState(false);
-
-  useEffect(() => {
-    const el = ref.current;
-    if (!el) return;
-    const observer = new IntersectionObserver(
-      ([entry]) => setIsStuck(!entry.isIntersecting),
-      { threshold: [1], rootMargin: "-1px 0px 0px 0px" }
-    );
-    observer.observe(el);
-    return () => observer.disconnect();
-  }, []);
 
   return (
     <div
       ref={ref}
-      className={`sticky top-0 z-40 transition-colors duration-300 ${
-        isStuck
-          ? "bg-background/80 backdrop-blur-xl border-b border-border"
-          : "bg-background"
-      }`}
+      className="sticky top-0 z-40 bg-background border-b-4 border-foreground"
     >
       <div className="container mx-auto px-6 md:px-12 lg:px-20">
-        <nav className="flex items-center gap-2 py-4 overflow-x-auto">
+        <nav className="flex items-center gap-0 py-0 overflow-x-auto">
           {tabs.map((tab) => (
             <button
               key={tab.value}
               onClick={() => onFilterChange(tab.value)}
-              className={`px-5 py-2.5 text-sm font-semibold tracking-wide uppercase whitespace-nowrap rounded-lg transition-colors duration-200 cursor-pointer ${
+              className={`px-5 py-4 text-xs font-black uppercase tracking-[0.1em] whitespace-nowrap transition-colors duration-200 cursor-pointer border-r-4 border-foreground last:border-r-0 ${
                 activeFilter === tab.value
-                  ? "bg-primary text-primary-foreground"
-                  : "bg-transparent text-foreground/70 border border-border hover:border-foreground/30 hover:text-foreground"
+                  ? "bg-foreground text-background"
+                  : "bg-background text-foreground/60 hover:bg-foreground hover:text-background"
               }`}
             >
-              [ {tab.label} ]
+              {tab.label}
             </button>
           ))}
         </nav>

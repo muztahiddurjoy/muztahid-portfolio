@@ -17,7 +17,6 @@ export default function ChronologicalFeed({ entries }: ChronologicalFeedProps) {
 
   useEffect(() => {
     const ctx = gsap.context(() => {
-      // Animate the vertical timeline line
       gsap.from(".feed-line", {
         scaleY: 0,
         transformOrigin: "top",
@@ -30,7 +29,6 @@ export default function ChronologicalFeed({ entries }: ChronologicalFeedProps) {
         },
       });
 
-      // Reveal each feed card
       gsap.utils.toArray<HTMLElement>(".feed-card").forEach((card) => {
         gsap.from(card, {
           opacity: 0,
@@ -45,7 +43,6 @@ export default function ChronologicalFeed({ entries }: ChronologicalFeedProps) {
         });
       });
 
-      // Pop the date nodes
       gsap.utils.toArray<HTMLElement>(".feed-node").forEach((node) => {
         gsap.from(node, {
           scale: 0,
@@ -74,9 +71,9 @@ export default function ChronologicalFeed({ entries }: ChronologicalFeedProps) {
 
   if (entries.length === 0) {
     return (
-      <section className="py-24 bg-background">
+      <section className="py-24 bg-background border-t-4 border-foreground">
         <div className="container mx-auto px-6 md:px-12 lg:px-20 text-center">
-          <p className="text-muted-foreground text-lg">
+          <p className="text-foreground/50 text-lg font-mono uppercase tracking-[0.15em]">
             No logs found for this category.
           </p>
         </div>
@@ -85,50 +82,49 @@ export default function ChronologicalFeed({ entries }: ChronologicalFeedProps) {
   }
 
   return (
-    <section ref={sectionRef} className="py-24 bg-background overflow-hidden">
+    <section ref={sectionRef} className="py-24 md:py-32 bg-background border-t-4 border-foreground overflow-hidden">
       <div className="container mx-auto px-6 md:px-12 lg:px-20">
-        <h2 className="text-3xl md:text-4xl font-black tracking-tight text-foreground mb-4">
-          Chronological Feed
+        <span className="font-script text-accent text-lg mb-2 block">archive</span>
+        <h2 className="text-3xl md:text-4xl font-black uppercase tracking-tighter text-foreground mb-4">
+          CHRONOLOGICAL FEED
         </h2>
-        <p className="text-muted-foreground max-w-xl mb-16">
+        <p className="text-foreground/50 max-w-xl mb-16 font-mono text-xs tracking-[0.15em] uppercase">
           Research entries ordered by publication date — most recent first.
         </p>
 
-        {/* Timeline container */}
+        {/* Timeline */}
         <div className="relative">
           {/* Vertical line */}
-          <div className="feed-line absolute left-4 md:left-8 top-0 bottom-0 w-px bg-border" />
+          <div className="feed-line absolute left-4 md:left-8 top-0 bottom-0 w-1 bg-foreground" />
 
           <div className="flex flex-col gap-12">
-            {entries.map((entry, idx) => (
+            {entries.map((entry) => (
               <div key={entry.slug} className="relative flex items-start gap-6 md:gap-10">
-                {/* Date node */}
+                {/* Node */}
                 <div className="feed-node relative z-10 flex-shrink-0 flex flex-col items-center">
-                  <span className="flex h-8 w-8 items-center justify-center rounded-full border-2 border-primary bg-background">
-                    <span className="h-2.5 w-2.5 rounded-full bg-secondary" />
+                  <span className="flex h-8 w-8 items-center justify-center border-4 border-foreground bg-background">
+                    <span className="h-2.5 w-2.5 bg-accent" />
                   </span>
                 </div>
 
                 {/* Card */}
-                <div
-                  className="feed-card flex-1 rounded-2xl border border-border bg-card p-6 md:p-8"
-                >
-                  <div className="flex flex-wrap items-center gap-3 mb-3">
-                    <span className="text-xs font-semibold uppercase tracking-widest text-muted-foreground font-mono">
+                <div className="feed-card flex-1 border-4 border-foreground p-6 md:p-8">
+                  <div className="flex flex-wrap items-center gap-3 mb-3 border-b-4 border-foreground pb-3">
+                    <span className="text-[10px] font-black uppercase tracking-[0.2em] text-foreground/50 font-mono">
                       {formatDate(entry.date)}
                     </span>
-                    <span className="h-1 w-1 rounded-full bg-border" />
-                    <span className="flex items-center gap-1 text-xs text-muted-foreground">
+                    <span className="h-3 w-px bg-foreground/30" />
+                    <span className="flex items-center gap-1 text-[10px] text-foreground/40 font-mono uppercase tracking-[0.15em]">
                       <Clock size={12} />
                       {entry.readTime}
                     </span>
                   </div>
 
-                  <h3 className="text-xl md:text-2xl font-extrabold text-card-foreground leading-snug mb-3">
+                  <h3 className="text-xl md:text-2xl font-black uppercase tracking-tighter text-foreground leading-snug mb-3">
                     {entry.title}
                   </h3>
 
-                  <p className="text-sm text-muted-foreground leading-relaxed mb-5 max-w-2xl">
+                  <p className="text-sm text-foreground/50 leading-relaxed mb-5 max-w-2xl">
                     {entry.excerpt}
                   </p>
 
@@ -136,7 +132,7 @@ export default function ChronologicalFeed({ entries }: ChronologicalFeedProps) {
                     {entry.tags.map((tag) => (
                       <span
                         key={tag}
-                        className="flex items-center gap-1 rounded-md bg-muted px-2 py-0.5 text-xs font-medium text-muted-foreground"
+                        className="flex items-center gap-1 px-2 py-0.5 border-2 border-foreground/30 text-[10px] font-black uppercase tracking-[0.1em] text-foreground/50"
                       >
                         <Tag size={10} />
                         {tag}
@@ -144,7 +140,7 @@ export default function ChronologicalFeed({ entries }: ChronologicalFeedProps) {
                     ))}
                   </div>
 
-                  <button className="group inline-flex items-center gap-1.5 text-sm font-bold text-foreground transition-colors duration-200 hover:text-secondary">
+                  <button className="group inline-flex items-center gap-1.5 text-xs font-black uppercase tracking-[0.15em] text-foreground transition-colors duration-200 hover:text-accent">
                     Read Full Log
                     <ArrowRight
                       size={14}

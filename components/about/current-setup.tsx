@@ -21,52 +21,20 @@ const categories = [
     title: "Hardware",
     icon: Monitor,
     items: [
-      {
-        icon: Cpu,
-        label: "CPU",
-        detail: "High-performance multi-core processor built for parallel deep learning workloads and ROS2 simulation",
-      },
-      {
-        icon: MemoryStick,
-        label: "RAM",
-        detail: "High-capacity memory for running Gazebo simulations, Docker containers, and heavy IDE environments simultaneously",
-      },
-      {
-        icon: HardDrive,
-        label: "GPU",
-        detail: "Dedicated GPU accelerating PyTorch/TensorFlow training, CUDA-based point cloud processing, and 3D rendering",
-      },
-      {
-        icon: HardDrive,
-        label: "Storage",
-        detail: "NVMe SSD setup for fast model loading, dataset access, and build pipeline throughput",
-      },
+      { icon: Cpu, label: "CPU", detail: "High-performance multi-core processor for parallel deep learning workloads and ROS2 simulation" },
+      { icon: MemoryStick, label: "RAM", detail: "High-capacity memory for running Gazebo simulations, Docker containers, and heavy IDE environments simultaneously" },
+      { icon: HardDrive, label: "GPU", detail: "Dedicated GPU accelerating PyTorch/TensorFlow training, CUDA-based point cloud processing, and 3D rendering" },
+      { icon: HardDrive, label: "Storage", detail: "NVMe SSD setup for fast model loading, dataset access, and build pipeline throughput" },
     ],
   },
   {
     title: "Software Stack",
     icon: Code,
     items: [
-      {
-        icon: Code,
-        label: "Editor",
-        detail: "VS Code with Vim keybindings, custom snippets, and a minimal extension set tuned for Next.js, ROS2, and C++",
-      },
-      {
-        icon: Terminal,
-        label: "Terminal",
-        detail: "Zsh with custom aliases, tmux for session management, and fzf for rapid file navigation",
-      },
-      {
-        icon: Container,
-        label: "Containers",
-        detail: "Docker and Docker Compose for reproducible dev environments — especially critical for ROS2 workspace isolation",
-      },
-      {
-        icon: Layers,
-        label: "OS",
-        detail: "Ubuntu Linux as daily driver — required for first-class ROS2 support and low-level hardware access",
-      },
+      { icon: Code, label: "Editor", detail: "VS Code with Vim keybindings, custom snippets, and a minimal extension set tuned for Next.js, ROS2, and C++" },
+      { icon: Terminal, label: "Terminal", detail: "Zsh with custom aliases, tmux for session management, and fzf for rapid file navigation" },
+      { icon: Container, label: "Containers", detail: "Docker and Docker Compose for reproducible dev environments — especially for ROS2 workspace isolation" },
+      { icon: Layers, label: "OS", detail: "Ubuntu Linux as daily driver — required for first-class ROS2 support and low-level hardware access" },
     ],
   },
 ];
@@ -96,52 +64,58 @@ export default function CurrentSetup() {
   }, []);
 
   return (
-    <section ref={sectionRef} className="py-24 bg-background overflow-hidden">
+    <section ref={sectionRef} className="py-24 md:py-32 bg-background border-t-4 border-foreground overflow-hidden">
       <div className="container mx-auto px-6 md:px-12 lg:px-20">
-        <h2 className="text-3xl md:text-4xl font-black tracking-tight text-foreground mb-4">
-          The Current Workspace
+        <span className="font-script text-2xl md:text-3xl text-primary -rotate-2 inline-block mb-3">
+          The battlestation.
+        </span>
+        <h2 className="text-3xl md:text-5xl font-black uppercase tracking-tighter text-foreground mb-4 leading-[0.9]">
+          Current{" "}
+          <span className="bg-foreground text-background px-3 pt-3 pb-1 inline-block">
+            Workspace
+          </span>
         </h2>
-        <p className="text-muted-foreground max-w-xl mb-16">
-          A development environment purpose-built for deep learning, robotics simulation,
-          and heavy full-stack workflows.
+        <p className="text-sm font-mono uppercase tracking-[0.1em] text-foreground/50 max-w-xl mb-16">
+          Purpose-built for deep learning, robotics simulation, and heavy full-stack workflows.
         </p>
 
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
-          {categories.map((cat) => {
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-0">
+          {categories.map((cat, catIdx) => {
             const CatIcon = cat.icon;
             return (
               <div
                 key={cat.title}
-                className="setup-reveal rounded-2xl border border-border bg-card p-8"
+                className={`setup-reveal border-4 border-foreground ${catIdx > 0 ? "border-t-0 md:border-t-4 md:border-l-0" : ""}`}
               >
-                <div className="flex items-center gap-3 mb-6">
-                  <div className="flex items-center justify-center w-10 h-10 rounded-lg bg-primary/10 dark:bg-primary/20">
-                    <CatIcon size={20} className="text-primary dark:text-primary" />
+                {/* Category header */}
+                <div className="flex items-center gap-3 p-5 border-b-4 border-foreground">
+                  <div className="flex items-center justify-center w-10 h-10 bg-foreground text-background">
+                    <CatIcon size={20} />
                   </div>
-                  <h3 className="text-xl font-extrabold text-card-foreground">
+                  <h3 className="text-lg font-black uppercase tracking-tight text-foreground">
                     {cat.title}
                   </h3>
                 </div>
 
-                <div className="flex flex-col gap-5">
-                  {cat.items.map((item) => {
+                {/* Items */}
+                <div className="flex flex-col">
+                  {cat.items.map((item, itemIdx) => {
                     const ItemIcon = item.icon;
                     return (
                       <div
                         key={item.label}
-                        className="setup-reveal flex items-start gap-3"
+                        className={`setup-reveal flex items-start gap-3 p-5 ${
+                          itemIdx < cat.items.length - 1 ? "border-b-2 border-foreground/15" : ""
+                        }`}
                       >
-                        <div className="flex-shrink-0 mt-0.5">
-                          <ItemIcon
-                            size={16}
-                            className="text-secondary dark:text-primary"
-                          />
+                        <div className="flex-shrink-0 mt-0.5 w-6 h-6 flex items-center justify-center bg-foreground/10">
+                          <ItemIcon size={14} className="text-foreground" />
                         </div>
                         <div>
-                          <span className="text-sm font-extrabold text-foreground">
+                          <span className="text-sm font-black uppercase tracking-tight text-foreground">
                             {item.label}
                           </span>
-                          <p className="text-xs text-muted-foreground leading-relaxed mt-0.5">
+                          <p className="text-xs text-foreground/50 leading-relaxed mt-0.5">
                             {item.detail}
                           </p>
                         </div>

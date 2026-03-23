@@ -19,7 +19,6 @@ export default function ProjectsHero() {
       });
     }, ref);
 
-    // Geometric grid + trajectory animation
     const canvas = canvasRef.current;
     if (!canvas) return;
     const context = canvas.getContext("2d");
@@ -42,8 +41,12 @@ export default function ProjectsHero() {
       context.clearRect(0, 0, w, h);
       time += 0.003;
 
-      // Digital grid
-      context.strokeStyle = "rgba(210, 180, 140, 0.06)";
+      const fg = getComputedStyle(document.documentElement).getPropertyValue("--background").trim();
+      const lineColor = `rgba(${fg === "#fff" ? "255,255,255" : "0,0,0"}, 0.06)`;
+      const nodeColor = `rgba(${fg === "#fff" ? "255,255,255" : "0,0,0"}, 0.1)`;
+      const trajColor = `rgba(${fg === "#fff" ? "255,255,255" : "0,0,0"}, 0.15)`;
+
+      context.strokeStyle = lineColor;
       context.lineWidth = 0.5;
       const spacing = 40;
       for (let x = 0; x < w; x += spacing) {
@@ -61,8 +64,7 @@ export default function ProjectsHero() {
         context.stroke();
       }
 
-      // Grid intersection nodes
-      context.fillStyle = "rgba(210, 180, 140, 0.1)";
+      context.fillStyle = nodeColor;
       for (let x = 0; x < w; x += spacing) {
         for (let y = 0; y < h; y += spacing) {
           const pulse = Math.sin(time * 2 + x * 0.05 + y * 0.05) * 0.5 + 0.5;
@@ -79,8 +81,7 @@ export default function ProjectsHero() {
         }
       }
 
-      // Trajectory line (physical path)
-      context.strokeStyle = "rgba(210, 180, 140, 0.15)";
+      context.strokeStyle = trajColor;
       context.lineWidth = 1.5;
       context.beginPath();
       for (let i = 0; i <= 100; i++) {
@@ -109,22 +110,24 @@ export default function ProjectsHero() {
   return (
     <section
       ref={ref}
-      className="relative min-h-[70vh] flex items-center bg-primary overflow-hidden"
+      className="relative min-h-[70vh] flex items-center bg-foreground text-background overflow-hidden border-b-4 border-background"
     >
       <canvas
         ref={canvasRef}
         className="absolute inset-0 w-full h-full pointer-events-none"
       />
       <div className="relative z-10 container mx-auto px-6 md:px-12 lg:px-20 py-24 lg:py-32">
-        <p className="projects-hero-text text-xs tracking-widest uppercase text-primary-foreground/60 mb-6">
-          Project Universe
-        </p>
-        <h1 className="projects-hero-text text-4xl md:text-6xl lg:text-[5.5rem] font-black tracking-tight leading-[0.95] text-primary-foreground mb-8">
-          Systems in
+        <span className="projects-hero-text font-script text-accent text-lg md:text-xl mb-3 block">
+          project universe
+        </span>
+        <h1 className="projects-hero-text text-4xl md:text-6xl lg:text-[5.5rem] font-black uppercase tracking-tighter leading-[0.95] text-background mb-8">
+          SYSTEMS IN
           <br />
-          Production.
+          <span className="bg-background text-foreground px-3 pt-3 pb-1 inline-block">
+            PRODUCTION
+          </span>
         </h1>
-        <p className="projects-hero-text text-lg md:text-xl text-primary-foreground/70 leading-relaxed max-w-2xl">
+        <p className="projects-hero-text text-lg md:text-xl text-background/60 leading-relaxed max-w-2xl border-l-8 border-accent pl-6">
           From scalable enterprise architectures to autonomous navigation in
           unstructured environments.
         </p>
