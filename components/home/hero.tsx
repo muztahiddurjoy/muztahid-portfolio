@@ -20,24 +20,35 @@ interface HeroProps {
 export default function Hero({ siteSettings }: HeroProps) {
   const containerRef = useRef<HTMLDivElement>(null);
   const graphicRef = useRef<HTMLDivElement>(null);
+  const marqueeRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
     const ctx = gsap.context(() => {
+      // Snappy, aggressive entrance for text
       gsap.from(".hero-text", {
-        y: 30,
+        y: 50,
+        clipPath: "inset(0 0 100% 0)",
         opacity: 0,
-        duration: 1,
-        stagger: 0.15,
-        ease: "power3.out",
+        duration: 0.8,
+        stagger: 0.1,
+        ease: "power4.out",
         delay: 0.2,
       });
 
+      // Sharp slide-in for the brutalist cards
       gsap.from(graphicRef.current, {
-        x: 40,
+        x: 100,
         opacity: 0,
-        duration: 1.2,
-        ease: "power3.out",
-        delay: 0.5,
+        duration: 1,
+        ease: "expo.out",
+        delay: 0.4,
+      });
+      
+      // Fade in the marquee
+      gsap.from(marqueeRef.current, {
+        opacity: 0,
+        duration: 1.5,
+        delay: 0.8,
       });
     }, containerRef);
 
@@ -47,117 +58,146 @@ export default function Hero({ siteSettings }: HeroProps) {
   return (
     <section
       ref={containerRef}
-      className="relative min-h-screen flex items-center overflow-hidden"
+      className="relative min-h-screen flex items-center overflow-hidden bg-primary"
     >
-      {/* Split diagonal background */}
-      <div className="absolute inset-0 bg-primary" />
+      {/* Razor-sharp diagonal background split */}
       <div
-        className="absolute inset-0"
+        className="absolute inset-0 bg-secondary"
         style={{
-          clipPath: "polygon(55% 0, 100% 0, 100% 100%, 40% 100%)",
+          clipPath: "polygon(45% 0, 100% 0, 100% 100%, 30% 100%)",
         }}
-      >
-        <div className="h-full w-full bg-secondary" />
-      </div>
-      {/* Subtle grain overlay */}
-      <div className="absolute inset-0 opacity-[0.03] bg-[url('data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHdpZHRoPSIzMDAiIGhlaWdodD0iMzAwIj48ZmlsdGVyIGlkPSJhIj48ZmVUdXJidWxlbmNlIHR5cGU9ImZyYWN0YWxOb2lzZSIgYmFzZUZyZXF1ZW5jeT0iLjc1Ii8+PC9maWx0ZXI+PHJlY3Qgd2lkdGg9IjEwMCUiIGhlaWdodD0iMTAwJSIgZmlsdGVyPSJ1cmwoI2EpIi8+PC9zdmc+')]" />
+      />
+      
+      {/* Subtle grain overlay for texture */}
+      <div className="absolute inset-0 opacity-[0.04] mix-blend-overlay bg-[url('data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHdpZHRoPSIzMDAiIGhlaWdodD0iMzAwIj48ZmlsdGVyIGlkPSJhIj48ZmVUdXJidWxlbmNlIHR5cGU9ImZyYWN0YWxOb2lzZSIgYmFzZUZyZXF1ZW5jeT0iLjc1Ii8+PC9maWx0ZXI+PHJlY3Qgd2lkdGg9IjEwMCUiIGhlaWdodD0iMTAwJSIgZmlsdGVyPSJ1cmwoI2EpIi8+PC9zdmc+')]" />
 
       <div className="container relative z-10 mx-auto px-6 md:px-12 lg:px-20 flex flex-col lg:flex-row items-center justify-between gap-12 w-full py-24 lg:py-0">
-        {/* Left Content */}
-        <div className="w-full lg:w-1/2 flex flex-col space-y-6 text-primary-foreground">
-          <Badge variant="outline" className="hero-text w-fit border-primary-foreground/30 text-primary-foreground/90 text-xs tracking-widest uppercase">
+        
+        {/* Left Content: The Heavyweight Typography */}
+        <div className="w-full lg:w-1/2 flex flex-col space-y-6 text-primary-foreground relative">
+          
+          {/* Handwritten accent overlapping the main structure */}
+          <div className="hero-text absolute -top-12 left-2 md:-top-8 md:left-8 z-20">
+            <span className="font-script text-4xl md:text-5xl text-accent -rotate-6 inline-block opacity-90">
+              Just call me Muz.
+            </span>
+          </div>
+
+          <Badge variant="outline" className="hero-text w-fit border-primary-foreground text-primary-foreground text-xs tracking-[0.2em] font-black uppercase rounded-none px-3 py-1 bg-primary">
             CS Student @ BRAC University
           </Badge>
 
-          <h1 className="hero-text text-5xl md:text-7xl lg:text-[5.5rem] font-black tracking-tight leading-[0.95]">
+          <h1 className="hero-text text-[4.5rem] md:text-[7rem] lg:text-[8rem] font-black tracking-tighter leading-[0.85] uppercase">
             {(siteSettings?.name ?? "Muztahid Rahman").split(" ").map((word, i) => (
-              <span key={i}>
-                {i > 0 && <br />}
+              <span key={i} className="block">
                 {word}
               </span>
             ))}
           </h1>
 
-          <p className="hero-text text-lg md:text-xl max-w-lg text-primary-foreground/80 leading-relaxed">
+          {/* Secondary handwritten accent */}
+          <div className="hero-text pl-2 md:pl-4">
+            <span className="font-script text-2xl md:text-3xl text-primary-foreground/80 -rotate-2 inline-block">
+              Building robots & restoring classics.
+            </span>
+          </div>
+
+          <p className="hero-text text-lg md:text-xl max-w-md font-medium text-primary-foreground/90 leading-tight border-l-4 border-accent pl-4">
             {siteSettings?.heroTagline ?? "Architecting Scalable Web Platforms & Autonomous Systems."}
           </p>
 
-          <div className="hero-text flex flex-wrap gap-3 pt-2">
+          <div className="hero-text flex flex-wrap gap-4 pt-4">
             <Button
               size="lg"
-              className="bg-secondary text-secondary-foreground font-semibold transition-colors duration-300 hover:bg-secondary/80"
+              className="bg-accent text-accent-foreground font-black uppercase tracking-widest rounded-none border-2 border-accent btn-inverse-hover px-8 h-14"
             >
               Explore My Work
-              <ArrowRight className="ml-1.5" size={16} />
+              <ArrowRight className="ml-2" size={18} strokeWidth={3} />
             </Button>
             <Button
               variant="outline"
               size="lg"
-              className="border-primary-foreground/30 text-primary-foreground bg-transparent font-semibold transition-colors duration-300 hover:bg-primary-foreground/10"
+              className="bg-transparent text-primary-foreground font-black uppercase tracking-widest rounded-none border-2 border-primary-foreground btn-inverse-hover px-8 h-14"
             >
-              <Download className="mr-1.5" size={16} />
-              Download Resume
+              <Download className="mr-2" size={18} strokeWidth={3} />
+              Resume
             </Button>
           </div>
         </div>
 
-        {/* Right Graphic Cards */}
+        {/* Right Graphic Cards: Brutalist & High Contrast */}
         <div
           ref={graphicRef}
-          className="w-full lg:w-1/2 flex flex-col sm:flex-row lg:flex-col xl:flex-row justify-center lg:justify-end gap-5 mt-8 lg:mt-0"
+          className="w-full lg:w-1/2 flex flex-col justify-center lg:justify-end gap-6 mt-12 lg:mt-0 relative z-10"
         >
           {/* Web Architecture Card */}
-          <div className="relative w-full max-w-xs rounded-2xl border border-secondary-foreground/10 bg-secondary/90 backdrop-blur-sm p-6 shadow-2xl">
-            <div className="flex items-center gap-3 mb-4">
-              <div className="flex items-center justify-center w-10 h-10 rounded-lg bg-secondary-foreground/10">
-                <Globe size={20} className="text-secondary-foreground" />
-              </div>
-              <h3 className="text-lg font-black text-secondary-foreground">Web Architecture</h3>
+          <div className="w-full max-w-sm ml-auto bg-primary border-4 border-primary-foreground p-6 shadow-[8px_8px_0px_0px_rgba(0,0,0,0.3)] dark:shadow-[8px_8px_0px_0px_var(--color-primary-foreground)] transition-transform duration-300 hover:-translate-y-1 hover:translate-x-1 hover:shadow-[4px_4px_0px_0px_rgba(0,0,0,0.3)] dark:hover:shadow-[4px_4px_0px_0px_var(--color-primary-foreground)]">
+            <div className="flex items-center gap-4 mb-4 border-b-2 border-primary-foreground/20 pb-4">
+              <Globe size={28} className="text-accent" strokeWidth={2.5} />
+              <h3 className="text-xl font-black uppercase tracking-wide text-primary-foreground">Web Architecture</h3>
             </div>
-            <p className="text-sm text-secondary-foreground/70 mb-5 leading-relaxed">
+            <p className="text-sm font-medium text-primary-foreground/80 mb-6 leading-relaxed">
               Enterprise-grade full-stack platforms with scalable cloud infrastructure.
             </p>
             <div className="flex flex-wrap gap-2">
-              {["Next.js", "NestJS", "AWS"].map((t) => (
-                <span key={t} className="inline-flex items-center gap-1.5 rounded-md bg-secondary-foreground/10 px-2.5 py-1 text-xs font-semibold text-secondary-foreground">
-                  {t === "Next.js" && <Layers size={12} />}
-                  {t === "NestJS" && <Server size={12} />}
-                  {t === "AWS" && <Globe size={12} />}
+              {["Next.js", "NestJS", "TypeScript"].map((t) => (
+                <span key={t} className="inline-flex items-center gap-1.5 border-2 border-primary-foreground/30 bg-primary-foreground/5 px-3 py-1 text-xs font-black uppercase text-primary-foreground">
+                  {t === "Next.js" && <Layers size={14} />}
+                  {t === "NestJS" && <Server size={14} />}
                   {t}
                 </span>
               ))}
             </div>
-            {/* Decorative element */}
-            <div className="absolute -top-3 -right-3 w-16 h-16 rounded-full border-2 border-secondary-foreground/10 opacity-50" />
           </div>
 
-          {/* Robotics Card */}
-          <div className="relative w-full max-w-xs rounded-2xl border border-primary-foreground/10 bg-primary/90 backdrop-blur-sm p-6 shadow-2xl">
-            <div className="flex items-center gap-3 mb-4">
-              <div className="flex items-center justify-center w-10 h-10 rounded-lg bg-primary-foreground/10">
-                <Cpu size={20} className="text-primary-foreground" />
-              </div>
-              <h3 className="text-lg font-black text-primary-foreground">Robotics &amp; Autonomy</h3>
+          {/* Robotics Card (Offset for dynamic layout) */}
+          <div className="w-full max-w-sm ml-auto lg:mr-12 bg-secondary border-4 border-secondary-foreground p-6 shadow-[8px_8px_0px_0px_rgba(0,0,0,0.3)] dark:shadow-[8px_8px_0px_0px_var(--color-secondary-foreground)] transition-transform duration-300 hover:-translate-y-1 hover:translate-x-1 hover:shadow-[4px_4px_0px_0px_rgba(0,0,0,0.3)] dark:hover:shadow-[4px_4px_0px_0px_var(--color-secondary-foreground)]">
+            <div className="flex items-center gap-4 mb-4 border-b-2 border-secondary-foreground/20 pb-4">
+              <Cpu size={28} className="text-secondary-foreground" strokeWidth={2.5} />
+              <h3 className="text-xl font-black uppercase tracking-wide text-secondary-foreground">Robotics & Autonomy</h3>
             </div>
-            <p className="text-sm text-primary-foreground/70 mb-5 leading-relaxed">
-              Autonomous navigation and embedded systems with low-level control.
+            <p className="text-sm font-medium text-secondary-foreground/80 mb-6 leading-relaxed">
+              Autonomous navigation, SLAM, and embedded systems with low-level control.
             </p>
             <div className="flex flex-wrap gap-2">
               {["ROS2", "C/C++", "STM32"].map((t) => (
-                <span key={t} className="inline-flex items-center gap-1.5 rounded-md bg-primary-foreground/10 px-2.5 py-1 text-xs font-semibold text-primary-foreground">
-                  {t === "ROS2" && <Cog size={12} />}
-                  {t === "C/C++" && <Cpu size={12} />}
-                  {t === "STM32" && <Wifi size={12} />}
+                <span key={t} className="inline-flex items-center gap-1.5 border-2 border-secondary-foreground/30 bg-secondary-foreground/5 px-3 py-1 text-xs font-black uppercase text-secondary-foreground">
+                  {t === "ROS2" && <Cog size={14} />}
+                  {t === "C/C++" && <Cpu size={14} />}
+                  {t === "STM32" && <Wifi size={14} />}
                   {t}
                 </span>
               ))}
             </div>
-            {/* Decorative SVG arm abstract */}
-            <svg className="absolute -bottom-2 -left-2 w-14 h-14 text-primary-foreground/10" viewBox="0 0 60 60" fill="none">
-              <path d="M10 50 L30 30 L50 35 L45 15" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round" />
-              <circle cx="30" cy="30" r="3" fill="currentColor" />
-              <circle cx="50" cy="35" r="2.5" fill="currentColor" />
-            </svg>
+          </div>
+        </div>
+      </div>
+
+      {/* The Identity Marquee - Anchored to the bottom */}
+      <div ref={marqueeRef} className="absolute bottom-0 left-0 w-full bg-foreground text-background py-3 border-t-4 border-accent z-20">
+        <div className="marquee-container">
+          <div className="marquee-content font-black text-sm md:text-base tracking-[0.2em] uppercase">
+            <span>CHIEF SOFTWARE ENGINEER @ BOT ENGINEERS</span>
+            <span className="text-accent">•</span>
+            <span>CO-FOUNDER @ APPBAKSHO</span>
+            <span className="text-accent">•</span>
+            <span>BRACU CS STUDENT</span>
+            <span className="text-accent">•</span>
+            <span>VINTAGE CAR ENTHUSIAST</span>
+            <span className="text-accent">•</span>
+            <span>3D PRINTING NERD</span>
+            <span className="text-accent">•</span>
+            {/* Duplicate for seamless loop */}
+            <span>CHIEF SOFTWARE ENGINEER @ BOT ENGINEERS</span>
+            <span className="text-accent">•</span>
+            <span>CO-FOUNDER @ APPBAKSHO</span>
+            <span className="text-accent">•</span>
+            <span>BRACU CS STUDENT</span>
+            <span className="text-accent">•</span>
+            <span>VINTAGE CAR ENTHUSIAST</span>
+            <span className="text-accent">•</span>
+            <span>3D PRINTING NERD</span>
+            <span className="text-accent">•</span>
           </div>
         </div>
       </div>

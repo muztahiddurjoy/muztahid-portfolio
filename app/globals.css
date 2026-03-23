@@ -7,9 +7,11 @@
 @theme inline {
   --color-background: var(--background);
   --color-foreground: var(--foreground);
-  --font-sans: "Inter", ui-sans-serif, system-ui, -apple-system, sans-serif;
+  --font-sans: var(--font-sans), ui-sans-serif, system-ui, -apple-system, sans-serif;
   --font-mono: var(--font-geist-mono);
-  --font-heading: "Inter", ui-sans-serif, system-ui, -apple-system, sans-serif;
+  --font-heading: var(--font-sans), ui-sans-serif, system-ui, -apple-system, sans-serif;
+  --font-script: var(--font-script), cursive; /* Added the handwritten script font */
+  
   --color-sidebar-ring: var(--sidebar-ring);
   --color-sidebar-border: var(--sidebar-border);
   --color-sidebar-accent-foreground: var(--sidebar-accent-foreground);
@@ -39,6 +41,7 @@
   --color-popover: var(--popover);
   --color-card-foreground: var(--card-foreground);
   --color-card: var(--card);
+  
   --radius-sm: calc(var(--radius) * 0.6);
   --radius-md: calc(var(--radius) * 0.8);
   --radius-lg: var(--radius);
@@ -46,6 +49,24 @@
   --radius-2xl: calc(var(--radius) * 1.8);
   --radius-3xl: calc(var(--radius) * 2.2);
   --radius-4xl: calc(var(--radius) * 2.6);
+
+  /* Lando-style Custom Animations */
+  --animate-marquee: marquee 25s linear infinite;
+  --animate-fade-in: fadeIn 0.8s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+  --animate-reveal: reveal 1s cubic-bezier(0.77, 0, 0.175, 1) forwards;
+
+  @keyframes marquee {
+    0% { transform: translateX(0%); }
+    100% { transform: translateX(-100%); }
+  }
+  @keyframes fadeIn {
+    from { opacity: 0; }
+    to { opacity: 1; }
+  }
+  @keyframes reveal {
+    0% { clip-path: inset(0 100% 0 0); }
+    100% { clip-path: inset(0 0 0 0); }
+  }
 }
 
 /* =========================================
@@ -564,8 +585,7 @@
     @apply border-border outline-ring/50;
   }
   body {
-    @apply bg-background text-foreground;
-    /* Smooth transition for random theme loading */
+    @apply bg-background text-foreground overflow-x-hidden;
     transition: background-color 0.8s ease-out, color 0.8s ease-out; 
   }
   html {
@@ -577,8 +597,34 @@
     transition: background-color 0.4s ease-out, border-color 0.4s ease-out, color 0.4s ease-out;
   }
   
-  /* Global typography overrides for the brutalist, punchy look */
   h1, h2, h3, h4, h5, h6 {
     @apply font-heading font-extrabold tracking-tight;
+  }
+}
+
+/* =========================================
+   UTILITIES (Lando Style Hovers & Accents)
+   ========================================= */
+@layer utilities {
+  .font-script {
+    font-family: var(--font-script);
+  }
+
+  /* Smooth underline reveal replacing scale/up animations */
+  .hover-underline-animation {
+    @apply relative inline-block after:content-[''] after:absolute after:w-full after:h-[2px] after:bg-current after:bottom-0 after:left-0 after:origin-bottom-right after:scale-x-0 after:transition-transform after:duration-300 hover:after:origin-bottom-left hover:after:scale-x-100;
+  }
+
+  /* Sharp color inversion for buttons without moving them */
+  .btn-inverse-hover {
+    @apply transition-colors duration-300 border border-foreground bg-transparent text-foreground hover:bg-foreground hover:text-background;
+  }
+
+  /* Lando Marquee Container */
+  .marquee-container {
+    @apply overflow-hidden whitespace-nowrap flex;
+  }
+  .marquee-content {
+    @apply animate-marquee flex items-center space-x-8 shrink-0 px-4;
   }
 }
