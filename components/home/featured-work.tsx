@@ -24,13 +24,13 @@ export default function FeaturedWork({ cases }: FeaturedWorkProps) {
 
   useEffect(() => {
     const ctx = gsap.context(() => {
-      // Crisp, staggered reveal for the section header
+      // Aggressive, heavy reveal for the brutalist header blocks
       gsap.from(".work-header-text", {
-        y: 40,
+        y: 50,
         clipPath: "inset(0 0 100% 0)",
         opacity: 0,
         duration: 0.8,
-        stagger: 0.1,
+        stagger: 0.15,
         ease: "power4.out",
         scrollTrigger: {
           trigger: ".work-header",
@@ -39,14 +39,14 @@ export default function FeaturedWork({ cases }: FeaturedWorkProps) {
         },
       });
 
-      // Sharp slide-up and fade for the case cards
+      // Sharp, mechanical drop-in for cards
       gsap.utils.toArray<HTMLElement>(".case-card").forEach((card, index) => {
         gsap.from(card, {
           y: 40,
           opacity: 0,
-          duration: 0.8,
+          duration: 0.6,
           ease: "expo.out",
-          delay: index * 0.1, // Stagger based on index
+          delay: index * 0.1,
           scrollTrigger: {
             trigger: card,
             start: "top 85%",
@@ -60,33 +60,42 @@ export default function FeaturedWork({ cases }: FeaturedWorkProps) {
   }, []);
 
   return (
-    <section ref={sectionRef} className="py-20 md:py-28 bg-background overflow-hidden border-t-4 border-foreground">
+    <section ref={sectionRef} className="py-24 md:py-32 bg-background overflow-hidden border-t-4 border-foreground">
       <div className="container mx-auto px-6 md:px-12 lg:px-20">
         
-        {/* Refined Editorial Header */}
-        <div className="work-header relative mb-12 md:mb-16 max-w-4xl">
-          <span className="work-header-text font-script text-3xl md:text-4xl text-primary absolute -top-6 left-0 md:-top-8 md:-left-4 -rotate-3 z-10 drop-shadow-sm">
+        {/* Heavy Structural Header */}
+        <div className="work-header relative mb-16 md:mb-24 max-w-5xl">
+          <span className="work-header-text font-script text-3xl md:text-5xl text-primary absolute -top-8 left-0 md:-top-10 md:-left-6 -rotate-3 z-10 drop-shadow-sm">
             Stuff I've built.
           </span>
-          <h2 className="work-header-text text-4xl md:text-5xl lg:text-6xl font-black uppercase tracking-tight leading-[0.9] text-foreground relative z-0 mt-4 md:mt-6">
-            Featured Projects
+          
+          {/* Brutalist Text Blocks */}
+          <h2 className="text-[3.5rem] sm:text-[5rem] md:text-[6.5rem] lg:text-[7.5rem] font-black uppercase tracking-tighter leading-[0.85] flex flex-col items-start gap-2 relative z-0 mt-8 md:mt-10">
+            <span className="work-header-text text-foreground">Featured</span>
+            <span className="work-header-text bg-foreground text-background px-4 pt-4 pb-2 md:px-6 md:pt-6 md:pb-3">
+              Projects
+            </span>
           </h2>
-          <p className="work-header-text mt-6 text-base md:text-lg font-medium text-foreground/80 leading-relaxed max-w-2xl border-l-4 border-accent pl-4">
-            Select architecture that demonstrates end-to-end ownership. From scalable cloud platforms to low-level physical systems.
+          
+          <p className="work-header-text mt-8 text-base md:text-lg lg:text-xl font-bold uppercase tracking-wide text-foreground/90 leading-snug max-w-3xl border-l-8 border-accent pl-5">
+            Select architecture demonstrating end-to-end ownership. From scalable cloud platforms to low-level physical systems.
           </p>
         </div>
 
-        {/* Brutalist Grid System */}
-        <div className="grid grid-cols-1 lg:grid-cols-2 gap-8 md:gap-10">
-          {cases.map((c) => (
+        {/* Brutalist Grid System - Strict Compartments */}
+        <div className="grid grid-cols-1 lg:grid-cols-2 gap-8 md:gap-12">
+          {cases.map((c, index) => (
             <article
               key={c.id}
-              className="case-card group relative flex flex-col border-4 border-foreground bg-background p-8 transition-colors duration-300 hover:bg-muted/30"
+              className="case-card group flex flex-col border-4 border-foreground bg-background transition-colors duration-300"
             >
-              {/* Category Badge & Arrow */}
-              <div className="flex justify-between items-start mb-6">
+              {/* Telemetry Header (Index & Category) */}
+              <div className="flex justify-between items-center border-b-4 border-foreground p-4 md:p-6 bg-muted/20">
+                <span className="font-black text-3xl md:text-4xl text-foreground/30 tracking-tighter leading-none">
+                  {(index + 1).toString().padStart(2, '0')}
+                </span>
                 <div 
-                  className={`px-3 py-1.5 border-2 border-foreground font-black text-xs uppercase tracking-widest ${
+                  className={`px-4 py-1.5 border-2 border-foreground font-black text-xs md:text-sm uppercase tracking-[0.2em] ${
                     c.accent === "primary" 
                       ? "bg-foreground text-background" 
                       : "bg-accent text-foreground"
@@ -94,39 +103,41 @@ export default function FeaturedWork({ cases }: FeaturedWorkProps) {
                 >
                   {c.accent === "primary" ? "On Screen" : "In Lab"}
                 </div>
-                {/* Arrow slides right, strictly NO moving up/scaling */}
-                <div className="w-10 h-10 flex items-center justify-center border-2 border-transparent group-hover:border-foreground transition-colors duration-300 rounded-full">
+              </div>
+
+              {/* Core Content Area */}
+              <div className="p-6 md:p-8 flex-grow flex flex-col justify-center">
+                <h3 className="text-3xl md:text-4xl lg:text-5xl font-black uppercase tracking-tighter text-foreground leading-[0.9] mb-6 group-hover:underline decoration-foreground decoration-4 underline-offset-4">
+                  {c.title}
+                </h3>
+                <p className="text-sm md:text-base font-bold text-foreground/80 leading-snug border-l-4 border-foreground/30 pl-4">
+                  {c.description}
+                </p>
+              </div>
+
+              {/* Data / Footer Bar */}
+              <div className="flex justify-between items-end gap-4 border-t-4 border-foreground p-4 md:p-6 bg-background">
+                {/* Tech Stack Tags (Invert on hover) */}
+                <div className="flex flex-wrap gap-2 relative z-10">
+                  {c.tags.map((tag) => (
+                    <span 
+                      key={tag} 
+                      className="px-2.5 py-1 border-2 border-foreground bg-background text-[10px] md:text-xs font-black uppercase tracking-[0.15em] text-foreground transition-colors duration-300 group-hover:bg-foreground group-hover:text-background"
+                    >
+                      {tag}
+                    </span>
+                  ))}
+                </div>
+                
+                {/* Rigid Action Button */}
+                <div className="w-12 h-12 shrink-0 flex items-center justify-center border-4 border-foreground bg-accent transition-colors duration-300 group-hover:bg-foreground group-hover:text-background">
                   <ArrowRight 
-                    className="text-foreground transform group-hover:translate-x-1 transition-transform duration-300" 
-                    size={24} 
-                    strokeWidth={2.5} 
+                    className="text-foreground group-hover:text-background transform group-hover:translate-x-1 transition-all duration-300" 
+                    size={28} 
+                    strokeWidth={3} 
                   />
                 </div>
               </div>
-
-              {/* Core Content */}
-              <h3 className="text-2xl md:text-3xl font-black uppercase tracking-tight text-foreground mb-3">
-                {c.title}
-              </h3>
-
-              <p className="text-sm md:text-base font-medium text-foreground/80 leading-relaxed border-l-4 border-foreground/30 pl-4 mb-8 flex-grow group-hover:border-foreground transition-colors duration-300">
-                {c.description}
-              </p>
-
-              {/* Tech Stack Tags */}
-              <div className="flex flex-wrap gap-2 mt-auto relative z-10">
-                {c.tags.map((tag) => (
-                  <span 
-                    key={tag} 
-                    className="px-2.5 py-1 border-2 border-foreground/20 bg-foreground/5 text-[10px] md:text-xs font-black uppercase text-foreground tracking-wider"
-                  >
-                    {tag}
-                  </span>
-                ))}
-              </div>
-
-              {/* Mechanical Hover Accent (Grows from bottom, doesn't shift layout) */}
-              <div className="absolute bottom-0 left-0 w-full h-0 bg-foreground transition-all duration-300 ease-out group-hover:h-2 z-20" />
             </article>
           ))}
         </div>
