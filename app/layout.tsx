@@ -25,6 +25,33 @@ export const metadata: Metadata = {
   description: "Portfolio showcasing scalable enterprise web architectures and autonomous robotic systems.",
 };
 
+// This script runs synchronously before the browser paints the UI.
+// It prevents the "flash of unstyled content" (FOUC) when reloading.
+const themeScript = `
+  (function() {
+    try {
+      const themes = [
+        'theme-default', // Triggers the :root Oxford Blue
+        'theme-vanilla-coffee', 
+        'theme-champagne-chocolate', 
+        'theme-rose-maroon', 
+        'theme-almond-coffee', 
+        'theme-smoke-wine', 
+        'theme-milk-sage', 
+        'theme-offwhite-olive', 
+        'theme-cream-indigo',
+        'theme-amber-cocoa',
+        'theme-floral-olive',
+        'theme-butter-espresso'
+      ];
+      const randomTheme = themes[Math.floor(Math.random() * themes.length)];
+      if (randomTheme !== 'theme-default') {
+        document.documentElement.classList.add(randomTheme);
+      }
+    } catch (e) {}
+  })();
+`;
+
 export default function RootLayout({
   children,
 }: Readonly<{
@@ -33,17 +60,20 @@ export default function RootLayout({
   return (
     <html
       lang="en"
-      // Suppress hydration warnings if you add next-themes for dark mode later
-      suppressHydrationWarning 
+      suppressHydrationWarning // Prevents Next.js from throwing errors when the script modifies the HTML class
       className={cn(
         "h-full antialiased", 
         inter.variable, 
         geistMono.variable
       )}
     >
+      <head>
+        {/* Inject the blocking script */}
+        <script dangerouslySetInnerHTML={{ __html: themeScript }} />
+      </head>
       <body className="min-h-full flex flex-col font-sans bg-background text-foreground selection:bg-primary selection:text-primary-foreground">
         <Navbar />
-        <main className="flex-1">{children}</main>
+        <main className="flex-1 w-full">{children}</main>
         <Footer />
       </body>
     </html>

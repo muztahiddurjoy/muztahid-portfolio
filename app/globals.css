@@ -1,4 +1,3 @@
-@import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&display=swap');
 @import "tailwindcss";
 @import "tw-animate-css";
 @import "shadcn/tailwind.css";
@@ -6,10 +5,6 @@
 @custom-variant dark (&:is(.dark *));
 
 @theme inline {
-  /* Brand Colors Setup */
-  --color-oxford: #002147;
-  --color-tan: #d2b48c;
-
   --color-background: var(--background);
   --color-foreground: var(--foreground);
   --font-sans: "Inter", ui-sans-serif, system-ui, -apple-system, sans-serif;
@@ -53,103 +48,536 @@
   --radius-4xl: calc(var(--radius) * 2.6);
 }
 
+/* =========================================
+   0. DEFAULT THEME: Oxford Blue & Tan 
+   ========================================= */
 :root {
-  /* Light Mode - Neutral background, Oxford Blue text, Tan accents */
   --background: #fdfcfb;
   --foreground: #002147;
   --card: #ffffff;
   --card-foreground: #002147;
   --popover: #ffffff;
   --popover-foreground: #002147;
-  
-  /* Primary buttons/elements will be Oxford Blue with Tan text */
   --primary: #002147;
   --primary-foreground: #d2b48c;
-  
-  /* Secondary buttons/elements will be Tan with Oxford Blue text */
   --secondary: #d2b48c;
   --secondary-foreground: #002147;
-  
-  --muted: #f3f4f6;
-  --muted-foreground: #4b5563;
+  --muted: #0021471a;
+  --muted-foreground: #00214799;
   --accent: #d2b48c;
   --accent-foreground: #002147;
   --destructive: oklch(0.577 0.245 27.325);
-  --border: #e5e7eb;
-  --input: #e5e7eb;
+  --border: #00214726;
+  --input: #00214726;
   --ring: #002147;
-  
-  --chart-1: #002147;
-  --chart-2: #d2b48c;
-  --chart-3: oklch(0.439 0 0);
-  --chart-4: oklch(0.371 0 0);
-  --chart-5: oklch(0.269 0 0);
   --radius: 0.625rem;
-  
-  --sidebar: #fdfcfb;
-  --sidebar-foreground: #002147;
-  --sidebar-primary: #002147;
-  --sidebar-primary-foreground: #d2b48c;
-  --sidebar-accent: #f3f4f6;
-  --sidebar-accent-foreground: #002147;
-  --sidebar-border: #e5e7eb;
-  --sidebar-ring: #002147;
 }
 
 .dark {
-  /* Dark Mode - Oxford Blue background, Tan text */
   --background: #002147;
   --foreground: #d2b48c;
   --card: #001a38;
   --card-foreground: #d2b48c;
   --popover: #001a38;
   --popover-foreground: #d2b48c;
-  
-  /* Primary buttons/elements will be Tan with Oxford Blue text */
   --primary: #d2b48c;
   --primary-foreground: #002147;
-  
-  /* Secondary buttons/elements will be a lighter Oxford Blue with Tan text */
   --secondary: #0a2f5c;
   --secondary-foreground: #d2b48c;
-  
-  --muted: #0a2f5c;
-  --muted-foreground: #9ca3af;
+  --muted: #d2b48c1a;
+  --muted-foreground: #d2b48c99;
   --accent: #0a2f5c;
   --accent-foreground: #d2b48c;
   --destructive: oklch(0.704 0.191 22.216);
-  --border: #0a2f5c;
-  --input: #0a2f5c;
+  --border: #d2b48c26;
+  --input: #d2b48c26;
   --ring: #d2b48c;
-  
-  --chart-1: #d2b48c;
-  --chart-2: #002147;
-  --chart-3: oklch(0.439 0 0);
-  --chart-4: oklch(0.371 0 0);
-  --chart-5: oklch(0.269 0 0);
-  
-  --sidebar: #001a38;
-  --sidebar-foreground: #d2b48c;
-  --sidebar-primary: #d2b48c;
-  --sidebar-primary-foreground: #002147;
-  --sidebar-accent: #0a2f5c;
-  --sidebar-accent-foreground: #d2b48c;
-  --sidebar-border: #0a2f5c;
-  --sidebar-ring: #d2b48c;
 }
 
+/* =========================================
+   1. THEME: Vanilla Cream & Coffee Bean 
+   ========================================= */
+.theme-vanilla-coffee {
+  --background: #FCECCF;
+  --foreground: #442D1D;
+  --card: #FCECCF;
+  --card-foreground: #442D1D;
+  --popover: #FCECCF;
+  --popover-foreground: #442D1D;
+  --primary: #442D1D;
+  --primary-foreground: #FCECCF;
+  --secondary: #FCECCF;
+  --secondary-foreground: #442D1D;
+  --muted: #442D1D1a;
+  --muted-foreground: #442D1D99;
+  --accent: #FCECCF;
+  --accent-foreground: #442D1D;
+  --border: #442D1D26;
+  --input: #442D1D26;
+  --ring: #442D1D;
+}
+.dark.theme-vanilla-coffee {
+  --background: #442D1D;
+  --foreground: #FCECCF;
+  --card: #442D1D;
+  --card-foreground: #FCECCF;
+  --popover: #442D1D;
+  --popover-foreground: #FCECCF;
+  --primary: #FCECCF;
+  --primary-foreground: #442D1D;
+  --secondary: #442D1D;
+  --secondary-foreground: #FCECCF;
+  --muted: #FCECCF1a;
+  --muted-foreground: #FCECCF99;
+  --accent: #442D1D;
+  --accent-foreground: #FCECCF;
+  --border: #FCECCF26;
+  --input: #FCECCF26;
+  --ring: #FCECCF;
+}
+
+/* =========================================
+   2. THEME: Champagne & Chocolate 
+   ========================================= */
+.theme-champagne-chocolate {
+  --background: #FBDFA2;
+  --foreground: #442216;
+  --card: #FBDFA2;
+  --card-foreground: #442216;
+  --popover: #FBDFA2;
+  --popover-foreground: #442216;
+  --primary: #442216;
+  --primary-foreground: #FBDFA2;
+  --secondary: #FBDFA2;
+  --secondary-foreground: #442216;
+  --muted: #4422161a;
+  --muted-foreground: #44221699;
+  --accent: #FBDFA2;
+  --accent-foreground: #442216;
+  --border: #44221626;
+  --input: #44221626;
+  --ring: #442216;
+}
+.dark.theme-champagne-chocolate {
+  --background: #442216;
+  --foreground: #FBDFA2;
+  --card: #442216;
+  --card-foreground: #FBDFA2;
+  --popover: #442216;
+  --popover-foreground: #FBDFA2;
+  --primary: #FBDFA2;
+  --primary-foreground: #442216;
+  --secondary: #442216;
+  --secondary-foreground: #FBDFA2;
+  --muted: #FBDFA21a;
+  --muted-foreground: #FBDFA299;
+  --accent: #442216;
+  --accent-foreground: #FBDFA2;
+  --border: #FBDFA226;
+  --input: #FBDFA226;
+  --ring: #FBDFA2;
+}
+
+/* =========================================
+   3. THEME: Rose Water & Maroon 
+   ========================================= */
+.theme-rose-maroon {
+  --background: #FFF7EC;
+  --foreground: #630100;
+  --card: #FFF7EC;
+  --card-foreground: #630100;
+  --popover: #FFF7EC;
+  --popover-foreground: #630100;
+  --primary: #630100;
+  --primary-foreground: #FFF7EC;
+  --secondary: #FFF7EC;
+  --secondary-foreground: #630100;
+  --muted: #6301001a;
+  --muted-foreground: #63010099;
+  --accent: #FFF7EC;
+  --accent-foreground: #630100;
+  --border: #63010026;
+  --input: #63010026;
+  --ring: #630100;
+}
+.dark.theme-rose-maroon {
+  --background: #630100;
+  --foreground: #FFF7EC;
+  --card: #630100;
+  --card-foreground: #FFF7EC;
+  --popover: #630100;
+  --popover-foreground: #FFF7EC;
+  --primary: #FFF7EC;
+  --primary-foreground: #630100;
+  --secondary: #630100;
+  --secondary-foreground: #FFF7EC;
+  --muted: #FFF7EC1a;
+  --muted-foreground: #FFF7EC99;
+  --accent: #630100;
+  --accent-foreground: #FFF7EC;
+  --border: #FFF7EC26;
+  --input: #FFF7EC26;
+  --ring: #FFF7EC;
+}
+
+/* =========================================
+   4. THEME: Almond & Dark Coffee 
+   ========================================= */
+.theme-almond-coffee {
+  --background: #EFE1D5;
+  --foreground: #2E0D14;
+  --card: #EFE1D5;
+  --card-foreground: #2E0D14;
+  --popover: #EFE1D5;
+  --popover-foreground: #2E0D14;
+  --primary: #2E0D14;
+  --primary-foreground: #EFE1D5;
+  --secondary: #EFE1D5;
+  --secondary-foreground: #2E0D14;
+  --muted: #2E0D141a;
+  --muted-foreground: #2E0D1499;
+  --accent: #EFE1D5;
+  --accent-foreground: #2E0D14;
+  --border: #2E0D1426;
+  --input: #2E0D1426;
+  --ring: #2E0D14;
+}
+.dark.theme-almond-coffee {
+  --background: #2E0D14;
+  --foreground: #EFE1D5;
+  --card: #2E0D14;
+  --card-foreground: #EFE1D5;
+  --popover: #2E0D14;
+  --popover-foreground: #EFE1D5;
+  --primary: #EFE1D5;
+  --primary-foreground: #2E0D14;
+  --secondary: #2E0D14;
+  --secondary-foreground: #EFE1D5;
+  --muted: #EFE1D51a;
+  --muted-foreground: #EFE1D599;
+  --accent: #2E0D14;
+  --accent-foreground: #EFE1D5;
+  --border: #EFE1D526;
+  --input: #EFE1D526;
+  --ring: #EFE1D5;
+}
+
+/* =========================================
+   5. THEME: White Smoke & Wine 
+   ========================================= */
+.theme-smoke-wine {
+  --background: #F7F4F3;
+  --foreground: #5B2333;
+  --card: #F7F4F3;
+  --card-foreground: #5B2333;
+  --popover: #F7F4F3;
+  --popover-foreground: #5B2333;
+  --primary: #5B2333;
+  --primary-foreground: #F7F4F3;
+  --secondary: #F7F4F3;
+  --secondary-foreground: #5B2333;
+  --muted: #5B23331a;
+  --muted-foreground: #5B233399;
+  --accent: #F7F4F3;
+  --accent-foreground: #5B2333;
+  --border: #5B233326;
+  --input: #5B233326;
+  --ring: #5B2333;
+}
+.dark.theme-smoke-wine {
+  --background: #5B2333;
+  --foreground: #F7F4F3;
+  --card: #5B2333;
+  --card-foreground: #F7F4F3;
+  --popover: #5B2333;
+  --popover-foreground: #F7F4F3;
+  --primary: #F7F4F3;
+  --primary-foreground: #5B2333;
+  --secondary: #5B2333;
+  --secondary-foreground: #F7F4F3;
+  --muted: #F7F4F31a;
+  --muted-foreground: #F7F4F399;
+  --accent: #5B2333;
+  --accent-foreground: #F7F4F3;
+  --border: #F7F4F326;
+  --input: #F7F4F326;
+  --ring: #F7F4F3;
+}
+
+/* =========================================
+   6. THEME: Milk White & Deep Sage 
+   ========================================= */
+.theme-milk-sage {
+  --background: #FDFBF0;
+  --foreground: #465940;
+  --card: #FDFBF0;
+  --card-foreground: #465940;
+  --popover: #FDFBF0;
+  --popover-foreground: #465940;
+  --primary: #465940;
+  --primary-foreground: #FDFBF0;
+  --secondary: #FDFBF0;
+  --secondary-foreground: #465940;
+  --muted: #4659401a;
+  --muted-foreground: #46594099;
+  --accent: #FDFBF0;
+  --accent-foreground: #465940;
+  --border: #46594026;
+  --input: #46594026;
+  --ring: #465940;
+}
+.dark.theme-milk-sage {
+  --background: #465940;
+  --foreground: #FDFBF0;
+  --card: #465940;
+  --card-foreground: #FDFBF0;
+  --popover: #465940;
+  --popover-foreground: #FDFBF0;
+  --primary: #FDFBF0;
+  --primary-foreground: #465940;
+  --secondary: #465940;
+  --secondary-foreground: #FDFBF0;
+  --muted: #FDFBF01a;
+  --muted-foreground: #FDFBF099;
+  --accent: #465940;
+  --accent-foreground: #FDFBF0;
+  --border: #FDFBF026;
+  --input: #FDFBF026;
+  --ring: #FDFBF0;
+}
+
+/* =========================================
+   7. THEME: Off-White & Dark Olive 
+   ========================================= */
+.theme-offwhite-olive {
+  --background: #FEFBF6;
+  --foreground: #4B4D39;
+  --card: #FEFBF6;
+  --card-foreground: #4B4D39;
+  --popover: #FEFBF6;
+  --popover-foreground: #4B4D39;
+  --primary: #4B4D39;
+  --primary-foreground: #FEFBF6;
+  --secondary: #FEFBF6;
+  --secondary-foreground: #4B4D39;
+  --muted: #4B4D391a;
+  --muted-foreground: #4B4D3999;
+  --accent: #FEFBF6;
+  --accent-foreground: #4B4D39;
+  --border: #4B4D3926;
+  --input: #4B4D3926;
+  --ring: #4B4D39;
+}
+.dark.theme-offwhite-olive {
+  --background: #4B4D39;
+  --foreground: #FEFBF6;
+  --card: #4B4D39;
+  --card-foreground: #FEFBF6;
+  --popover: #4B4D39;
+  --popover-foreground: #FEFBF6;
+  --primary: #FEFBF6;
+  --primary-foreground: #4B4D39;
+  --secondary: #4B4D39;
+  --secondary-foreground: #FEFBF6;
+  --muted: #FEFBF61a;
+  --muted-foreground: #FEFBF699;
+  --accent: #4B4D39;
+  --accent-foreground: #FEFBF6;
+  --border: #FEFBF626;
+  --input: #FEFBF626;
+  --ring: #FEFBF6;
+}
+
+/* =========================================
+   8. THEME: Cream & Midnight Indigo 
+   ========================================= */
+.theme-cream-indigo {
+  --background: #F0E7D5;
+  --foreground: #212842;
+  --card: #F0E7D5;
+  --card-foreground: #212842;
+  --popover: #F0E7D5;
+  --popover-foreground: #212842;
+  --primary: #212842;
+  --primary-foreground: #F0E7D5;
+  --secondary: #F0E7D5;
+  --secondary-foreground: #212842;
+  --muted: #2128421a;
+  --muted-foreground: #21284299;
+  --accent: #F0E7D5;
+  --accent-foreground: #212842;
+  --border: #21284226;
+  --input: #21284226;
+  --ring: #212842;
+}
+.dark.theme-cream-indigo {
+  --background: #212842;
+  --foreground: #F0E7D5;
+  --card: #212842;
+  --card-foreground: #F0E7D5;
+  --popover: #212842;
+  --popover-foreground: #F0E7D5;
+  --primary: #F0E7D5;
+  --primary-foreground: #212842;
+  --secondary: #212842;
+  --secondary-foreground: #F0E7D5;
+  --muted: #F0E7D51a;
+  --muted-foreground: #F0E7D599;
+  --accent: #212842;
+  --accent-foreground: #F0E7D5;
+  --border: #F0E7D526;
+  --input: #F0E7D526;
+  --ring: #F0E7D5;
+}
+
+/* =========================================
+   9. THEME: Amber Lux & Cocoa Noir 
+   ========================================= */
+.theme-amber-cocoa {
+  --background: #DDC5A3;
+  --foreground: #342721;
+  --card: #DDC5A3;
+  --card-foreground: #342721;
+  --popover: #DDC5A3;
+  --popover-foreground: #342721;
+  --primary: #342721;
+  --primary-foreground: #DDC5A3;
+  --secondary: #DDC5A3;
+  --secondary-foreground: #342721;
+  --muted: #3427211a;
+  --muted-foreground: #34272199;
+  --accent: #DDC5A3;
+  --accent-foreground: #342721;
+  --border: #34272126;
+  --input: #34272126;
+  --ring: #342721;
+}
+.dark.theme-amber-cocoa {
+  --background: #342721;
+  --foreground: #DDC5A3;
+  --card: #342721;
+  --card-foreground: #DDC5A3;
+  --popover: #342721;
+  --popover-foreground: #DDC5A3;
+  --primary: #DDC5A3;
+  --primary-foreground: #342721;
+  --secondary: #342721;
+  --secondary-foreground: #DDC5A3;
+  --muted: #DDC5A31a;
+  --muted-foreground: #DDC5A399;
+  --accent: #342721;
+  --accent-foreground: #DDC5A3;
+  --border: #DDC5A326;
+  --input: #DDC5A326;
+  --ring: #DDC5A3;
+}
+
+/* =========================================
+   10. THEME: Floral White & Black Olive 
+   ========================================= */
+.theme-floral-olive {
+  --background: #FAF7EE;
+  --foreground: #31372B;
+  --card: #FAF7EE;
+  --card-foreground: #31372B;
+  --popover: #FAF7EE;
+  --popover-foreground: #31372B;
+  --primary: #31372B;
+  --primary-foreground: #FAF7EE;
+  --secondary: #FAF7EE;
+  --secondary-foreground: #31372B;
+  --muted: #31372B1a;
+  --muted-foreground: #31372B99;
+  --accent: #FAF7EE;
+  --accent-foreground: #31372B;
+  --border: #31372B26;
+  --input: #31372B26;
+  --ring: #31372B;
+}
+.dark.theme-floral-olive {
+  --background: #31372B;
+  --foreground: #FAF7EE;
+  --card: #31372B;
+  --card-foreground: #FAF7EE;
+  --popover: #31372B;
+  --popover-foreground: #FAF7EE;
+  --primary: #FAF7EE;
+  --primary-foreground: #31372B;
+  --secondary: #31372B;
+  --secondary-foreground: #FAF7EE;
+  --muted: #FAF7EE1a;
+  --muted-foreground: #FAF7EE99;
+  --accent: #31372B;
+  --accent-foreground: #FAF7EE;
+  --border: #FAF7EE26;
+  --input: #FAF7EE26;
+  --ring: #FAF7EE;
+}
+
+/* =========================================
+   11. THEME: Butter & Espresso 
+   ========================================= */
+.theme-butter-espresso {
+  --background: #FFEDAB;
+  --foreground: #301C1B;
+  --card: #FFEDAB;
+  --card-foreground: #301C1B;
+  --popover: #FFEDAB;
+  --popover-foreground: #301C1B;
+  --primary: #301C1B;
+  --primary-foreground: #FFEDAB;
+  --secondary: #FFEDAB;
+  --secondary-foreground: #301C1B;
+  --muted: #301C1B1a;
+  --muted-foreground: #301C1B99;
+  --accent: #FFEDAB;
+  --accent-foreground: #301C1B;
+  --border: #301C1B26;
+  --input: #301C1B26;
+  --ring: #301C1B;
+}
+.dark.theme-butter-espresso {
+  --background: #301C1B;
+  --foreground: #FFEDAB;
+  --card: #301C1B;
+  --card-foreground: #FFEDAB;
+  --popover: #301C1B;
+  --popover-foreground: #FFEDAB;
+  --primary: #FFEDAB;
+  --primary-foreground: #301C1B;
+  --secondary: #301C1B;
+  --secondary-foreground: #FFEDAB;
+  --muted: #FFEDAB1a;
+  --muted-foreground: #FFEDAB99;
+  --accent: #301C1B;
+  --accent-foreground: #FFEDAB;
+  --border: #FFEDAB26;
+  --input: #FFEDAB26;
+  --ring: #FFEDAB;
+}
+
+/* =========================================
+   BASE STYLES & TRANSITIONS
+   ========================================= */
 @layer base {
   * {
     @apply border-border outline-ring/50;
   }
   body {
     @apply bg-background text-foreground;
+    /* Smooth transition for random theme loading */
+    transition: background-color 0.8s ease-out, color 0.8s ease-out; 
   }
   html {
     @apply font-sans;
   }
   
-  /* Global typography overrides for that heavy, punchy look */
+  /* Applies transitions to your Shadcn components automatically */
+  section, div, button, nav, header {
+    transition: background-color 0.4s ease-out, border-color 0.4s ease-out, color 0.4s ease-out;
+  }
+  
+  /* Global typography overrides for the brutalist, punchy look */
   h1, h2, h3, h4, h5, h6 {
     @apply font-heading font-extrabold tracking-tight;
   }
