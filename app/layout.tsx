@@ -2,6 +2,8 @@ import type { Metadata } from "next";
 import { Inter, Geist_Mono } from "next/font/google";
 import "./globals.css";
 import { cn } from "@/lib/utils";
+import Navbar from "@/components/layout/navbar";
+import Footer from "@/components/layout/footer";
 
 // Inter is configured as a variable font and mapped to --font-sans 
 // to perfectly sync with your global.css setup.
@@ -40,7 +42,9 @@ export default function RootLayout({
       )}
     >
       <body className="min-h-full flex flex-col font-sans bg-background text-foreground selection:bg-primary selection:text-primary-foreground">
-        {children}
+        <Navbar />
+        <main className="flex-1">{children}</main>
+        <Footer />
       </body>
     </html>
   );

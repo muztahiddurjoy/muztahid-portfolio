@@ -9,7 +9,6 @@ import Metrics from "@/components/home/metrics";
 import Education from "@/components/home/education";
 import Philosophy from "@/components/home/philosophy";
 import ContactCTA from "@/components/home/contact-cta";
-import Footer from "@/components/home/footer";
 import {
   getSiteSettings,
   getMetrics,
@@ -72,7 +71,6 @@ export default async function Home() {
       } : null} />
       <Philosophy siteSettings={siteSettings} />
       <ContactCTA />
-      <Footer />
     </>
   );
 }
