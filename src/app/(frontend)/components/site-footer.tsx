@@ -1,14 +1,14 @@
 'use client'
 
 import { ArrowUpRight, ArrowUp } from 'lucide-react'
-import { siteConfig } from '@/lib/portfolio-data'
+import type { SiteConfig } from '@/lib/portfolio-data'
 import { TransitionLink } from './ui/transition-link'
 import { CtaButton } from './ui/cta-button'
 import { Reveal } from './ui/reveal'
 import { GithubIcon, LinkedinIcon } from './ui/brand-icons'
 import { useLenis } from '../providers/smooth-scroll'
 
-export function SiteFooter() {
+export function SiteFooter({ site }: { site: SiteConfig }) {
   const lenis = useLenis()
   const toTop = () => {
     if (lenis) lenis.scrollTo(0, { duration: 1.4 })
@@ -27,8 +27,8 @@ export function SiteFooter() {
             <CtaButton href="/contact" variant="solid" icon="arrow-right">
               Start a conversation
             </CtaButton>
-            <CtaButton href={`mailto:${siteConfig.email}`} variant="text" icon="arrow-up">
-              {siteConfig.email}
+            <CtaButton href={`mailto:${site.email}`} variant="text" icon="arrow-up">
+              {site.email}
             </CtaButton>
           </div>
         </Reveal>
@@ -36,18 +36,17 @@ export function SiteFooter() {
         <div className="mt-16 grid gap-12 border-t border-border pt-12 md:grid-cols-[1.4fr_1fr_1fr]">
           {/* brand */}
           <div>
-            <div className="flex items-baseline gap-2">
-              <span className="font-display text-2xl">{siteConfig.shortName}</span>
-              <span className="font-script text-xl text-muted-foreground">rahman</span>
+            <div className="flex items-baseline">
+              <span className="font-signature text-[2.4rem] leading-none">{site.name}</span>
             </div>
-            <p className="mt-3 max-w-xs text-sm text-muted-foreground">{siteConfig.tagline}</p>
-            <p className="mt-4 text-sm text-muted-foreground">{siteConfig.location}</p>
+            <p className="mt-3 max-w-xs text-sm text-muted-foreground">{site.tagline}</p>
+            <p className="mt-4 text-sm text-muted-foreground">{site.location}</p>
           </div>
 
           {/* sitemap */}
           <nav className="flex flex-col gap-2.5">
             <p className="eyebrow mb-1">Explore</p>
-            {siteConfig.nav.map((item) => (
+            {site.nav.map((item) => (
               <TransitionLink
                 key={item.href}
                 href={item.href}
@@ -62,15 +61,15 @@ export function SiteFooter() {
           {/* connect */}
           <div className="flex flex-col gap-2.5">
             <p className="eyebrow mb-1">Connect</p>
-            <a href={siteConfig.github} target="_blank" rel="noopener noreferrer" className="group flex items-center gap-2 text-sm text-muted-foreground hover:text-foreground">
+            <a href={site.github} target="_blank" rel="noopener noreferrer" className="group flex items-center gap-2 text-sm text-muted-foreground hover:text-foreground">
               <GithubIcon className="h-4 w-4" /> <span className="link-underline">GitHub</span>
               <ArrowUpRight className="h-3.5 w-3.5 opacity-0 transition-opacity group-hover:opacity-100" />
             </a>
-            <a href={siteConfig.linkedin} target="_blank" rel="noopener noreferrer" className="group flex items-center gap-2 text-sm text-muted-foreground hover:text-foreground">
+            <a href={site.linkedin} target="_blank" rel="noopener noreferrer" className="group flex items-center gap-2 text-sm text-muted-foreground hover:text-foreground">
               <LinkedinIcon className="h-4 w-4" /> <span className="link-underline">LinkedIn</span>
               <ArrowUpRight className="h-3.5 w-3.5 opacity-0 transition-opacity group-hover:opacity-100" />
             </a>
-            <a href={`mailto:${siteConfig.email}`} className="link-underline w-fit text-sm text-muted-foreground hover:text-foreground">
+            <a href={`mailto:${site.email}`} className="link-underline w-fit text-sm text-muted-foreground hover:text-foreground">
               Email
             </a>
           </div>
@@ -79,13 +78,13 @@ export function SiteFooter() {
 
       {/* giant signature */}
       <div className="pointer-events-none select-none overflow-hidden border-t border-border">
-        <p className="whitespace-nowrap text-center font-script text-[clamp(5rem,22vw,20rem)] leading-none text-foreground/10">
-          Muztahid Rahman
+        <p className="whitespace-nowrap text-center font-signature text-[clamp(5rem,22vw,20rem)] leading-[1.15] text-foreground/10">
+          {site.name}
         </p>
       </div>
 
       <div className="container-page flex flex-col items-center justify-between gap-4 border-t border-border py-6 text-xs text-muted-foreground sm:flex-row">
-        <p>© 2026 {siteConfig.name}. Built to last.</p>
+        <p>© 2026 {site.name}. Built to last.</p>
         <p className="order-3 sm:order-2">Next.js · GSAP · Lenis · 12 palettes</p>
         <button onClick={toTop} className="order-2 flex items-center gap-1.5 transition-colors hover:text-foreground sm:order-3" aria-label="Back to top">
           Back to top <ArrowUp className="h-3.5 w-3.5" />

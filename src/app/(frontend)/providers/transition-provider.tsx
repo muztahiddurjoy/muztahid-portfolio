@@ -10,7 +10,7 @@ import {
 } from 'react'
 import { usePathname, useRouter } from 'next/navigation'
 import { gsap } from '@/lib/gsap'
-import { siteConfig } from '@/lib/portfolio-data'
+import type { SiteConfig } from '@/lib/portfolio-data'
 import { useLenis } from './smooth-scroll'
 
 type TransitionCtx = { navigate: (href: string) => void }
@@ -21,7 +21,7 @@ export const useTransition = () => useContext(Ctx)
 // navigation sweeps it up to cover, the route swaps, then it sweeps up and away.
 // NB: we always pin `y: 0` so gsap's parse of the initial inline translateY(100%)
 // (which it stores as a leftover px `y`) can never offset the yPercent tweens.
-export function TransitionProvider({ children }: { children: ReactNode }) {
+export function TransitionProvider({ children, site }: { children: ReactNode; site: SiteConfig }) {
   const router = useRouter()
   const pathname = usePathname()
   const lenis = useLenis()
@@ -96,9 +96,9 @@ export function TransitionProvider({ children }: { children: ReactNode }) {
           style={{ transform: 'translateY(100%)' }}
         >
           <div ref={mark} className="text-center" style={{ opacity: 0 }}>
-            <span className="font-script text-5xl md:text-6xl">{siteConfig.shortName}</span>
-            <span className="mt-1 block text-[0.7rem] uppercase tracking-[0.35em] opacity-70">
-              {siteConfig.role}
+            <span className="font-signature text-6xl leading-[1.2] md:text-7xl">{site.name}</span>
+            <span className="mt-2 block text-[0.7rem] uppercase tracking-[0.35em] opacity-70">
+              {site.role}
             </span>
           </div>
         </div>

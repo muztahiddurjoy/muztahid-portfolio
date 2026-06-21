@@ -4,7 +4,7 @@ import { Fragment, useRef } from 'react'
 import { gsap } from '@/lib/gsap'
 import { useIsoLayoutEffect } from '@/lib/use-iso-layout-effect'
 import { cn } from '@/lib/utils'
-import { story } from '@/lib/portfolio-data'
+import type { Story } from '@/lib/portfolio-data'
 
 import { Reveal } from '../ui/reveal'
 import { AnimatedHeading } from '../ui/animated-heading'
@@ -12,12 +12,12 @@ import { CtaButton } from '../ui/cta-button'
 import { ImageFrame } from '../ui/image-frame'
 import { Eyebrow, Signature } from '../ui/primitives'
 
-// Split the closing line so the second sentence can carry the italic emphasis.
-const nextSplit = story.next.indexOf('If you')
-const nextLead = nextSplit > -1 ? story.next.slice(0, nextSplit).trim() : story.next
-const nextEmphasis = nextSplit > -1 ? story.next.slice(nextSplit).trim() : ''
+export function AboutPage({ story }: { story: Story }) {
+  // Split the closing line so the second sentence can carry the italic emphasis.
+  const nextSplit = story.next.indexOf('If you')
+  const nextLead = nextSplit > -1 ? story.next.slice(0, nextSplit).trim() : story.next
+  const nextEmphasis = nextSplit > -1 ? story.next.slice(nextSplit).trim() : ''
 
-export function AboutPage() {
   const scope = useRef<HTMLElement>(null)
 
   useIsoLayoutEffect(() => {

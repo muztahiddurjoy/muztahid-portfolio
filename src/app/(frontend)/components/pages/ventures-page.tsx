@@ -6,7 +6,6 @@ import { gsap } from '@/lib/gsap'
 import { useIsoLayoutEffect } from '@/lib/use-iso-layout-effect'
 import { cn } from '@/lib/utils'
 import {
-  ventures,
   ventureTypeMeta,
   type Venture,
   type VentureType,
@@ -31,7 +30,7 @@ const filters: { key: Filter; label: string }[] = [
 const underlineGrow =
   'bg-[linear-gradient(currentColor,currentColor)] bg-no-repeat bg-[length:0%_1.5px] [background-position:0_100%] transition-[background-size] duration-500 ease-[cubic-bezier(0.22,1,0.36,1)] group-hover:bg-[length:100%_1.5px] group-focus-visible:bg-[length:100%_1.5px]'
 
-export default function VenturesPage() {
+export default function VenturesPage({ ventures }: { ventures: Venture[] }) {
   const [active, setActive] = useState<Filter>('all')
   const listRef = useRef<HTMLUListElement | null>(null)
 

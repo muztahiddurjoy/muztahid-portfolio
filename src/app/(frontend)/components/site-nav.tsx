@@ -3,14 +3,14 @@
 import { useEffect, useRef, useState } from 'react'
 import { usePathname } from 'next/navigation'
 import { Menu, X } from 'lucide-react'
-import { siteConfig } from '@/lib/portfolio-data'
+import type { SiteConfig } from '@/lib/portfolio-data'
 import { cn } from '@/lib/utils'
 import { gsap } from '@/lib/gsap'
 import { TransitionLink } from './ui/transition-link'
 import { ThemeSwitcher } from './ui/theme-switcher'
 import { GithubIcon, LinkedinIcon } from './ui/brand-icons'
 
-export function SiteNav() {
+export function SiteNav({ site }: { site: SiteConfig }) {
   const pathname = usePathname()
   const [scrolled, setScrolled] = useState(false)
   const [hidden, setHidden] = useState(false)
@@ -59,15 +59,14 @@ export function SiteNav() {
       >
         <div className={cn('transition-colors duration-500', scrolled ? 'border-b border-border bg-background/80 backdrop-blur-xl' : 'border-b border-transparent')}>
           <nav className="container-page flex h-18 items-center justify-between py-4">
-            <TransitionLink href="/" data-cursor className="group flex items-baseline gap-2">
-              <span className="font-display text-2xl font-medium tracking-tight">{siteConfig.shortName}</span>
-              <span className="font-script text-xl text-muted-foreground transition-colors group-hover:text-foreground">
-                rahman
+            <TransitionLink href="/" data-cursor aria-label={site.name} className="group flex items-baseline">
+              <span className="font-signature text-[2rem] leading-none text-foreground transition-opacity group-hover:opacity-70">
+                {site.name}
               </span>
             </TransitionLink>
 
             <div className="hidden items-center gap-7 lg:flex">
-              {siteConfig.nav.map((item) => (
+              {site.nav.map((item) => (
                 <TransitionLink
                   key={item.href}
                   href={item.href}
@@ -104,7 +103,7 @@ export function SiteNav() {
       >
         <div className="bg-dotgrid absolute inset-0 opacity-40" />
         <nav className="relative flex flex-col">
-          {siteConfig.nav.map((item, i) => (
+          {site.nav.map((item, i) => (
             <TransitionLink
               key={item.href}
               href={item.href}
@@ -117,10 +116,10 @@ export function SiteNav() {
           ))}
         </nav>
         <div data-mitem className="relative mt-10 flex items-center gap-4">
-          <a href={siteConfig.github} target="_blank" rel="noopener noreferrer" aria-label="GitHub" className="grid h-11 w-11 place-items-center rounded-full border border-border">
+          <a href={site.github} target="_blank" rel="noopener noreferrer" aria-label="GitHub" className="grid h-11 w-11 place-items-center rounded-full border border-border">
             <GithubIcon className="h-5 w-5" />
           </a>
-          <a href={siteConfig.linkedin} target="_blank" rel="noopener noreferrer" aria-label="LinkedIn" className="grid h-11 w-11 place-items-center rounded-full border border-border">
+          <a href={site.linkedin} target="_blank" rel="noopener noreferrer" aria-label="LinkedIn" className="grid h-11 w-11 place-items-center rounded-full border border-border">
             <LinkedinIcon className="h-5 w-5" />
           </a>
           <ThemeSwitcher align="left" />

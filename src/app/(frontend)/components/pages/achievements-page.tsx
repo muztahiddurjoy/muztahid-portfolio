@@ -3,7 +3,6 @@
 import { useRef } from 'react'
 import { ArrowUpRight } from 'lucide-react'
 import {
-  achievements,
   achievementTypeMeta,
   type Achievement,
   type AchievementType,
@@ -27,26 +26,6 @@ const typeIcon: Record<AchievementType, IconName> = {
 
 const typeOrder: AchievementType[] = ['award', 'competition', 'leadership', 'milestone']
 
-const featured = achievements.filter((a) => a.featured)
-
-const byDateDesc = [...achievements].sort(
-  (a, b) => +new Date(b.date) - +new Date(a.date),
-)
-
-const totals = achievements.reduce<Record<AchievementType, number>>(
-  (acc, a) => {
-    acc[a.type] += 1
-    return acc
-  },
-  { award: 0, competition: 0, leadership: 0, milestone: 0 },
-)
-
-const statItems = [
-  { value: achievements.length, label: 'Milestones on the record' },
-  { value: totals.award + totals.competition, label: 'Awards & competitions' },
-  { value: totals.leadership, label: 'Leadership roles held' },
-]
-
 /* ---- small featured highlight card (paper) ---- */
 function FeaturedHighlight({ a }: { a: Achievement }) {
   return (
@@ -68,8 +47,28 @@ function FeaturedHighlight({ a }: { a: Achievement }) {
   )
 }
 
-export default function AchievementsPage() {
+export default function AchievementsPage({ achievements }: { achievements: Achievement[] }) {
   const listRef = useRef<HTMLOListElement>(null)
+
+  const featured = achievements.filter((a) => a.featured)
+
+  const byDateDesc = [...achievements].sort(
+    (a, b) => +new Date(b.date) - +new Date(a.date),
+  )
+
+  const totals = achievements.reduce<Record<AchievementType, number>>(
+    (acc, a) => {
+      acc[a.type] += 1
+      return acc
+    },
+    { award: 0, competition: 0, leadership: 0, milestone: 0 },
+  )
+
+  const statItems = [
+    { value: achievements.length, label: 'Milestones on the record' },
+    { value: totals.award + totals.competition, label: 'Awards & competitions' },
+    { value: totals.leadership, label: 'Leadership roles held' },
+  ]
 
   // Soft reveal-from-side for the timeline rows. Initial hidden state is applied
   // only in the browser before paint, so content stays readable without JS.

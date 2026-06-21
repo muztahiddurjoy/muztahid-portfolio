@@ -4,7 +4,7 @@ import { useMemo, useRef, useState } from 'react'
 import { gsap } from '@/lib/gsap'
 import { useIsoLayoutEffect } from '@/lib/use-iso-layout-effect'
 import { cn } from '@/lib/utils'
-import { certificates } from '@/lib/portfolio-data'
+import { type Certificate } from '@/lib/portfolio-data'
 import { Reveal } from '../ui/reveal'
 import { Eyebrow, Tag, Signature, CountUp } from '../ui/primitives'
 import { CtaButton } from '../ui/cta-button'
@@ -26,7 +26,7 @@ const certDiscipline: Record<string, Exclude<Discipline, 'All'>> = {
   'udemy-fullstack': 'Web',
 }
 
-export default function CertificatesPage() {
+export default function CertificatesPage({ certificates }: { certificates: Certificate[] }) {
   const gridRef = useRef<HTMLUListElement>(null)
   const [active, setActive] = useState<Discipline>('All')
 

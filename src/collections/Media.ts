@@ -9,8 +9,21 @@ export const Media: CollectionConfig = {
     {
       name: 'alt',
       type: 'text',
-      required: true,
+      admin: { description: 'Alt text for accessibility (images). Leave blank for non-image files like the CV.' },
+    },
+    {
+      name: 'caption',
+      type: 'text',
+      admin: { description: 'Optional caption.' },
     },
   ],
-  upload: true,
+  upload: {
+    mimeTypes: ['image/*', 'application/pdf'],
+    focalPoint: true,
+    imageSizes: [
+      { name: 'thumbnail', width: 480 },
+      { name: 'card', width: 960 },
+      { name: 'hero', width: 1600 },
+    ],
+  },
 }

@@ -1,9 +1,10 @@
 import type { Metadata } from 'next'
 import { notFound } from 'next/navigation'
-import { articles } from '@/lib/portfolio-data'
+import { getArticle, getArticles } from '@/lib/content'
 import ArticleDetail from '../../components/writing/article-detail'
 
-export function generateStaticParams() {
+export async function generateStaticParams() {
+  const articles = await getArticles()
   return articles.map((a) => ({ slug: a.slug }))
 }
 
@@ -13,7 +14,7 @@ export async function generateMetadata({
   params: Promise<{ slug: string }>
 }): Promise<Metadata> {
   const { slug } = await params
-  const a = articles.find((x) => x.slug === slug)
+  const a = await getArticle(slug)
   if (!a) return { title: 'Article not found' }
   return {
     title: a.title,
@@ -24,6 +25,7 @@ export async function generateMetadata({
 
 export default async function Page({ params }: { params: Promise<{ slug: string }> }) {
   const { slug } = await params
+  const articles = await getArticles()
   const i = articles.findIndex((x) => x.slug === slug)
   if (i === -1) notFound()
   return (
