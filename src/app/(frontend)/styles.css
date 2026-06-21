@@ -1,58 +1,82 @@
 @import 'tailwindcss';
 
 /* ============================================================
-   THE FULL-STACK INNOVATOR — design system
-   Dark-first, slate/deep-blue canvas, signal-cyan accent.
-   Category accents: robotics=cyan · cloud=indigo · hardware=amber
+   MUZTAHID RAHMAN — founder portfolio
+   Editorial · warm "paper + ink" duotone · 12 random themes
+   Each theme sets only --background + --foreground; every other
+   token derives via color-mix, so all components work in any theme.
    ============================================================ */
 
 @theme {
-  /* ---- ink canvas (near-black navy) ---- */
-  --color-ink-950: #050710;
-  --color-ink-900: #080b15;
-  --color-ink-850: #0a0e1b;
-  --color-ink-800: #0e1322;
-  --color-ink-750: #131a2d;
-  --color-ink-700: #1a2238;
-  --color-ink-600: #243049;
+  /* semantic tokens (values come from :root + .theme-* below) */
+  --color-background: var(--background);
+  --color-foreground: var(--foreground);
+  --color-card: var(--card);
+  --color-card-foreground: var(--foreground);
+  --color-elevated: var(--elevated);
+  --color-primary: var(--foreground);
+  --color-primary-foreground: var(--background);
+  --color-secondary: var(--secondary);
+  --color-secondary-foreground: var(--foreground);
+  --color-muted: var(--muted);
+  --color-muted-foreground: var(--muted-foreground);
+  --color-faint: var(--faint);
+  --color-accent: var(--foreground);
+  --color-accent-foreground: var(--background);
+  --color-border: var(--border);
+  --color-line: var(--border);
+  --color-border-strong: var(--border-strong);
+  --color-ring: var(--foreground);
 
-  /* ---- foreground ---- */
-  --color-fg: #eaf0fb;
-  --color-fg-muted: #9aa6c2;
-  --color-fg-dim: #5e6a86;
+  /* fonts (wired by next/font in layout) */
+  --font-display: var(--font-fraunces), Georgia, 'Times New Roman', serif;
+  --font-body: var(--font-inter), ui-sans-serif, system-ui, sans-serif;
+  --font-script: var(--font-caveat), ui-serif, cursive;
 
-  /* ---- signal accent (dominant brand) ---- */
-  --color-signal: #46e3ff;
-  --color-signal-bright: #7af0ff;
-  --color-signal-deep: #1aa6c9;
+  /* fluid editorial type scale */
+  --text-hero: clamp(2.9rem, 8vw, 8.5rem);
+  --text-display: clamp(2.4rem, 5.5vw, 5.5rem);
+  --text-title: clamp(1.9rem, 3.6vw, 3.25rem);
+  --text-head: clamp(1.4rem, 2.4vw, 2.1rem);
 
-  /* ---- category accents ---- */
-  --color-robotics: #46e3ff;
-  --color-cloud: #8f7bff;
-  --color-hardware: #ffb454;
-
-  /* ---- hairlines ---- */
-  --color-line: rgba(146, 166, 204, 0.1);
-  --color-line-strong: rgba(146, 166, 204, 0.2);
-
-  /* ---- fonts (wired by next/font in layout) ---- */
-  --font-display: var(--font-space-grotesk), ui-sans-serif, system-ui, sans-serif;
-  --font-sans: var(--font-inter), ui-sans-serif, system-ui, sans-serif;
-  --font-mono: var(--font-jetbrains-mono), ui-monospace, monospace;
-
-  /* ---- type scale (fluid) ---- */
-  --text-mega: clamp(3.2rem, 11vw, 11rem);
-  --text-display: clamp(2.6rem, 7vw, 6rem);
-  --text-h1: clamp(2.2rem, 5vw, 4rem);
-  --text-h2: clamp(1.7rem, 3.4vw, 2.75rem);
-
-  /* ---- easing / timing ---- */
-  --ease-out-expo: cubic-bezier(0.16, 1, 0.3, 1);
-  --ease-in-out-quint: cubic-bezier(0.83, 0, 0.17, 1);
-
-  /* ---- radius ---- */
-  --radius-card: 18px;
+  /* easing / radius */
+  --ease-smooth: cubic-bezier(0.22, 1, 0.36, 1);
+  --ease-soft: cubic-bezier(0.65, 0.05, 0.36, 1);
+  --radius: 0.85rem;
+  --radius-xl: 1.5rem;
 }
+
+/* ---- default palette (warm off-white + espresso) + derived tokens ---- */
+:root {
+  --background: #faf6ee;
+  --foreground: #241a12;
+
+  /* derived — recompute automatically when a theme overrides bg/fg */
+  --elevated: color-mix(in oklab, var(--background) 96%, var(--foreground));
+  --card: color-mix(in oklab, var(--background) 93%, var(--foreground));
+  --secondary: color-mix(in oklab, var(--background) 87%, var(--foreground));
+  --muted: color-mix(in oklab, var(--background) 90%, var(--foreground));
+  --faint: color-mix(in oklab, var(--foreground) 5%, transparent);
+  --muted-foreground: color-mix(in oklab, var(--foreground) 58%, var(--background));
+  --border: color-mix(in oklab, var(--foreground) 13%, var(--background));
+  --border-strong: color-mix(in oklab, var(--foreground) 32%, var(--background));
+}
+
+/* ============================================================
+   12 warm themes — only background + foreground per theme.
+   ============================================================ */
+.theme-oxford-tan       { --background: #fdfcfb; --foreground: #002147; }
+.theme-vanilla-coffee   { --background: #fceccf; --foreground: #442d1d; }
+.theme-champagne-choc   { --background: #fbdfa2; --foreground: #442216; }
+.theme-rose-maroon      { --background: #fff7ec; --foreground: #630100; }
+.theme-almond-coffee    { --background: #efe1d5; --foreground: #2e0d14; }
+.theme-smoke-wine       { --background: #f7f4f3; --foreground: #5b2333; }
+.theme-milk-sage        { --background: #fdfbf0; --foreground: #465940; }
+.theme-offwhite-olive   { --background: #fefbf6; --foreground: #4b4d39; }
+.theme-cream-indigo     { --background: #f0e7d5; --foreground: #212842; }
+.theme-amber-cocoa      { --background: #ddc5a3; --foreground: #342721; }
+.theme-floral-olive     { --background: #faf7ee; --foreground: #31372b; }
+.theme-butter-espresso  { --background: #ffedab; --foreground: #301c1b; }
 
 /* ============================================================
    Base
@@ -66,81 +90,59 @@ html {
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
   text-rendering: optimizeLegibility;
-  scroll-behavior: auto; /* Lenis owns scrolling */
-  background-color: var(--color-ink-950);
+  scroll-behavior: auto; /* Lenis owns scroll */
+  background-color: var(--background);
 }
 
 html.lenis,
 html.lenis body {
   height: auto;
 }
-
 .lenis.lenis-smooth {
   scroll-behavior: auto !important;
 }
-
 .lenis.lenis-stopped {
   overflow: clip;
 }
 
 body {
   margin: 0;
-  background-color: var(--color-ink-950);
-  color: var(--color-fg);
-  font-family: var(--font-sans);
-  font-size: 1rem;
-  line-height: 1.6;
-  font-feature-settings: 'ss01', 'cv01', 'cv03';
+  background-color: var(--background);
+  color: var(--foreground);
+  font-family: var(--font-body);
+  font-size: 1.0625rem;
+  line-height: 1.65;
   overflow-x: clip;
-  /* faint vertical-glow + grain handled by overlay components */
+  /* smooth crossfade when the theme shuffles */
+  transition: background-color 0.7s var(--ease-smooth), color 0.7s var(--ease-smooth);
 }
 
-::selection {
-  background: color-mix(in oklab, var(--color-signal) 32%, transparent);
-  color: #fff;
-}
-
-a {
-  color: inherit;
-  text-decoration: none;
-}
-
-img,
-svg,
-video {
-  display: block;
-  max-width: 100%;
-}
-
-h1,
-h2,
-h3,
-h4 {
+h1, h2, h3, h4 {
   font-family: var(--font-display);
-  font-weight: 600;
+  font-weight: 380;
   letter-spacing: -0.02em;
-  line-height: 0.98;
+  line-height: 1.0;
   margin: 0;
   text-wrap: balance;
 }
 
-p {
-  margin: 0;
+p { margin: 0; }
+a { color: inherit; text-decoration: none; }
+img, svg, video { display: block; max-width: 100%; }
+
+::selection {
+  background: var(--foreground);
+  color: var(--background);
 }
 
-/* ============================================================
-   Focus + accessibility
-   ============================================================ */
 :focus-visible {
-  outline: 2px solid var(--color-signal);
+  outline: 2px solid var(--foreground);
   outline-offset: 3px;
   border-radius: 4px;
 }
 
 @media (prefers-reduced-motion: reduce) {
-  *,
-  *::before,
-  *::after {
+  *, *::before, *::after {
     animation-duration: 0.001ms !important;
     animation-iteration-count: 1 !important;
     transition-duration: 0.001ms !important;
@@ -151,128 +153,105 @@ p {
 /* ============================================================
    Utilities
    ============================================================ */
-@utility container-x {
+@utility container-page {
   width: 100%;
-  max-width: 1320px;
+  max-width: 1280px;
   margin-inline: auto;
-  padding-inline: clamp(1.25rem, 5vw, 4rem);
+  padding-inline: clamp(1.25rem, 5vw, 4.5rem);
 }
 
-/* monospace eyebrow label */
+@utility container-prose {
+  width: 100%;
+  max-width: 720px;
+  margin-inline: auto;
+  padding-inline: clamp(1.25rem, 5vw, 2rem);
+}
+
 @utility eyebrow {
-  font-family: var(--font-mono);
+  font-family: var(--font-body);
   font-size: 0.72rem;
-  letter-spacing: 0.28em;
+  font-weight: 500;
+  letter-spacing: 0.22em;
   text-transform: uppercase;
-  color: var(--color-fg-dim);
+  color: var(--muted-foreground);
 }
 
-.text-gradient {
-  background: linear-gradient(
-    180deg,
-    var(--color-fg) 0%,
-    color-mix(in oklab, var(--color-fg) 70%, var(--color-signal)) 100%
-  );
-  -webkit-background-clip: text;
-  background-clip: text;
-  -webkit-text-fill-color: transparent;
+.font-script { font-family: var(--font-script); }
+.font-display { font-family: var(--font-display); }
+
+/* italic serif accent inside display text */
+.display-italic {
+  font-family: var(--font-display);
+  font-style: italic;
+  font-weight: 380;
 }
 
-.text-signal-gradient {
-  background: linear-gradient(100deg, var(--color-signal-bright), var(--color-cloud));
-  -webkit-background-clip: text;
-  background-clip: text;
-  -webkit-text-fill-color: transparent;
+/* animated underline link */
+.link-underline {
+  position: relative;
+  display: inline-block;
+}
+.link-underline::after {
+  content: '';
+  position: absolute;
+  left: 0;
+  bottom: -2px;
+  width: 100%;
+  height: 1.5px;
+  background: currentColor;
+  transform: scaleX(0);
+  transform-origin: right;
+  transition: transform 0.45s var(--ease-smooth);
+}
+.link-underline:hover::after,
+.link-underline:focus-visible::after {
+  transform: scaleX(1);
+  transform-origin: left;
 }
 
-/* engineered blueprint grid */
-.bg-grid {
-  background-image:
-    linear-gradient(to right, var(--color-line) 1px, transparent 1px),
-    linear-gradient(to bottom, var(--color-line) 1px, transparent 1px);
-  background-size: 64px 64px;
+/* ink-fill inverse button */
+.btn-inverse {
+  border: 1px solid var(--border-strong);
+  background: transparent;
+  color: var(--foreground);
+  transition: background-color 0.4s var(--ease-smooth), color 0.4s var(--ease-smooth),
+    border-color 0.4s var(--ease-smooth);
+}
+.btn-inverse:hover {
+  background: var(--foreground);
+  color: var(--background);
+  border-color: var(--foreground);
 }
 
+/* hairline divider */
+.hairline { border-color: var(--border); }
+
+/* fine paper-dot grid */
 .bg-dotgrid {
-  background-image: radial-gradient(var(--color-line-strong) 1px, transparent 1px);
-  background-size: 28px 28px;
-}
-
-/* glass card surface */
-.surface {
-  background:
-    linear-gradient(180deg, rgba(146, 166, 204, 0.05), rgba(146, 166, 204, 0.012));
-  border: 1px solid var(--color-line);
-  backdrop-filter: blur(8px);
-}
-
-.glow-signal {
-  box-shadow:
-    0 0 0 1px color-mix(in oklab, var(--color-signal) 40%, transparent),
-    0 8px 40px -12px color-mix(in oklab, var(--color-signal) 45%, transparent);
-}
-
-/* hide until GSAP/Reveal mounts to avoid FOUC of animated nodes */
-.will-reveal {
-  opacity: 0;
+  background-image: radial-gradient(var(--border-strong) 0.7px, transparent 0.7px);
+  background-size: 22px 22px;
 }
 
 /* marquee */
 @keyframes marquee-x {
-  from {
-    transform: translateX(0);
-  }
-  to {
-    transform: translateX(-50%);
-  }
+  from { transform: translateX(0); }
+  to { transform: translateX(-50%); }
 }
 
-/* slow drift for ambient blobs */
-@keyframes drift {
-  0%,
-  100% {
-    transform: translate3d(0, 0, 0);
-  }
-  50% {
-    transform: translate3d(2%, -3%, 0);
-  }
+/* slow float */
+@keyframes float-soft {
+  0%, 100% { transform: translateY(0); }
+  50% { transform: translateY(-10px); }
 }
 
-/* blinking caret for terminal/mono */
-@keyframes blink {
-  0%,
-  49% {
-    opacity: 1;
-  }
-  50%,
-  100% {
-    opacity: 0;
-  }
-}
-.caret::after {
-  content: '';
-  display: inline-block;
-  width: 0.6em;
-  height: 1.05em;
-  margin-left: 0.15em;
-  translate: 0 0.15em;
-  background: var(--color-signal);
-  animation: blink 1.1s step-end infinite;
-}
+/* hide animated nodes pre-mount to avoid flash (only set by JS) */
+.will-reveal { opacity: 0; }
 
-/* thin custom scrollbar */
-::-webkit-scrollbar {
-  width: 10px;
-  height: 10px;
-}
-::-webkit-scrollbar-track {
-  background: var(--color-ink-950);
-}
+/* thin scrollbar tuned to theme */
+::-webkit-scrollbar { width: 10px; height: 10px; }
+::-webkit-scrollbar-track { background: var(--background); }
 ::-webkit-scrollbar-thumb {
-  background: var(--color-ink-700);
+  background: var(--border-strong);
   border-radius: 99px;
-  border: 2px solid var(--color-ink-950);
-}
-::-webkit-scrollbar-thumb:hover {
-  background: var(--color-ink-600);
+  border: 3px solid var(--background);
 }

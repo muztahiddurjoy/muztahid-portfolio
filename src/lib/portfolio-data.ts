@@ -1,618 +1,572 @@
 /* ============================================================
-   THE FULL-STACK INNOVATOR — single source of truth (hardcoded)
-   This mirrors the Payload CMS content model from project_prd.md
-   so it can be swapped for the Local API later with no UI change.
+   MUZTAHID RAHMAN — founder portfolio data (hardcoded prototype)
+   Founder-first framing: vision + impact, technical depth as proof.
    ============================================================ */
-
-export type Category = 'robotics' | 'cloud' | 'hardware'
-export type SkillCluster = 'hardware-perception' | 'software-backend' | 'devops-deployment'
-export type AwardCategory = 'award' | 'competition' | 'leadership'
-
-export const categoryMeta: Record<
-  Category,
-  { label: string; short: string; accentVar: string; hex: string }
-> = {
-  robotics: {
-    label: 'Robotics & Autonomous Systems',
-    short: 'Robotics',
-    accentVar: 'var(--color-robotics)',
-    hex: '#46e3ff',
-  },
-  cloud: {
-    label: 'Cloud & Web Infrastructure',
-    short: 'Cloud',
-    accentVar: 'var(--color-cloud)',
-    hex: '#8f7bff',
-  },
-  hardware: {
-    label: 'Hardware Engineering',
-    short: 'Hardware',
-    accentVar: 'var(--color-hardware)',
-    hex: '#ffb454',
-  },
-}
 
 export const siteConfig = {
   name: 'Muztahid Rahman',
   shortName: 'Muztahid',
-  role: 'Software & Robotics Engineer',
+  role: 'Founder & Engineer',
+  tagline: 'Building the future, one venture at a time.',
   location: 'Dhaka, Bangladesh',
   email: 'muztahid.appbaksho@gmail.com',
   github: 'https://github.com/muztahiddurjoy',
   linkedin: 'https://www.linkedin.com/in/muztahiddurjoy',
-  availability: 'Open to Master’s opportunities · 2026 intake',
+  availability: 'Building · open to bold collaborations',
+  metaDescription:
+    'Muztahid Rahman is a founder and engineer building companies and the technology behind them — from autonomous robotics to scalable products.',
   nav: [
-    { label: 'Projects', href: '#projects', index: '01' },
-    { label: 'Skills', href: '#skills', index: '02' },
-    { label: 'Timeline', href: '#timeline', index: '03' },
-    { label: 'About', href: '#about', index: '04' },
+    { label: 'Story', href: '/about' },
+    { label: 'Ventures', href: '/ventures' },
+    { label: 'Writing', href: '/writing' },
+    { label: 'Achievements', href: '/achievements' },
+    { label: 'Certificates', href: '/certificates' },
+    { label: 'Contact', href: '/contact' },
   ],
 }
 
-export const hero = {
-  badge: 'Available — Master’s 2026',
-  // split for word/line stagger animation
-  headline: ['Bridging', 'Autonomous Robotics', '& Scalable Software.'],
-  subhead:
-    'I engineer intelligent systems from hardware to the cloud — autonomous navigation stacks, production-grade web infrastructure, and the firmware in between. Currently seeking Master’s opportunities in Robotics & Autonomous Systems.',
-  primaryCta: { label: 'View My Projects', href: '#projects' },
-  secondaryCta: { label: 'Download Academic CV', href: '/cv' },
+/* ---------------- Home ---------------- */
+export const home = {
+  eyebrow: 'Founder · Engineer · Builder',
+  headline: ['Building the', 'future, one', 'venture at a time.'],
+  // word(s) to italicize per line index → softens the serif headline
+  headlineAccent: 'venture',
+  script: 'from idea to shipped',
+  lede:
+    'I’m Muztahid — a founder who builds companies and the technology underneath them. I started a software studio, lead engineering teams, and ship autonomous systems. I’m most alive in the gap between a bold idea and the machine that makes it real.',
+  primaryCta: { label: 'Explore my ventures', href: '/ventures' },
+  secondaryCta: { label: 'Read my story', href: '/about' },
   marquee: [
-    'ROS2',
-    'SLAM',
-    'Next.js',
-    'NestJS',
-    'STM32',
-    'AWS',
-    'Prisma',
-    'C/C++',
-    'LiDAR',
-    'MongoDB',
-    'Docker',
-    'Python',
+    'Appbaksho',
+    'BOT Engineers',
+    'Mongol-Tori',
+    'WICE Gold',
+    'Future of Capitalism',
+    'NASA Space Apps',
+    'BRAC University',
+  ],
+  now: [
+    { label: 'Founding', value: 'Appbaksho — a software studio shipping products for ambitious teams' },
+    { label: 'Leading', value: 'Engineering at BOT Engineers as Chief Software Engineer' },
+    { label: 'Building', value: 'Autonomous navigation with BRACU Mongol-Tori' },
+    { label: 'Studying', value: 'Computer Science at BRAC University' },
   ],
 }
 
 export const stats = [
-  { value: 15, suffix: '+', label: 'Projects shipped' },
-  { value: 50, suffix: '+', label: 'DB models designed' },
-  { value: 18, suffix: '+', label: 'Technologies mastered' },
-  { value: 3, suffix: '', label: 'Engineering disciplines' },
+  { value: 5, suffix: '+', label: 'Ventures founded & led' },
+  { value: 15, suffix: '+', label: 'Products shipped' },
+  { value: 12, suffix: '', label: 'Awards & recognitions' },
+  { value: 3, suffix: '', label: 'Organizations built' },
 ]
 
-export type RepoLink = { label: string; url: string }
-export type KeyMetric = { label: string; value: string }
+/* ---------------- Founder story (About) ---------------- */
+export const story = {
+  eyebrow: 'The story',
+  title: 'I build companies — and the technology that makes them inevitable.',
+  intro:
+    'My work lives where vision meets the soldering iron. I don’t just imagine products; I architect the systems, lead the teams, and ship the things that turn an idea into a company.',
+  portrait: { label: 'Muztahid Rahman', caption: 'Founder · Dhaka' },
+  narrative: [
+    'I grew up taking things apart to understand how they worked — then putting them back together better. That instinct never left. Today it shows up as the same loop at a bigger scale: see a gap, build the system that closes it, and rally people around the result.',
+    'I founded Appbaksho to give ambitious teams a studio that ships like a startup and engineers like a veteran. As Chief Software Engineer at BOT Engineers, I lead a cross-functional team building production platforms, set the engineering culture, and turn roadmaps into shipped software. With BRACU Mongol-Tori, I push autonomy onto terrain that punishes shortcuts.',
+    'What ties it together is a founder’s appetite for ownership: I want to be responsible for the whole arc — the pitch, the architecture, the team, and the metric that says it worked. Competitions like the World Invention Competition and the Future of Capitalism startup challenge sharpened the instinct to frame engineering as value, not just code.',
+  ],
+  philosophy: {
+    quote:
+      'Build like the W123 — over-engineered, mechanically pure, and made to outlast its creator.',
+    body: 'Every venture, every line of code, every 3D-printed bracket should carry that intent: built to last, built to be trusted, built so the next person can stand on it.',
+  },
+  values: [
+    {
+      title: 'Vision first',
+      body: 'Start from the world you want to exist, then reverse-engineer the system that creates it.',
+    },
+    {
+      title: 'Ship to learn',
+      body: 'A shipped prototype teaches more than a perfect plan. Momentum compounds.',
+    },
+    {
+      title: 'Bridge the layers',
+      body: 'The edge is where hardware meets software, where founders meet engineers. Live there.',
+    },
+    {
+      title: 'Build to outlast',
+      body: 'Over-engineer the things that matter. Systems should outlive the people who made them.',
+    },
+  ],
+  journey: [
+    { year: '2021', title: 'Started building', detail: 'First products, first clients — learning to ship under real constraints.' },
+    { year: '2023', title: 'Founded Appbaksho', detail: 'Turned freelance momentum into a software studio with a delivery engine.' },
+    { year: '2023', title: 'Joined Mongol-Tori', detail: 'Began leading autonomy & software for a Mars-rover platform.' },
+    { year: '2023', title: 'NASA Space Apps', detail: 'Shipped a telemetry visualiser in a 48-hour global hackathon.' },
+    { year: '2024', title: 'Chief Software Engineer', detail: 'Took the engineering lead at BOT Engineers; built the culture and the pipeline.' },
+    { year: '2024', title: 'WICE Gold & startup stage', detail: 'Won an international invention Gold Medal; pitched at Future of Capitalism.' },
+  ],
+  next: 'Next, I’m scaling Appbaksho beyond services into products, and pushing autonomy research toward harder, less forgiving environments. If you’re building something audacious, let’s talk.',
+}
 
-export type Project = {
+/* ---------------- Ventures (projects, founder-framed) ---------------- */
+export type VentureType = 'company' | 'product' | 'robotics' | 'research'
+
+export const ventureTypeMeta: Record<VentureType, { label: string }> = {
+  company: { label: 'Company' },
+  product: { label: 'Product' },
+  robotics: { label: 'Robotics' },
+  research: { label: 'Research' },
+}
+
+export type Venture = {
   slug: string
-  title: string
-  subtitle: string
-  category: Category
-  summary: string
-  successMetric: string
-  year: string
+  name: string
+  tagline: string
   role: string
-  duration: string
+  type: VentureType
+  year: string
+  status: string
   featured: boolean
-  tech: string[]
-  keyMetrics: KeyMetric[]
-  // case study (FR-2.6)
+  summary: string
+  cover: { label: string; caption: string }
+  metrics: { label: string; value: string }[]
+  stack: string[]
+  // case study
+  vision: string
   problem: string
-  architecture: string[]
-  result: string
-  repoLinks: RepoLink[]
-  features: string[]
-  code: { filename: string; language: string; lines: string[] }
+  build: string[]
+  outcome: string
+  links: { label: string; url: string }[]
   gallery: { label: string; caption: string }[]
 }
 
-export const projects: Project[] = [
+export const ventures: Venture[] = [
   {
-    slug: 'autonomous-navigation-rover',
-    title: 'Autonomous Navigation Stack',
-    subtitle: 'BRACU Mongol-Tori · Mars Rover',
-    category: 'robotics',
-    summary:
-      'A full ROS2 autonomy stack for a Mars-rover platform: SLAM mapping, LiDAR–IMU sensor fusion, and real-time path planning across unstructured terrain.',
-    successMetric: '±15 cm nav accuracy @ 30 Hz',
-    year: '2024',
-    role: 'Autonomy & Software Lead',
-    duration: 'Ongoing',
+    slug: 'appbaksho',
+    name: 'Appbaksho',
+    tagline: 'A software studio that ships like a startup.',
+    role: 'Founder & Lead Developer',
+    type: 'company',
+    year: '2023',
+    status: 'Active',
     featured: true,
-    tech: ['ROS2', 'C/C++', 'Python', 'SLAM', 'LiDAR', 'OpenCV', 'Linux'],
-    keyMetrics: [
-      { label: 'Sensor inputs', value: '5+' },
-      { label: 'Nav accuracy', value: '±15cm' },
-      { label: 'Control loop', value: '30Hz' },
-      { label: 'Competition', value: 'URC' },
+    summary:
+      'The company I founded to give ambitious teams a studio that combines startup speed with production-grade engineering — from discovery to deployment to the legal paperwork in between.',
+    cover: { label: 'Appbaksho', caption: 'Software studio' },
+    metrics: [
+      { label: 'Clients shipped', value: '5+' },
+      { label: 'Doc turnaround', value: '−95%' },
+      { label: 'Founded', value: '2023' },
+      { label: 'Stack', value: 'Full-stack' },
     ],
+    stack: ['Next.js', 'NestJS', 'Prisma', 'PostgreSQL', 'AWS', 'TypeScript'],
+    vision:
+      'Most agencies either move fast and break things or move slow and over-charge. I wanted a third option: a studio that ships at startup velocity without sacrificing the engineering rigor a real product needs.',
     problem:
-      'The rover must traverse rocky, GPS-denied terrain and make real-time decisions on constrained onboard compute. Wheel odometry drifts on loose regolith, GPS is unreliable between obstacles, and the control loop has a hard 33 ms budget — there is no room for a navigation stall when the rover is mid-incline.',
-    architecture: [
-      'A ROS2 graph splits perception, planning, and control into independent nodes communicating over DDS, so a stalled planner never blocks the motor watchdog.',
-      'Sensor fusion combines LiDAR point clouds with IMU data through an EKF for drift-resistant odometry; stereo vision adds near-field obstacle depth.',
-      'A custom C++ planner runs A* over a rolling costmap with obstacle inflation, while a mission-level state machine arbitrates waypoint following, recovery, and fail-safe stop.',
-      'Low-level motor commands are clamped and rate-limited on an STM32 bridge, decoupling high-level intent from the physical drivetrain.',
+      'New ventures need a full digital presence and the un-glamorous machinery of a business — legal documents, compliance, internal tooling — all at once, under tight timelines and tighter budgets.',
+    build: [
+      'Stood up a modular Next.js delivery stack so each client project starts at 60% done, not zero.',
+      'Built an automated legal-document generation pipeline that templates compliance paperwork from structured inputs.',
+      'Integrated a headless CMS so non-technical founders own their content without waiting on engineers.',
+      'Wrapped everything in AWS-backed deploys with monitoring, from client discovery to post-launch.',
     ],
-    result:
-      'The stack holds ±15 cm waypoint accuracy at a sustained 30 Hz control loop across five fused sensor inputs, qualifying the platform for University Rover Challenge autonomy runs. Recovery behaviours brought autonomous mission completion from intermittent to repeatable on test terrain.',
-    repoLinks: [
-      { label: 'github.com/muztahiddurjoy', url: 'https://github.com/muztahiddurjoy' },
-      { label: 'Mongol-Tori — nav stack', url: 'https://github.com/muztahiddurjoy' },
-    ],
-    features: [
-      'ROS2 DDS inter-process architecture',
-      'SLAM-based real-time mapping & localization',
-      'LiDAR + IMU sensor-fusion (EKF) pipeline',
-      'C++ A* path planning with obstacle inflation',
-      'Mission state machine + fail-safe recovery',
-      'GPS waypoint nav with dead-reckoning fallback',
-    ],
-    code: {
-      filename: 'src/nav_node.cpp',
-      language: 'cpp',
-      lines: [
-        'class AutonomousNav : public rclcpp::Node {',
-        'public:',
-        '  AutonomousNav() : Node("autonomous_nav") {',
-        '    odom_sub_ = create_subscription<Odometry>(',
-        '      "/odom", 10, bind(&AutonomousNav::on_odom, this, _1));',
-        '    cmd_pub_ = create_publisher<Twist>("/cmd_vel", 10);',
-        '  }',
-        'private:',
-        '  void on_odom(const Odometry::SharedPtr msg) {',
-        '    auto cmd = Twist();',
-        '    double dx = waypoints_[wp_].x - msg->pose.pose.position.x;',
-        '    cmd.linear.x = std::clamp(dx * 0.5, -1.0, 1.0);',
-        '    cmd_pub_->publish(cmd);',
-        '  }',
-        '};',
-      ],
-    },
+    outcome:
+      'Delivered 5+ production web products for SMB clients and cut legal paperwork turnaround from weeks to hours — proving a studio can be both fast and serious.',
+    links: [{ label: 'github.com/muztahiddurjoy', url: 'https://github.com/muztahiddurjoy' }],
     gallery: [
-      { label: 'Costmap', caption: 'Rolling costmap with inflated obstacles' },
-      { label: 'Field test', caption: 'Autonomy run on test terrain' },
-      { label: 'Sensor rig', caption: 'LiDAR + stereo perception head' },
+      { label: 'Studio', caption: 'Appbaksho platform' },
+      { label: 'Ops', caption: 'Internal delivery tooling' },
+      { label: 'Docs', caption: 'Automated compliance docs' },
     ],
   },
   {
-    slug: 'enterprise-ecommerce-infrastructure',
-    title: 'Enterprise E-Commerce Infrastructure',
-    subtitle: 'zf-emart & zf-foods',
-    category: 'cloud',
-    summary:
-      'A production, multi-tenant commerce platform powering multiple storefronts on one typed backend — inventory, payments, and order tracking in real time.',
-    successMetric: '99.9% uptime · <200 ms responses',
+    slug: 'bot-engineers',
+    name: 'BOT Engineers',
+    tagline: 'Leading the engine that ships the product.',
+    role: 'Chief Software Engineer',
+    type: 'company',
     year: '2024',
-    role: 'Full-Stack Engineer',
-    duration: '6+ months',
+    status: 'Active',
     featured: true,
-    tech: ['Next.js', 'NestJS', 'Prisma', 'PostgreSQL', 'AWS', 'Docker', 'TypeScript'],
-    keyMetrics: [
+    summary:
+      'As Chief Software Engineer I lead a cross-functional team building production platforms — setting the engineering culture, the CI/CD backbone, and the standards that let a team ship fast without breaking trust.',
+    cover: { label: 'BOT Engineers', caption: 'Engineering leadership' },
+    metrics: [
+      { label: 'Deploy feedback', value: '3× faster' },
+      { label: 'Architecture', value: 'Monorepo' },
+      { label: 'Role', value: 'Chief SWE' },
+      { label: 'Since', value: '2024' },
+    ],
+    stack: ['Next.js', 'NestJS', 'Docker', 'AWS', 'Turborepo', 'TypeScript'],
+    vision:
+      'A team is only as fast as its slowest feedback loop. I wanted to make shipping boring, predictable, and safe — so the team could spend its creativity on the product, not the pipeline.',
+    problem:
+      'A growing team lacked visibility into sprints and deploys; build status lived in scattered tooling and code-review culture needed structure to scale.',
+    build: [
+      'Migrated the codebase to a Turborepo monorepo, unifying apps and shared packages behind one build graph.',
+      'Designed internal dashboards surfacing sprint state, workload, and deploy history in one place.',
+      'Streamed GitHub webhook events into a real-time build-status feed.',
+      'Established CI/CD gates and a code-review culture that scales with the team.',
+    ],
+    outcome:
+      'Tripled the speed of deploy feedback and standardised a review culture — engineering throughput became visible, predictable, and trusted.',
+    links: [{ label: 'github.com/muztahiddurjoy', url: 'https://github.com/muztahiddurjoy' }],
+    gallery: [
+      { label: 'Board', caption: 'Sprint dashboards' },
+      { label: 'Pipeline', caption: 'CI/CD with gates' },
+      { label: 'Monorepo', caption: 'Unified build graph' },
+    ],
+  },
+  {
+    slug: 'enterprise-commerce',
+    name: 'zf-emart & zf-foods',
+    tagline: 'Multi-tenant commerce that runs itself.',
+    role: 'Full-Stack Architect',
+    type: 'product',
+    year: '2024',
+    status: 'Shipped',
+    featured: true,
+    summary:
+      'A production, multi-tenant commerce platform powering multiple storefronts on one typed backend — inventory, payments, and order tracking in real time, with 99.9% uptime.',
+    cover: { label: 'zf-emart', caption: 'Enterprise commerce' },
+    metrics: [
       { label: 'DB models', value: '25+' },
-      { label: 'API endpoints', value: '60+' },
+      { label: 'Endpoints', value: '60+' },
       { label: 'Uptime', value: '99.9%' },
       { label: 'Response', value: '<200ms' },
     ],
+    stack: ['Next.js', 'NestJS', 'Prisma', 'PostgreSQL', 'AWS', 'Docker'],
+    vision:
+      'Small businesses deserve infrastructure that big retailers take for granted. One backend, many storefronts, zero compromise on reliability.',
     problem:
-      'Multiple storefronts needed to run on one backend without leaking data across tenants, while handling thousands of SKUs, deeply nested category trees, and zero-downtime deploys. Auth had to work across several client applications at once.',
-    architecture: [
-      'A NestJS API enforces clean service–repository separation, with Prisma providing type-safe data access and migrations across 25+ relational models.',
-      'A Next.js frontend handles SSR and client interactivity; tenancy is resolved per request so storefronts share logic but never share data.',
-      'JWT auth with refresh-token rotation secures every client app; AWS SES (production access) drives transactional email on verified custom domains.',
-      'Docker images ship through a CI/CD pipeline with health checks and rollbacks for zero-downtime releases.',
+      'Multiple storefronts needed to run on one backend without leaking data across tenants, while handling thousands of SKUs, nested category trees, and zero-downtime deploys.',
+    build: [
+      'Engineered a NestJS API with clean service–repository separation and Prisma for type-safe access across 25+ models.',
+      'Resolved tenancy per request so storefronts share logic but never share data.',
+      'Secured JWT auth with refresh-token rotation and AWS SES on verified custom domains.',
+      'Shipped Docker images through CI/CD with health checks and rollbacks for zero-downtime releases.',
     ],
-    result:
-      'The platform sustains 99.9% uptime with sub-200 ms median responses across 60+ endpoints, synchronising inventory in real time across storefronts. Content editors update catalogs without engineering involvement.',
-    repoLinks: [{ label: 'github.com/muztahiddurjoy', url: 'https://github.com/muztahiddurjoy' }],
-    features: [
-      'Multi-tenant storefront architecture',
-      'JWT auth with refresh-token rotation',
-      'Real-time inventory synchronization',
-      'AWS SES on verified custom domains',
-      'Prisma type-safe migrations',
-      'Dockerized zero-downtime deploys',
-    ],
-    code: {
-      filename: 'prisma/schema.prisma',
-      language: 'prisma',
-      lines: [
-        'model Product {',
-        '  id         String   @id @default(cuid())',
-        '  name       String',
-        '  slug       String   @unique',
-        '  price      Decimal  @db.Decimal(10, 2)',
-        '  sku        String   @unique',
-        '  inventory  Int      @default(0)',
-        '  category   Category @relation(fields: [categoryId], references: [id])',
-        '  categoryId String',
-        '  variants   ProductVariant[]',
-        '  @@index([categoryId])',
-        '  @@map("products")',
-        '}',
-      ],
-    },
+    outcome:
+      'The platform sustains 99.9% uptime with sub-200 ms responses across 60+ endpoints, synchronising inventory in real time — and editors update catalogs without engineering.',
+    links: [{ label: 'github.com/muztahiddurjoy', url: 'https://github.com/muztahiddurjoy' }],
     gallery: [
-      { label: 'Schema', caption: 'Normalised 25-model Prisma schema' },
-      { label: 'Dashboard', caption: 'Role-based admin dashboard' },
-      { label: 'Pipeline', caption: 'CI/CD with health checks' },
+      { label: 'Schema', caption: 'Normalised data model' },
+      { label: 'Admin', caption: 'Role-based dashboard' },
+      { label: 'Scale', caption: 'Real-time inventory' },
     ],
   },
   {
-    slug: 'stm32-motor-control-firmware',
-    title: 'Real-Time Motor-Control Firmware',
-    subtitle: 'STM32 · ARM Cortex-M4',
-    category: 'hardware',
-    summary:
-      'Bare-metal firmware bridging high-level autonomy intent to physical drivetrains — interrupt-driven sensor polling and closed-loop PID at 10 kHz+.',
-    successMetric: '10 kHz polling · deterministic loop',
+    slug: 'mongol-tori-autonomy',
+    name: 'Mongol-Tori Autonomy',
+    tagline: 'Teaching a rover to think for itself.',
+    role: 'AI & Autonomy Lead',
+    type: 'robotics',
     year: '2024',
-    role: 'Embedded Engineer',
-    duration: '4 months',
-    featured: false,
-    tech: ['C/C++', 'STM32', 'ESP32', 'Digital Logic', 'Linux'],
-    keyMetrics: [
-      { label: 'Sample rate', value: '10kHz+' },
-      { label: 'Jitter', value: '<5µs' },
-      { label: 'PID loops', value: '4x' },
-      { label: 'MCU', value: 'Cortex-M4' },
-    ],
-    problem:
-      'Line-following and drivetrain control need deterministic timing: a polling-based IR array introduced jitter that the higher-level planner could not compensate for, and busy-wait loops starved the control task on a single core.',
-    architecture: [
-      'Sensor acquisition moved from polling to timer-driven interrupts, freeing the main loop and pinning sample timing under 5 µs of jitter.',
-      'A DMA path streams ADC channels into a ring buffer so the CPU never blocks on conversion.',
-      'Four independent PID loops run from a fixed-rate timer ISR; outputs are clamped and slew-limited before reaching the motor drivers.',
-      'A thin command protocol over UART exposes setpoints to the ROS2 bridge, decoupling firmware from the autonomy stack.',
-    ],
-    result:
-      'The firmware sustains 10 kHz+ sensor sampling with deterministic control timing, eliminating the jitter that previously destabilised line-following at speed. Verified against oscilloscope timing captures.',
-    repoLinks: [{ label: 'github.com/muztahiddurjoy', url: 'https://github.com/muztahiddurjoy' }],
-    features: [
-      'Interrupt-driven (vs polling) sensor acquisition',
-      'DMA-fed ADC ring buffer',
-      'Four fixed-rate PID control loops',
-      'Slew-limited motor outputs',
-      'UART command protocol to ROS2 bridge',
-      'Oscilloscope-verified timing',
-    ],
-    code: {
-      filename: 'src/control_isr.c',
-      language: 'c',
-      lines: [
-        'void TIM2_IRQHandler(void) {',
-        '  if (TIM2->SR & TIM_SR_UIF) {',
-        '    TIM2->SR &= ~TIM_SR_UIF;',
-        '    for (int i = 0; i < N_MOTORS; i++) {',
-        '      float err = setpoint[i] - encoder_rate[i];',
-        '      integ[i] = clampf(integ[i] + err * DT, -I_MAX, I_MAX);',
-        '      float u = KP*err + KI*integ[i] + KD*(err - prev[i])/DT;',
-        '      motor_write(i, clampf(u, -PWM_MAX, PWM_MAX));',
-        '      prev[i] = err;',
-        '    }',
-        '  }',
-        '}',
-      ],
-    },
-    gallery: [
-      { label: 'Scope', caption: 'Timing capture @ 10 kHz' },
-      { label: 'Board', caption: 'STM32 driver board' },
-      { label: 'Bench', caption: 'Closed-loop bench test' },
-    ],
-  },
-  {
-    slug: 'appbaksho-platform',
-    title: 'Startup Operations Platform',
-    subtitle: 'Appbaksho',
-    category: 'cloud',
+    status: 'Ongoing',
+    featured: true,
     summary:
-      'A ground-up startup build: the core platform, internal operations tooling, and automated legal-document generation — engineering well beyond the code.',
-    successMetric: 'Weeks → hours legal turnaround',
-    year: '2023',
-    role: 'Founder & Lead Developer',
-    duration: 'Ongoing',
-    featured: false,
-    tech: ['Next.js', 'Prisma', 'PostgreSQL', 'AWS', 'TypeScript', 'Docker'],
-    keyMetrics: [
-      { label: 'Clients shipped', value: '5+' },
-      { label: 'Doc turnaround', value: '−95%' },
-      { label: 'Deploys', value: 'CI/CD' },
-      { label: 'Founded', value: '2023' },
+      'A full ROS2 autonomy stack for a Mars-rover platform with BRACU Mongol-Tori: SLAM mapping, LiDAR–IMU sensor fusion, and real-time path planning across unstructured terrain.',
+    cover: { label: 'Mongol-Tori', caption: 'Autonomous rover' },
+    metrics: [
+      { label: 'Nav accuracy', value: '±15cm' },
+      { label: 'Control loop', value: '30Hz' },
+      { label: 'Sensors', value: '5+' },
+      { label: 'Arena', value: 'URC' },
     ],
+    stack: ['ROS2', 'C/C++', 'Python', 'SLAM', 'LiDAR', 'STM32'],
+    vision:
+      'Autonomy shouldn’t need a manicured lab. I wanted a rover that holds its line on rocky, GPS-denied terrain — the kind of robustness real-world robotics actually demands.',
     problem:
-      'A new agency needed a full digital presence and business formation under tight timelines — code, internal tooling, and the non-technical machinery of legal and compliance documents, all at once.',
-    architecture: [
-      'A modular Next.js component architecture enabled rapid iteration without sacrificing production quality.',
-      'A headless CMS integration let non-technical team members own content updates.',
-      'An automated document-generation pipeline templated legal and compliance paperwork from structured inputs.',
-      'AWS-backed deploys with monitoring closed the loop from client discovery to post-launch.',
+      'The rover must traverse rocky, GPS-denied terrain and make real-time decisions on constrained onboard compute, within a hard 33 ms control budget.',
+    build: [
+      'Split perception, planning, and control into independent ROS2 nodes over DDS, so a stalled planner never blocks the motor watchdog.',
+      'Fused LiDAR point clouds with IMU data through an EKF for drift-resistant odometry.',
+      'Wrote a C++ A* planner over a rolling costmap with obstacle inflation, arbitrated by a mission state machine.',
+      'Clamped low-level motor commands on an STM32 bridge, decoupling intent from the drivetrain.',
     ],
-    result:
-      'Delivered 5+ production web products for SMB clients and cut legal paperwork turnaround from weeks to hours through automated generation — freeing the team to focus on delivery.',
-    repoLinks: [{ label: 'github.com/muztahiddurjoy', url: 'https://github.com/muztahiddurjoy' }],
-    features: [
-      'Modular Next.js product architecture',
-      'Headless CMS for non-technical editors',
-      'Automated legal-document generation',
-      'AWS deploys with monitoring',
-      'End-to-end client delivery',
-      'Reusable agency component library',
-    ],
-    code: {
-      filename: 'lib/generate-doc.ts',
-      language: 'typescript',
-      lines: [
-        'export async function generateDoc(template: Template, data: ClientData) {',
-        '  const filled = render(template.body, data)',
-        '  const pdf = await toPdf(filled, { margins: A4_MARGINS })',
-        '  await s3.put(`docs/${data.clientId}/${template.id}.pdf`, pdf)',
-        '  return { url: signedUrl(template.id), generatedAt: Date.now() }',
-        '}',
-      ],
-    },
+    outcome:
+      'Holds ±15 cm waypoint accuracy at a sustained 30 Hz loop across five fused sensors — turning intermittent autonomy runs into repeatable ones.',
+    links: [{ label: 'github.com/muztahiddurjoy', url: 'https://github.com/muztahiddurjoy' }],
     gallery: [
-      { label: 'Platform', caption: 'Agency platform website' },
-      { label: 'Ops', caption: 'Internal operations tooling' },
-      { label: 'Docs', caption: 'Generated compliance docs' },
-    ],
-  },
-  {
-    slug: 'fabrication-prototyping-pipeline',
-    title: 'Rapid Fabrication Pipeline',
-    subtitle: 'CAD → Slice → Print',
-    category: 'hardware',
-    summary:
-      'End-to-end physical prototyping for robotic assemblies — CAD modelling through slice optimisation to production on Bambu Lab hardware.',
-    successMetric: '30+ custom parts produced',
-    year: '2024',
-    role: 'Design & Fabrication',
-    duration: 'Ongoing',
-    featured: false,
-    tech: ['Digital Logic', 'C/C++', 'Linux'],
-    keyMetrics: [
-      { label: 'Parts printed', value: '30+' },
-      { label: 'Layer height', value: '0.12mm' },
-      { label: 'Infill', value: 'Gyroid' },
-      { label: 'Hardware', value: 'Bambu Lab' },
-    ],
-    problem:
-      'Robotic assemblies need custom enclosures, sensor mounts, and brackets that no off-the-shelf part fits — each iteration must move from idea to validated physical part quickly and repeatably.',
-    architecture: [
-      'Components start as parametric CAD models with explicit tolerances and assembly constraints, validated against mechanical requirements.',
-      'STL exports are sliced with purpose-tuned parameters — 0.12 mm precision layers, gyroid infill for strength, grid for speed — per part role.',
-      'Prints run on Bambu Lab hardware with real-time monitoring; post-processing adds heat-set inserts and final assembly with electronics.',
-      'A small parts library captures proven mounts so the next robot reuses rather than redesigns.',
-    ],
-    result:
-      'Produced 30+ custom parts — enclosures, mounts, and sensor housings — that integrate directly into the rover and embedded builds, closing the loop between digital design and physical hardware.',
-    repoLinks: [{ label: 'github.com/muztahiddurjoy', url: 'https://github.com/muztahiddurjoy' }],
-    features: [
-      'Parametric CAD with tolerance budgets',
-      'Role-tuned slice profiles (gyroid / grid)',
-      'Real-time print monitoring',
-      'Heat-set insert post-processing',
-      'Reusable mechanical parts library',
-      'Direct integration into robotic builds',
-    ],
-    code: {
-      filename: 'slicer/profile.cfg',
-      language: 'ini',
-      lines: [
-        '[precision]',
-        'layer_height = 0.12',
-        'infill_pattern = gyroid',
-        'infill_density = 35%',
-        'wall_loops = 4',
-        'support = tree_auto',
-        'nozzle_temp = 220',
-      ],
-    },
-    gallery: [
-      { label: 'CAD', caption: 'Parametric assembly model' },
-      { label: 'Slice', caption: 'Gyroid infill preview' },
-      { label: 'Print', caption: 'Finished sensor housing' },
-    ],
-  },
-  {
-    slug: 'bot-engineers-internal-tools',
-    title: 'Engineering Operations Tooling',
-    subtitle: 'BOT Engineers',
-    category: 'cloud',
-    summary:
-      'Internal dashboards for team management, sprint tracking, and deploy notifications — wiring GitHub webhooks into real-time build status.',
-    successMetric: '3× faster deploy feedback',
-    year: '2024',
-    role: 'Chief Software Engineer',
-    duration: 'Ongoing',
-    featured: false,
-    tech: ['Next.js', 'NestJS', 'Docker', 'AWS', 'TypeScript', 'Linux'],
-    keyMetrics: [
-      { label: 'Deploy speed', value: '3×' },
-      { label: 'Team size', value: 'Cross-fn' },
-      { label: 'Monorepo', value: 'Turbo' },
-      { label: 'CI/CD', value: 'Automated' },
-    ],
-    problem:
-      'A growing cross-functional team lacked visibility into sprints and deploys; build status lived in scattered tooling and code-review culture needed structure to scale.',
-    architecture: [
-      'A monorepo migration (Turborepo) unified apps and shared packages behind one build graph.',
-      'Internal dashboards surface sprint state, team workload, and deploy history in one place.',
-      'GitHub webhooks stream build and deploy events into a real-time status feed.',
-      'CI/CD pipelines enforce checks and code-review gates before release.',
-    ],
-    result:
-      'Tripled the speed of deploy feedback and standardised a review culture across the team — engineering throughput became visible and predictable.',
-    repoLinks: [{ label: 'github.com/muztahiddurjoy', url: 'https://github.com/muztahiddurjoy' }],
-    features: [
-      'Turborepo monorepo migration',
-      'Sprint + workload dashboards',
-      'GitHub webhook build feed',
-      'Automated CI/CD gates',
-      'Code-review culture tooling',
-      'Real-time deploy notifications',
-    ],
-    code: {
-      filename: 'webhooks/deploy.ts',
-      language: 'typescript',
-      lines: [
-        'router.post("/gh", verifySignature, async (req, res) => {',
-        '  const { workflow_run } = req.body',
-        '  if (workflow_run?.conclusion) {',
-        '    await feed.push({',
-        '      repo: workflow_run.repository.name,',
-        '      status: workflow_run.conclusion,',
-        '      at: workflow_run.updated_at,',
-        '    })',
-        '  }',
-        '  res.sendStatus(204)',
-        '})',
-      ],
-    },
-    gallery: [
-      { label: 'Board', caption: 'Sprint tracking board' },
-      { label: 'Feed', caption: 'Real-time deploy feed' },
-      { label: 'Mono', caption: 'Turborepo build graph' },
+      { label: 'Costmap', caption: 'Rolling costmap' },
+      { label: 'Field', caption: 'Terrain testing' },
+      { label: 'Rig', caption: 'Perception head' },
     ],
   },
   {
     slug: 'space-apps-telemetry',
-    title: 'Satellite Telemetry Visualiser',
-    subtitle: 'NASA Space Apps Challenge',
-    category: 'cloud',
-    summary:
-      'A 48-hour build processing satellite telemetry for environmental monitoring, with real-time streaming visualisations across a cross-disciplinary team.',
-    successMetric: '48-hour global hackathon build',
-    year: '2023',
+    name: 'Orbital Telemetry Visualiser',
+    tagline: '48 hours from raw signal to story.',
     role: 'Data & Frontend',
-    duration: '48 hours',
+    type: 'product',
+    year: '2023',
+    status: 'Prototype',
     featured: false,
-    tech: ['Python', 'Next.js', 'TypeScript'],
-    keyMetrics: [
+    summary:
+      'A NASA Space Apps build that turns dense satellite telemetry into a legible environmental-monitoring story — real-time streaming visualisations, shipped in a single weekend.',
+    cover: { label: 'Telemetry', caption: 'NASA Space Apps' },
+    metrics: [
       { label: 'Sprint', value: '48h' },
       { label: 'Streams', value: 'Real-time' },
       { label: 'Scope', value: 'Global' },
       { label: 'Team', value: 'Cross-fn' },
     ],
+    stack: ['Python', 'Next.js', 'TypeScript', 'REST'],
+    vision:
+      'Data only matters when people can feel it. I wanted to make satellite telemetry legible to a non-expert in seconds, not hours.',
     problem:
-      'Raw satellite telemetry is dense and hard to interpret; an environmental-monitoring story needed to be legible to non-experts within a 48-hour window.',
-    architecture: [
-      'A Python pipeline ingests and normalises telemetry into a stream-friendly shape.',
-      'A Next.js frontend renders real-time streaming graphs over the processed data.',
-      'REST APIs decouple ingestion from visualisation so the team could work in parallel.',
-      'Interaction patterns let reviewers drill from global view to a single signal.',
+      'Raw satellite telemetry is dense and hard to interpret; an environmental story needed to land within a 48-hour window.',
+    build: [
+      'Built a Python pipeline to ingest and normalise telemetry into a stream-friendly shape.',
+      'Rendered real-time streaming graphs over the processed data in Next.js.',
+      'Decoupled ingestion from visualisation with REST so the team could work in parallel.',
+      'Designed a global-to-signal drilldown for fast exploration.',
     ],
-    result:
-      'Shipped a working data-visualisation prototype inside the 48-hour sprint, translating satellite telemetry into an interactive environmental-monitoring story under hackathon constraints.',
-    repoLinks: [{ label: 'github.com/muztahiddurjoy', url: 'https://github.com/muztahiddurjoy' }],
-    features: [
-      'Python telemetry ingestion pipeline',
-      'Real-time streaming graphs',
-      'REST API decoupling',
-      'Global-to-signal drilldown',
-      'Cross-disciplinary 48h delivery',
-      'Environmental-monitoring narrative',
-    ],
-    code: {
-      filename: 'pipeline/ingest.py',
-      language: 'python',
-      lines: [
-        'def normalize(frame: TelemetryFrame) -> Reading:',
-        '    return Reading(',
-        '        ts=frame.epoch,',
-        '        band=frame.channel,',
-        '        value=scale(frame.raw, frame.gain),',
-        '        quality=flag(frame.snr),',
-        '    )',
-      ],
-    },
+    outcome:
+      'Shipped a working data-visualisation prototype inside the sprint — translating telemetry into an interactive monitoring narrative under real constraints.',
+    links: [{ label: 'github.com/muztahiddurjoy', url: 'https://github.com/muztahiddurjoy' }],
     gallery: [
-      { label: 'Stream', caption: 'Real-time telemetry graphs' },
-      { label: 'Map', caption: 'Global monitoring view' },
-      { label: 'Team', caption: '48-hour sprint' },
+      { label: 'Streams', caption: 'Live graphs' },
+      { label: 'Map', caption: 'Global view' },
+      { label: 'Sprint', caption: '48 hours' },
+    ],
+  },
+  {
+    slug: 'fabrication-studio',
+    name: 'Fabrication Studio',
+    tagline: 'Where digital designs become physical things.',
+    role: 'Design & Fabrication',
+    type: 'research',
+    year: '2024',
+    status: 'Ongoing',
+    featured: false,
+    summary:
+      'An end-to-end physical prototyping practice — CAD through slice optimisation to production on Bambu Lab hardware — that turns ideas into custom parts for robotic and product builds.',
+    cover: { label: 'Fabrication', caption: 'CAD → print' },
+    metrics: [
+      { label: 'Parts produced', value: '30+' },
+      { label: 'Precision', value: '0.12mm' },
+      { label: 'Infill', value: 'Gyroid' },
+      { label: 'Hardware', value: 'Bambu Lab' },
+    ],
+    stack: ['Fusion 360', 'CAD', 'FDM/FFF', 'Bambu Lab'],
+    vision:
+      'A founder who can prototype hardware as fast as software moves twice as quick. I built a practice to close the loop between an idea and a part you can hold.',
+    problem:
+      'Robotic assemblies need custom enclosures, mounts, and brackets that no off-the-shelf part fits — each iteration must go from idea to validated physical part fast and repeatably.',
+    build: [
+      'Start every component as a parametric CAD model with explicit tolerances and assembly constraints.',
+      'Tune slice profiles per role — 0.12 mm precision, gyroid for strength, grid for speed.',
+      'Print on Bambu Lab hardware with real-time monitoring and heat-set insert post-processing.',
+      'Capture proven mounts in a parts library so the next build reuses instead of redesigns.',
+    ],
+    outcome:
+      'Produced 30+ custom parts that integrate directly into rover and product builds — closing the loop between digital design and physical hardware.',
+    links: [{ label: 'github.com/muztahiddurjoy', url: 'https://github.com/muztahiddurjoy' }],
+    gallery: [
+      { label: 'CAD', caption: 'Parametric model' },
+      { label: 'Slice', caption: 'Gyroid infill' },
+      { label: 'Print', caption: 'Finished part' },
     ],
   },
 ]
 
-/* ---- Skills ecosystem (FR-3) ---- */
-export const skillClusterMeta: Record<
-  SkillCluster,
-  { label: string; blurb: string; icon: string }
-> = {
-  'hardware-perception': {
-    label: 'Hardware & Perception',
-    blurb: 'Firmware, sensors, and the physical layer',
-    icon: 'Cpu',
-  },
-  'software-backend': {
-    label: 'Software & Backend',
-    blurb: 'Typed services, data, and product UIs',
-    icon: 'Code2',
-  },
-  'devops-deployment': {
-    label: 'DevOps & Deployment',
-    blurb: 'Pipelines, cloud, and shipping',
-    icon: 'Cloud',
-  },
+/* ---------------- Writing (blog) ---------------- */
+export type WritingCategory = 'building' | 'engineering' | 'robotics' | 'essays'
+
+export const writingCategoryMeta: Record<WritingCategory, { label: string }> = {
+  building: { label: 'Building & Founding' },
+  engineering: { label: 'Engineering' },
+  robotics: { label: 'Robotics' },
+  essays: { label: 'Essays' },
 }
 
-export type Skill = {
-  name: string
-  cluster: SkillCluster
-  level: number // 0-100, drives the bar/ring viz
-  projects: string[] // related project slugs (FR-3.2)
+export type Block =
+  | { type: 'p'; text: string }
+  | { type: 'h'; text: string }
+  | { type: 'quote'; text: string }
+
+export type Article = {
+  slug: string
+  title: string
+  excerpt: string
+  date: string
+  dateLabel: string
+  readTime: string
+  category: WritingCategory
+  tags: string[]
+  featured: boolean
+  cover: { label: string; caption: string }
+  body: Block[]
 }
 
-export const skills: Skill[] = [
-  // hardware & perception
-  { name: 'C/C++', cluster: 'hardware-perception', level: 92, projects: ['autonomous-navigation-rover', 'stm32-motor-control-firmware'] },
-  { name: 'ROS2', cluster: 'hardware-perception', level: 88, projects: ['autonomous-navigation-rover'] },
-  { name: 'STM32', cluster: 'hardware-perception', level: 85, projects: ['stm32-motor-control-firmware'] },
-  { name: 'ESP32', cluster: 'hardware-perception', level: 80, projects: ['stm32-motor-control-firmware'] },
-  { name: 'SLAM', cluster: 'hardware-perception', level: 78, projects: ['autonomous-navigation-rover'] },
-  { name: 'LiDAR', cluster: 'hardware-perception', level: 76, projects: ['autonomous-navigation-rover'] },
-  { name: 'OpenCV', cluster: 'hardware-perception', level: 74, projects: ['autonomous-navigation-rover'] },
-  { name: 'Digital Logic', cluster: 'hardware-perception', level: 82, projects: ['stm32-motor-control-firmware', 'fabrication-prototyping-pipeline'] },
-  // software & backend
-  { name: 'Next.js', cluster: 'software-backend', level: 95, projects: ['enterprise-ecommerce-infrastructure', 'appbaksho-platform', 'bot-engineers-internal-tools', 'space-apps-telemetry'] },
-  { name: 'NestJS', cluster: 'software-backend', level: 90, projects: ['enterprise-ecommerce-infrastructure', 'bot-engineers-internal-tools'] },
-  { name: 'Prisma', cluster: 'software-backend', level: 90, projects: ['enterprise-ecommerce-infrastructure', 'appbaksho-platform'] },
-  { name: 'TypeScript', cluster: 'software-backend', level: 93, projects: ['enterprise-ecommerce-infrastructure', 'appbaksho-platform', 'bot-engineers-internal-tools', 'space-apps-telemetry'] },
-  { name: 'Java (DSA)', cluster: 'software-backend', level: 84, projects: [] },
-  { name: 'Python', cluster: 'software-backend', level: 86, projects: ['autonomous-navigation-rover', 'space-apps-telemetry'] },
-  { name: 'PostgreSQL', cluster: 'software-backend', level: 88, projects: ['enterprise-ecommerce-infrastructure', 'appbaksho-platform'] },
-  { name: 'MongoDB', cluster: 'software-backend', level: 80, projects: [] },
-  // devops & deployment
-  { name: 'AWS', cluster: 'devops-deployment', level: 85, projects: ['enterprise-ecommerce-infrastructure', 'appbaksho-platform', 'bot-engineers-internal-tools'] },
-  { name: 'Docker', cluster: 'devops-deployment', level: 86, projects: ['enterprise-ecommerce-infrastructure', 'bot-engineers-internal-tools'] },
-  { name: 'Vercel', cluster: 'devops-deployment', level: 88, projects: ['appbaksho-platform', 'space-apps-telemetry'] },
-  { name: 'CI/CD', cluster: 'devops-deployment', level: 84, projects: ['enterprise-ecommerce-infrastructure', 'bot-engineers-internal-tools'] },
-  { name: 'Linux', cluster: 'devops-deployment', level: 87, projects: ['autonomous-navigation-rover', 'stm32-motor-control-firmware'] },
-  { name: 'GitHub Actions', cluster: 'devops-deployment', level: 82, projects: ['bot-engineers-internal-tools'] },
+const loremBuild = (intro: string): Block[] => [
+  { type: 'p', text: intro },
+  { type: 'h', text: 'Why it matters' },
+  {
+    type: 'p',
+    text: 'The interesting problems live in the seams — between disciplines, between the plan and the prototype, between what a team intends and what actually ships. This is where I spend most of my time, and where the leverage hides.',
+  },
+  {
+    type: 'quote',
+    text: 'Over-engineer the things that matter; ship the rest. The art is knowing which is which.',
+  },
+  { type: 'h', text: 'How I think about it' },
+  {
+    type: 'p',
+    text: 'Start from the outcome you want to be true, reverse-engineer the smallest system that makes it true, and ship that. Then let reality correct your assumptions faster than any planning document could.',
+  },
+  {
+    type: 'p',
+    text: 'The compounding comes from repetition: every shipped iteration teaches the team something a slide deck never would, and the momentum becomes its own moat.',
+  },
 ]
 
-/* ---- Awards / competitions / leadership timeline (FR-4) ---- */
-export type Award = {
+export const articles: Article[] = [
+  {
+    slug: 'building-a-studio-not-an-agency',
+    title: 'Building a Studio, Not an Agency',
+    excerpt:
+      'Why I founded Appbaksho to ship like a startup and engineer like a veteran — and what that distinction actually changes day to day.',
+    date: '2026-03-15',
+    dateLabel: 'Mar 2026',
+    readTime: '8 min',
+    category: 'building',
+    tags: ['Founding', 'Appbaksho', 'Studio', 'Strategy'],
+    featured: true,
+    cover: { label: 'Studio', caption: 'On founding Appbaksho' },
+    body: loremBuild(
+      'An agency sells hours. A studio sells outcomes. That single reframing changed how I hire, how I price, and how I build the delivery engine behind Appbaksho — and it’s the difference between renting your time and compounding your leverage.',
+    ),
+  },
+  {
+    slug: 'shipping-under-constraint',
+    title: 'Shipping Under Constraint',
+    excerpt:
+      'The 48-hour hackathon taught me more about product than any six-month roadmap. A field guide to building when the clock is the enemy.',
+    date: '2026-02-28',
+    dateLabel: 'Feb 2026',
+    readTime: '6 min',
+    category: 'building',
+    tags: ['Product', 'Hackathon', 'NASA', 'Velocity'],
+    featured: false,
+    cover: { label: 'Constraint', caption: 'Building against the clock' },
+    body: loremBuild(
+      'Constraint is a feature. When you only have 48 hours, you stop debating and start shipping — and the things you choose to cut tell you exactly what the product actually is.',
+    ),
+  },
+  {
+    slug: 'the-engineering-culture-i-want',
+    title: 'The Engineering Culture I Want to Build',
+    excerpt:
+      'Notes on making shipping boring — CI/CD, code review, and the quiet systems that let a team move fast without breaking trust.',
+    date: '2026-02-10',
+    dateLabel: 'Feb 2026',
+    readTime: '9 min',
+    category: 'engineering',
+    tags: ['Leadership', 'CI/CD', 'Culture', 'BOT Engineers'],
+    featured: false,
+    cover: { label: 'Culture', caption: 'On engineering leadership' },
+    body: loremBuild(
+      'The best engineering cultures make the right thing the easy thing. At BOT Engineers I spent more time on the pipeline than the product — because a team is only ever as fast as its slowest feedback loop.',
+    ),
+  },
+  {
+    slug: 'autonomy-on-unforgiving-terrain',
+    title: 'Autonomy on Unforgiving Terrain',
+    excerpt:
+      'Tuning SLAM, fusing LiDAR with IMU, and surviving GPS-denied terrain on the Mongol-Tori rover — where robustness beats cleverness.',
+    date: '2025-12-18',
+    dateLabel: 'Dec 2025',
+    readTime: '12 min',
+    category: 'robotics',
+    tags: ['ROS2', 'SLAM', 'Autonomy', 'Mongol-Tori'],
+    featured: true,
+    cover: { label: 'Autonomy', caption: 'Robotics in the wild' },
+    body: loremBuild(
+      'A lab is a lie a robot tells itself. The moment you put a rover on real terrain — loose regolith, no GPS, a 33 ms control budget — every assumption gets audited by physics.',
+    ),
+  },
+  {
+    slug: 'the-w123-school-of-engineering',
+    title: 'The W123 School of Engineering',
+    excerpt:
+      'What a 1980s Mercedes taught me about building software, companies, and systems designed to outlast their creator.',
+    date: '2026-01-22',
+    dateLabel: 'Jan 2026',
+    readTime: '10 min',
+    category: 'essays',
+    tags: ['Philosophy', 'Reliability', 'Design'],
+    featured: false,
+    cover: { label: 'W123', caption: 'On building to last' },
+    body: loremBuild(
+      'The Mercedes W123 was over-engineered on purpose — built so the next owner, decades later, could still trust it. I want every venture I build to carry that same quiet promise.',
+    ),
+  },
+  {
+    slug: 'framing-engineering-as-value',
+    title: 'Framing Engineering as Value, Not Code',
+    excerpt:
+      'Lessons from the Future of Capitalism startup stage: how founders translate deep technical work into a story investors and users feel.',
+    date: '2026-01-05',
+    dateLabel: 'Jan 2026',
+    readTime: '7 min',
+    category: 'building',
+    tags: ['Startups', 'Pitching', 'Value', 'Competition'],
+    featured: false,
+    cover: { label: 'Value', caption: 'From code to company' },
+    body: loremBuild(
+      'Nobody buys your architecture diagram. Standing on the Future of Capitalism stage, I learned that the founder’s job is to translate engineering depth into a value a room of strangers can feel in thirty seconds.',
+    ),
+  },
+  {
+    slug: 'the-cloud-pipeline-that-sleeps-well',
+    title: 'The Cloud Pipeline That Sleeps Well',
+    excerpt:
+      'Zero-downtime deploys, health checks, and rollbacks — building infrastructure you can deploy on a Friday and still sleep.',
+    date: '2025-12-01',
+    dateLabel: 'Dec 2025',
+    readTime: '11 min',
+    category: 'engineering',
+    tags: ['AWS', 'CI/CD', 'DevOps', 'Reliability'],
+    featured: false,
+    cover: { label: 'Pipeline', caption: 'On cloud infrastructure' },
+    body: loremBuild(
+      'You can measure an engineering org by one question: would they deploy on a Friday afternoon? Building a pipeline you trust that much is mostly about making failure boring and recovery automatic.',
+    ),
+  },
+]
+
+/* ---------------- Achievements ---------------- */
+export type AchievementType = 'award' | 'competition' | 'leadership' | 'milestone'
+
+export const achievementTypeMeta: Record<AchievementType, { label: string }> = {
+  award: { label: 'Award' },
+  competition: { label: 'Competition' },
+  leadership: { label: 'Leadership' },
+  milestone: { label: 'Milestone' },
+}
+
+export type Achievement = {
   id: string
   title: string
   organization: string
-  date: string // ISO
+  date: string
   dateLabel: string
-  category: AwardCategory
+  type: AchievementType
   description: string
-  link?: string
   featured: boolean
+  link?: string
 }
 
-export const awards: Award[] = [
+export const achievements: Achievement[] = [
   {
     id: 'wice-gold',
     title: 'WICE Gold Medal',
     organization: 'World Invention Competition & Exhibition',
     date: '2024-08-01',
-    dateLabel: 'Aug 2024',
-    category: 'award',
+    dateLabel: 'August 2024',
+    type: 'award',
     description:
-      'Awarded the Gold Medal at an international invention competition for an engineered systems entry — recognising technical depth and real-world impact among a global field.',
+      'Awarded the Gold Medal at an international invention competition for an engineered systems entry — recognised for technical depth and real-world impact among a global field.',
     featured: true,
   },
   {
@@ -620,10 +574,21 @@ export const awards: Award[] = [
     title: 'Future of Capitalism — Startup Competition',
     organization: 'Startup Competition',
     date: '2024-04-01',
-    dateLabel: 'Apr 2024',
-    category: 'competition',
+    dateLabel: 'April 2024',
+    type: 'competition',
     description:
-      'Competed in a startup competition pitching a venture concept — sharpening business acumen, communication, and the ability to frame engineering work as product value.',
+      'Pitched a venture concept on the startup stage — sharpening the founder’s craft of turning engineering into a story of value, market, and momentum.',
+    featured: true,
+  },
+  {
+    id: 'appbaksho-founder',
+    title: 'Founded Appbaksho',
+    organization: 'Appbaksho',
+    date: '2023-03-01',
+    dateLabel: '2023',
+    type: 'milestone',
+    description:
+      'Turned freelance momentum into a software studio — building the delivery engine, the brand, and the first client roster from zero.',
     featured: true,
   },
   {
@@ -632,71 +597,140 @@ export const awards: Award[] = [
     organization: 'BOT Engineers',
     date: '2024-01-01',
     dateLabel: '2024 — Present',
-    category: 'leadership',
+    type: 'leadership',
     description:
-      'Leads a cross-functional engineering team building production web applications and internal tooling — architected CI/CD pipelines, drove a Turborepo migration, and established a code-review culture.',
+      'Lead a cross-functional engineering team building production platforms — architected CI/CD, drove a monorepo migration, and set the code-review culture.',
     featured: false,
   },
   {
     id: 'mongol-tori',
-    title: 'AI & Autonomy Engineer',
-    organization: 'BRACU Mongol-Tori Robotics Team',
+    title: 'AI & Autonomy Lead',
+    organization: 'BRACU Mongol-Tori',
     date: '2023-09-01',
     dateLabel: '2023 — Present',
-    category: 'leadership',
+    type: 'leadership',
     description:
-      'Develops autonomous navigation stacks with ROS2 and SLAM for unstructured terrain, and programs low-level motor drivers on STM32 — bridging perception, planning, and physical control on a Mars-rover platform.',
-    featured: true,
+      'Lead autonomy and software for a Mars-rover platform — ROS2, SLAM, and STM32 firmware bridging perception, planning, and physical control.',
+    featured: false,
   },
   {
     id: 'nasa-space-apps',
     title: 'NASA Space Apps Challenger',
     organization: 'NASA International Space Apps Challenge',
     date: '2023-10-01',
-    dateLabel: 'Oct 2023',
-    category: 'competition',
+    dateLabel: 'October 2023',
+    type: 'competition',
     description:
-      'Built a satellite-telemetry data-visualisation prototype for environmental monitoring in a 48-hour global hackathon, collaborating across disciplines under sprint constraints.',
-    featured: false,
-  },
-  {
-    id: 'appbaksho-founder',
-    title: 'Founder & Lead Developer',
-    organization: 'Appbaksho',
-    date: '2023-03-01',
-    dateLabel: '2023 — Present',
-    category: 'leadership',
-    description:
-      'Founded a software agency delivering full-stack products for local businesses — handling discovery, database design, AWS deployment, and post-launch monitoring end to end.',
+      'Built a satellite-telemetry visualiser in a 48-hour global hackathon, collaborating across disciplines under sprint constraints.',
     featured: false,
   },
 ]
 
-/* ---- About / mission (FR-5) ---- */
-export const about = {
-  photo: { label: 'Muztahid Rahman', caption: 'Lab · rover · pitch' },
-  mission: 'Build like the W123 — over-engineered, mechanically pure, and made to outlast its creator.',
-  narrative: [
-    'I’m a software and robotics engineer who is most at home where the two collide — writing the firmware that moves a motor, the autonomy that decides where it goes, and the cloud platform that watches it all. I lead engineering at BOT Engineers, build autonomous systems with BRACU Mongol-Tori, and founded Appbaksho to ship real products for real businesses.',
-    'What drives me is the bridge between disciplines: the moment a stereo camera’s depth map becomes a path the rover can actually drive, or when a typed schema turns a chaotic catalog into a system that runs itself. I want to study that bridge formally — to go deeper into perception, planning, and the systems engineering that lets intelligent machines act reliably in the physical world.',
-    'I’m seeking a Master’s in Robotics & Autonomous Systems where I can pair academic rigor with the build-and-ship instinct I’ve sharpened across competitions, a startup, and a robotics team — and turn it toward research that puts autonomy on harder, less forgiving terrain.',
+/* ---------------- Certificates ---------------- */
+export type Certificate = {
+  id: string
+  title: string
+  issuer: string
+  date: string
+  dateLabel: string
+  credentialId: string
+  skills: string[]
+}
+
+export const certificates: Certificate[] = [
+  {
+    id: 'aws-ccp',
+    title: 'AWS Certified Cloud Practitioner',
+    issuer: 'Amazon Web Services',
+    date: '2024-06-01',
+    dateLabel: 'Jun 2024',
+    credentialId: 'AWS-CCP-2024-MR',
+    skills: ['Cloud', 'AWS', 'Infrastructure'],
+  },
+  {
+    id: 'meta-frontend',
+    title: 'Meta Front-End Developer',
+    issuer: 'Meta · Coursera',
+    date: '2024-02-01',
+    dateLabel: 'Feb 2024',
+    credentialId: 'META-FE-9X42',
+    skills: ['React', 'JavaScript', 'UI'],
+  },
+  {
+    id: 'nvidia-dl',
+    title: 'Fundamentals of Deep Learning',
+    issuer: 'NVIDIA Deep Learning Institute',
+    date: '2024-01-01',
+    dateLabel: 'Jan 2024',
+    credentialId: 'DLI-FDL-7731',
+    skills: ['Deep Learning', 'Python', 'CUDA'],
+  },
+  {
+    id: 'ros2-dev',
+    title: 'ROS2 for Robotics Developers',
+    issuer: 'The Construct',
+    date: '2023-11-01',
+    dateLabel: 'Nov 2023',
+    credentialId: 'ROS2-DEV-2231',
+    skills: ['ROS2', 'C++', 'Robotics'],
+  },
+  {
+    id: 'mongodb-node',
+    title: 'MongoDB for Node.js Developers',
+    issuer: 'MongoDB University',
+    date: '2023-09-01',
+    dateLabel: 'Sep 2023',
+    credentialId: 'M220JS-44A1',
+    skills: ['MongoDB', 'Node.js', 'Databases'],
+  },
+  {
+    id: 'gcp-leader',
+    title: 'Google Cloud Digital Leader',
+    issuer: 'Google Cloud',
+    date: '2023-07-01',
+    dateLabel: 'Jul 2023',
+    credentialId: 'GCP-CDL-5567',
+    skills: ['Cloud', 'GCP', 'Strategy'],
+  },
+  {
+    id: 'postman-api',
+    title: 'API Fundamentals Student Expert',
+    issuer: 'Postman',
+    date: '2023-05-01',
+    dateLabel: 'May 2023',
+    credentialId: 'PM-API-8890',
+    skills: ['APIs', 'REST', 'Testing'],
+  },
+  {
+    id: 'fcc-responsive',
+    title: 'Responsive Web Design',
+    issuer: 'freeCodeCamp',
+    date: '2022-12-01',
+    dateLabel: 'Dec 2022',
+    credentialId: 'FCC-RWD-1042',
+    skills: ['HTML', 'CSS', 'Accessibility'],
+  },
+  {
+    id: 'udemy-fullstack',
+    title: 'The Complete Full-Stack Web Bootcamp',
+    issuer: 'Udemy',
+    date: '2022-08-01',
+    dateLabel: 'Aug 2022',
+    credentialId: 'UC-FS-3398',
+    skills: ['Full-Stack', 'Node.js', 'React'],
+  },
+]
+
+/* ---------------- Contact ---------------- */
+export const contact = {
+  eyebrow: 'Let’s build',
+  title: 'Have something audacious in mind?',
+  blurb:
+    'Whether it’s a venture worth founding, a product worth shipping, or a system worth bridging hardware and software — I read every message. Let’s make something that lasts.',
+  channels: [
+    { label: 'Email', value: 'muztahid.appbaksho@gmail.com', href: 'mailto:muztahid.appbaksho@gmail.com' },
+    { label: 'GitHub', value: 'github.com/muztahiddurjoy', href: 'https://github.com/muztahiddurjoy' },
+    { label: 'LinkedIn', value: 'in/muztahiddurjoy', href: 'https://www.linkedin.com/in/muztahiddurjoy' },
+    { label: 'Location', value: 'Dhaka, Bangladesh' },
   ],
-  education: {
-    degree: 'B.Sc. in Computer Science',
-    university: 'BRAC University',
-    status: 'Ongoing',
-    coursework: [
-      'Data Structures & Algorithms',
-      'Digital Logic Design',
-      'Computer Architecture',
-      'Operating Systems',
-      'Database Management',
-      'Linear Algebra',
-    ],
-  },
-  contact: {
-    heading: 'Let’s build something that ships.',
-    blurb:
-      'Whether it’s a research collaboration, a Master’s opportunity, or a system that needs bridging hardware and software — the inbox is open.',
-  },
 }

@@ -10,95 +10,74 @@ import {
 } from 'react'
 import { usePathname, useRouter } from 'next/navigation'
 import { gsap } from '@/lib/gsap'
+import { siteConfig } from '@/lib/portfolio-data'
 import { useLenis } from './smooth-scroll'
 
 type TransitionCtx = { navigate: (href: string) => void }
 const Ctx = createContext<TransitionCtx>({ navigate: () => {} })
 export const useTransition = () => useContext(Ctx)
 
-const COLS = 6
-
+// Soft editorial transition. The panel is parked below the viewport; a real
+// navigation sweeps it up to cover, the route swaps, then it sweeps up and away.
+// NB: we always pin `y: 0` so gsap's parse of the initial inline translateY(100%)
+// (which it stores as a leftover px `y`) can never offset the yPercent tweens.
 export function TransitionProvider({ children }: { children: ReactNode }) {
   const router = useRouter()
   const pathname = usePathname()
   const lenis = useLenis()
 
-  const overlayRef = useRef<HTMLDivElement>(null)
-  const colsRef = useRef<HTMLDivElement[]>([])
-  const labelRef = useRef<HTMLDivElement>(null)
+  const overlay = useRef<HTMLDivElement>(null)
+  const panel = useRef<HTMLDivElement>(null)
+  const mark = useRef<HTMLDivElement>(null)
+  const navigated = useRef(false)
   const animating = useRef(false)
-  const firstLoad = useRef(true)
 
-  const setCol = (el: HTMLDivElement | null, i: number) => {
-    if (el) colsRef.current[i] = el
-  }
-
-  // REVEAL: panels retract upward after the new route paints
-  const reveal = useCallback(() => {
-    const overlay = overlayRef.current
-    if (!overlay) return
-    const tl = gsap.timeline({
-      onComplete: () => {
-        overlay.style.pointerEvents = 'none'
-        animating.current = false
-      },
-    })
-    tl.set(overlay, { pointerEvents: 'auto' })
-    tl.to(labelRef.current, { opacity: 0, duration: 0.25, ease: 'power2.out' }, 0)
-    tl.to(
-      colsRef.current,
-      {
-        scaleY: 0,
-        transformOrigin: 'top',
-        duration: 0.7,
-        ease: 'expo.inOut',
-        stagger: 0.06,
-      },
-      0.05,
-    )
+  const park = useCallback(() => {
+    if (overlay.current) overlay.current.style.pointerEvents = 'none'
+    gsap.set(panel.current, { y: 0, yPercent: 100 })
+    gsap.set(mark.current, { opacity: 0, y: 16 })
+    animating.current = false
   }, [])
 
-  // COVER: panels grow from the bottom to hide the page, then push the route
   const navigate = useCallback(
     (href: string) => {
-      if (animating.current) return
-      // same in-page hash → let the anchor handler deal with it
-      if (href.startsWith('#')) return
+      if (animating.current || href.startsWith('#')) return
       animating.current = true
-      const overlay = overlayRef.current
-      if (!overlay) {
+      navigated.current = true
+      if (!overlay.current || !panel.current) {
         router.push(href)
         return
       }
-      const tl = gsap.timeline({
-        onComplete: () => router.push(href),
-      })
-      tl.set(overlay, { pointerEvents: 'auto' })
-      tl.set(colsRef.current, { scaleY: 0, transformOrigin: 'bottom' })
-      tl.to(colsRef.current, {
-        scaleY: 1,
-        duration: 0.6,
-        ease: 'expo.inOut',
-        stagger: 0.05,
-      })
-      tl.to(labelRef.current, { opacity: 1, duration: 0.3, ease: 'power2.out' }, '-=0.25')
+      overlay.current.style.pointerEvents = 'auto'
+      const tl = gsap.timeline({ onComplete: () => router.push(href) })
+      tl.fromTo(
+        panel.current,
+        { y: 0, yPercent: 100 },
+        { y: 0, yPercent: 0, duration: 0.65, ease: 'power4.inOut' },
+      )
+      tl.fromTo(
+        mark.current,
+        { opacity: 0, y: 16 },
+        { opacity: 1, y: 0, duration: 0.4, ease: 'power2.out' },
+        '-=0.3',
+      )
     },
     [router],
   )
 
-  // On every route change: jump to top, then reveal.
+  // Park on mount; after a real navigation, reveal (panel sweeps up and away).
   useEffect(() => {
-    if (firstLoad.current) {
-      firstLoad.current = false
-      // initial mount: panels start covering → reveal in
-      gsap.set(colsRef.current, { scaleY: 1, transformOrigin: 'top' })
-      reveal()
+    if (!navigated.current) {
+      park()
       return
     }
+    navigated.current = false
     if (lenis) lenis.scrollTo(0, { immediate: true })
     else window.scrollTo(0, 0)
-    gsap.set(colsRef.current, { scaleY: 1, transformOrigin: 'top' })
-    reveal()
+    if (overlay.current) overlay.current.style.pointerEvents = 'auto'
+    const tl = gsap.timeline({ onComplete: park })
+    tl.to(mark.current, { opacity: 0, duration: 0.25, ease: 'power2.out' }, 0)
+    tl.to(panel.current, { y: 0, yPercent: -100, duration: 0.7, ease: 'power4.inOut' }, 0.05)
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [pathname])
 
@@ -106,30 +85,22 @@ export function TransitionProvider({ children }: { children: ReactNode }) {
     <Ctx.Provider value={{ navigate }}>
       {children}
       <div
-        ref={overlayRef}
+        ref={overlay}
         aria-hidden
-        className="pointer-events-none fixed inset-0 z-[120] flex"
+        className="pointer-events-none fixed inset-0 z-[120]"
         style={{ pointerEvents: 'none' }}
       >
-        {Array.from({ length: COLS }).map((_, i) => (
-          <div
-            key={i}
-            ref={(el) => setCol(el, i)}
-            className="h-full flex-1 bg-ink-950"
-            style={{
-              transform: 'scaleY(0)',
-              boxShadow: '1px 0 0 rgba(70,227,255,0.06)',
-            }}
-          />
-        ))}
         <div
-          ref={labelRef}
-          className="absolute inset-0 flex items-center justify-center opacity-0"
+          ref={panel}
+          className="absolute inset-0 flex items-center justify-center bg-foreground text-background"
+          style={{ transform: 'translateY(100%)' }}
         >
-          <span className="font-mono text-[0.7rem] uppercase tracking-[0.4em] text-signal">
-            Loading
-            <span className="caret" />
-          </span>
+          <div ref={mark} className="text-center" style={{ opacity: 0 }}>
+            <span className="font-script text-5xl md:text-6xl">{siteConfig.shortName}</span>
+            <span className="mt-1 block text-[0.7rem] uppercase tracking-[0.35em] opacity-70">
+              {siteConfig.role}
+            </span>
+          </div>
         </div>
       </div>
     </Ctx.Provider>
