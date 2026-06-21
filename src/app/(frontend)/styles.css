@@ -32,6 +32,7 @@
   --font-display: var(--font-fraunces), Georgia, 'Times New Roman', serif;
   --font-body: var(--font-inter), ui-sans-serif, system-ui, sans-serif;
   --font-script: var(--font-caveat), ui-serif, cursive;
+  --font-signature: var(--font-great-vibes), 'Snell Roundhand', 'Brush Script MT', cursive;
 
   /* fluid editorial type scale */
   --text-hero: clamp(2.9rem, 8vw, 8.5rem);
@@ -178,6 +179,12 @@ img, svg, video { display: block; max-width: 100%; }
 
 .font-script { font-family: var(--font-script); }
 .font-display { font-family: var(--font-display); }
+/* formal signature wordmark — the name in nav · footer · transition overlay */
+.font-signature {
+  font-family: var(--font-signature);
+  font-weight: 400;
+  letter-spacing: 0.01em;
+}
 
 /* italic serif accent inside display text */
 .display-italic {

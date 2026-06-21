@@ -2,7 +2,7 @@
 
 import { useMemo, useState } from 'react'
 import { ArrowUpRight } from 'lucide-react'
-import { articles, writingCategoryMeta, type WritingCategory } from '@/lib/portfolio-data'
+import { writingCategoryMeta, type WritingCategory, type Article } from '@/lib/portfolio-data'
 import { cn } from '@/lib/utils'
 import { Reveal } from '../ui/reveal'
 import { AnimatedHeading } from '../ui/animated-heading'
@@ -13,7 +13,7 @@ import { Eyebrow, Tag, Signature } from '../ui/primitives'
 
 type Filter = 'all' | WritingCategory
 
-export default function WritingPage() {
+export default function WritingPage({ articles }: { articles: Article[] }) {
   const [filter, setFilter] = useState<Filter>('all')
 
   const featured = useMemo(() => articles.find((a) => a.featured), [])

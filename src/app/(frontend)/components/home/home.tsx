@@ -6,16 +6,16 @@ import { gsap } from '@/lib/gsap'
 import { useIsoLayoutEffect } from '@/lib/use-iso-layout-effect'
 import { cn } from '@/lib/utils'
 import {
-  siteConfig,
-  home,
-  stats,
-  ventures,
-  articles,
-  achievements,
   ventureTypeMeta,
   writingCategoryMeta,
   achievementTypeMeta,
   type AchievementType,
+  type SiteConfig,
+  type HomeData,
+  type Stat,
+  type Venture,
+  type Article,
+  type Achievement,
 } from '@/lib/portfolio-data'
 
 import { Reveal } from '../ui/reveal'
@@ -26,11 +26,6 @@ import { ImageFrame } from '../ui/image-frame'
 import { TransitionLink } from '../ui/transition-link'
 import { Icon, type IconName } from '../ui/lucide-icon'
 
-const featuredVentures = ventures.filter((v) => v.featured)
-const latestPosts = articles.slice(0, 3)
-const featuredWins = achievements.filter((a) => a.featured).slice(0, 3)
-
-const accent = home.headlineAccent.toLowerCase()
 const achievementIcon: Record<AchievementType, IconName> = {
   award: 'Trophy',
   competition: 'Award',
@@ -38,7 +33,27 @@ const achievementIcon: Record<AchievementType, IconName> = {
   milestone: 'Rocket',
 }
 
-export function Home() {
+export function Home({
+  siteConfig,
+  home,
+  stats,
+  ventures,
+  articles,
+  achievements,
+}: {
+  siteConfig: SiteConfig
+  home: HomeData
+  stats: Stat[]
+  ventures: Venture[]
+  articles: Article[]
+  achievements: Achievement[]
+}) {
+  const featuredVentures = ventures.filter((v) => v.featured)
+  const latestPosts = articles.slice(0, 3)
+  const featuredWins = achievements.filter((a) => a.featured).slice(0, 3)
+
+  const accent = home.headlineAccent.toLowerCase()
+
   const scope = useRef<HTMLElement>(null)
 
   useIsoLayoutEffect(() => {

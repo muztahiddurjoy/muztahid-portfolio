@@ -734,3 +734,10 @@ export const contact = {
     { label: 'Location', value: 'Dhaka, Bangladesh' },
   ],
 }
+
+/* ---------------- Derived content types (props for CMS-driven pages) ---------------- */
+export type SiteConfig = typeof siteConfig
+export type HomeData = typeof home
+export type Stat = (typeof stats)[number]
+export type Story = typeof story
+export type ContactData = typeof contact

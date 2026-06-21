@@ -1,4 +1,5 @@
 import type { Metadata } from 'next'
+import { getAbout } from '@/lib/content'
 import AboutPage from '../components/pages/about-page'
 
 export const metadata: Metadata = {
@@ -6,6 +7,7 @@ export const metadata: Metadata = {
   description: 'The story of a founder who builds companies and the technology that makes them inevitable.',
 }
 
-export default function Page() {
-  return <AboutPage />
+export default async function Page() {
+  const story = await getAbout()
+  return <AboutPage story={story} />
 }

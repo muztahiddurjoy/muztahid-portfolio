@@ -11,7 +11,7 @@ import { ArrowUpRight, ArrowRight } from 'lucide-react'
 import { gsap } from '@/lib/gsap'
 import { useIsoLayoutEffect } from '@/lib/use-iso-layout-effect'
 import { cn } from '@/lib/utils'
-import { contact, siteConfig } from '@/lib/portfolio-data'
+import type { ContactData, SiteConfig } from '@/lib/portfolio-data'
 import { Reveal } from '../ui/reveal'
 import { AnimatedHeading } from '../ui/animated-heading'
 import { Eyebrow } from '../ui/primitives'
@@ -139,7 +139,13 @@ function ChannelRow({
   )
 }
 
-export default function ContactPage() {
+export default function ContactPage({
+  contact,
+  siteConfig,
+}: {
+  contact: ContactData
+  siteConfig: SiteConfig
+}) {
   const [values, setValues] = useState<FormState>({
     name: '',
     email: '',
@@ -193,7 +199,7 @@ export default function ContactPage() {
     return next
   }
 
-  const handleSubmit = (e: FormEvent<HTMLFormElement>) => {
+  const handleSubmit = async (e: FormEvent<HTMLFormElement>) => {
     e.preventDefault()
     if (status === 'sending') return
     // honeypot — a real person never fills this; bots do
@@ -208,7 +214,23 @@ export default function ContactPage() {
     }
 
     setStatus('sending')
-    timer.current = setTimeout(() => setStatus('sent'), 900)
+    try {
+      const res = await fetch('/api/contact', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          name: values.name.trim(),
+          email: values.email.trim(),
+          message: values.message.trim(),
+          company: values.company, // honeypot, rejected server-side
+        }),
+      })
+      if (!res.ok) throw new Error(`Request failed: ${res.status}`)
+      setStatus('sent')
+    } catch {
+      setStatus('idle')
+      setErrors({ message: 'Something went wrong sending your message. Please email me directly.' })
+    }
   }
 
   const reset = () => {

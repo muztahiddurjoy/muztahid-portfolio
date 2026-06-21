@@ -67,8 +67,13 @@ export interface Config {
   };
   blocks: {};
   collections: {
-    users: User;
+    ventures: Venture;
+    articles: Article;
+    achievements: Achievement;
+    certificates: Certificate;
     media: Media;
+    'contact-submissions': ContactSubmission;
+    users: User;
     'payload-kv': PayloadKv;
     'payload-locked-documents': PayloadLockedDocument;
     'payload-preferences': PayloadPreference;
@@ -76,8 +81,13 @@ export interface Config {
   };
   collectionsJoins: {};
   collectionsSelect: {
-    users: UsersSelect<false> | UsersSelect<true>;
+    ventures: VenturesSelect<false> | VenturesSelect<true>;
+    articles: ArticlesSelect<false> | ArticlesSelect<true>;
+    achievements: AchievementsSelect<false> | AchievementsSelect<true>;
+    certificates: CertificatesSelect<false> | CertificatesSelect<true>;
     media: MediaSelect<false> | MediaSelect<true>;
+    'contact-submissions': ContactSubmissionsSelect<false> | ContactSubmissionsSelect<true>;
+    users: UsersSelect<false> | UsersSelect<true>;
     'payload-kv': PayloadKvSelect<false> | PayloadKvSelect<true>;
     'payload-locked-documents': PayloadLockedDocumentsSelect<false> | PayloadLockedDocumentsSelect<true>;
     'payload-preferences': PayloadPreferencesSelect<false> | PayloadPreferencesSelect<true>;
@@ -87,8 +97,18 @@ export interface Config {
     defaultIDType: string;
   };
   fallbackLocale: null;
-  globals: {};
-  globalsSelect: {};
+  globals: {
+    'site-settings': SiteSetting;
+    home: Home;
+    about: About;
+    contact: Contact;
+  };
+  globalsSelect: {
+    'site-settings': SiteSettingsSelect<false> | SiteSettingsSelect<true>;
+    home: HomeSelect<false> | HomeSelect<true>;
+    about: AboutSelect<false> | AboutSelect<true>;
+    contact: ContactSelect<false> | ContactSelect<true>;
+  };
   locale: null;
   widgets: {
     collections: CollectionsWidget;
@@ -118,6 +138,292 @@ export interface UserAuthOperations {
   };
 }
 /**
+ * Companies, products, robotics & research — the work, founder-framed.
+ *
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "ventures".
+ */
+export interface Venture {
+  id: string;
+  name: string;
+  tagline: string;
+  role: string;
+  type: 'company' | 'product' | 'robotics' | 'research';
+  year: string;
+  /**
+   * e.g. Active, Shipped, Ongoing
+   */
+  status: string;
+  /**
+   * Card-level + intro paragraph.
+   */
+  summary: string;
+  /**
+   * Card / case-study hero. Image optional; label+caption are the text placeholder.
+   */
+  cover?: {
+    label?: string | null;
+    caption?: string | null;
+    image?: (string | null) | Media;
+  };
+  /**
+   * Tech stack chips.
+   */
+  stack?: string[] | null;
+  /**
+   * Key numbers shown on the card / case study.
+   */
+  metrics?:
+    | {
+        label: string;
+        value: string;
+        id?: string | null;
+      }[]
+    | null;
+  /**
+   * Case study · the vision.
+   */
+  vision: string;
+  /**
+   * Case study · the problem.
+   */
+  problem: string;
+  /**
+   * Case study · how it was built (bullet list).
+   */
+  build?:
+    | {
+        point: string;
+        id?: string | null;
+      }[]
+    | null;
+  /**
+   * Case study · the outcome.
+   */
+  outcome: string;
+  links?:
+    | {
+        label: string;
+        url: string;
+        id?: string | null;
+      }[]
+    | null;
+  gallery?:
+    | {
+        label?: string | null;
+        caption?: string | null;
+        image?: (string | null) | Media;
+        id?: string | null;
+      }[]
+    | null;
+  /**
+   * Surface on the homepage & top of the list.
+   */
+  featured?: boolean | null;
+  /**
+   * Manual sort. Lower shows first.
+   */
+  order?: number | null;
+  /**
+   * URL segment. Leave blank to auto-generate from the title/name.
+   */
+  slug?: string | null;
+  updatedAt: string;
+  createdAt: string;
+  _status?: ('draft' | 'published') | null;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "media".
+ */
+export interface Media {
+  id: string;
+  /**
+   * Alt text for accessibility (images). Leave blank for non-image files like the CV.
+   */
+  alt?: string | null;
+  /**
+   * Optional caption.
+   */
+  caption?: string | null;
+  updatedAt: string;
+  createdAt: string;
+  url?: string | null;
+  thumbnailURL?: string | null;
+  filename?: string | null;
+  mimeType?: string | null;
+  filesize?: number | null;
+  width?: number | null;
+  height?: number | null;
+  focalX?: number | null;
+  focalY?: number | null;
+  sizes?: {
+    thumbnail?: {
+      url?: string | null;
+      width?: number | null;
+      height?: number | null;
+      mimeType?: string | null;
+      filesize?: number | null;
+      filename?: string | null;
+    };
+    card?: {
+      url?: string | null;
+      width?: number | null;
+      height?: number | null;
+      mimeType?: string | null;
+      filesize?: number | null;
+      filename?: string | null;
+    };
+    hero?: {
+      url?: string | null;
+      width?: number | null;
+      height?: number | null;
+      mimeType?: string | null;
+      filesize?: number | null;
+      filename?: string | null;
+    };
+  };
+}
+/**
+ * Essays & notes on building, engineering and robotics.
+ *
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "articles".
+ */
+export interface Article {
+  id: string;
+  title: string;
+  /**
+   * Card + meta description.
+   */
+  excerpt: string;
+  category: 'building' | 'engineering' | 'robotics' | 'essays';
+  /**
+   * e.g. "8 min"
+   */
+  readTime: string;
+  date: string;
+  /**
+   * Optional display label, e.g. "Mar 2026". Auto-derived from date if blank.
+   */
+  dateLabel?: string | null;
+  tags?: string[] | null;
+  cover?: {
+    label?: string | null;
+    caption?: string | null;
+    image?: (string | null) | Media;
+  };
+  body: (
+    | {
+        text: string;
+        id?: string | null;
+        blockName?: string | null;
+        blockType: 'paragraph';
+      }
+    | {
+        text: string;
+        id?: string | null;
+        blockName?: string | null;
+        blockType: 'heading';
+      }
+    | {
+        text: string;
+        id?: string | null;
+        blockName?: string | null;
+        blockType: 'quote';
+      }
+    | {
+        image: string | Media;
+        caption?: string | null;
+        id?: string | null;
+        blockName?: string | null;
+        blockType: 'image';
+      }
+  )[];
+  featured?: boolean | null;
+  /**
+   * URL segment. Leave blank to auto-generate from the title/name.
+   */
+  slug?: string | null;
+  updatedAt: string;
+  createdAt: string;
+  _status?: ('draft' | 'published') | null;
+}
+/**
+ * Awards, competitions, leadership & milestones — the timeline.
+ *
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "achievements".
+ */
+export interface Achievement {
+  id: string;
+  title: string;
+  organization: string;
+  date: string;
+  /**
+   * Display label, e.g. "August 2024" or "2024 — Present".
+   */
+  dateLabel?: string | null;
+  type: 'award' | 'competition' | 'leadership' | 'milestone';
+  description: string;
+  /**
+   * Optional external link.
+   */
+  link?: string | null;
+  featured?: boolean | null;
+  /**
+   * Manual override; otherwise sorted by date (newest first).
+   */
+  order?: number | null;
+  updatedAt: string;
+  createdAt: string;
+}
+/**
+ * Professional credentials & courses.
+ *
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "certificates".
+ */
+export interface Certificate {
+  id: string;
+  title: string;
+  issuer: string;
+  date: string;
+  /**
+   * Display label, e.g. "Jun 2024".
+   */
+  dateLabel?: string | null;
+  credentialId: string;
+  skills?: string[] | null;
+  /**
+   * Stable identifier used for discipline grouping on the frontend (e.g. "aws-ccp").
+   */
+  key?: string | null;
+  /**
+   * Manual override; otherwise sorted by date (newest first).
+   */
+  order?: number | null;
+  updatedAt: string;
+  createdAt: string;
+}
+/**
+ * Messages sent through the contact form.
+ *
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "contact-submissions".
+ */
+export interface ContactSubmission {
+  id: string;
+  name: string;
+  email: string;
+  message: string;
+  meta?: {
+    submittedFrom?: string | null;
+  };
+  updatedAt: string;
+  createdAt: string;
+}
+/**
  * This interface was referenced by `Config`'s JSON-Schema
  * via the `definition` "users".
  */
@@ -144,25 +450,6 @@ export interface User {
 }
 /**
  * This interface was referenced by `Config`'s JSON-Schema
- * via the `definition` "media".
- */
-export interface Media {
-  id: string;
-  alt: string;
-  updatedAt: string;
-  createdAt: string;
-  url?: string | null;
-  thumbnailURL?: string | null;
-  filename?: string | null;
-  mimeType?: string | null;
-  filesize?: number | null;
-  width?: number | null;
-  height?: number | null;
-  focalX?: number | null;
-  focalY?: number | null;
-}
-/**
- * This interface was referenced by `Config`'s JSON-Schema
  * via the `definition` "payload-kv".
  */
 export interface PayloadKv {
@@ -186,12 +473,32 @@ export interface PayloadLockedDocument {
   id: string;
   document?:
     | ({
-        relationTo: 'users';
-        value: string | User;
+        relationTo: 'ventures';
+        value: string | Venture;
+      } | null)
+    | ({
+        relationTo: 'articles';
+        value: string | Article;
+      } | null)
+    | ({
+        relationTo: 'achievements';
+        value: string | Achievement;
+      } | null)
+    | ({
+        relationTo: 'certificates';
+        value: string | Certificate;
       } | null)
     | ({
         relationTo: 'media';
         value: string | Media;
+      } | null)
+    | ({
+        relationTo: 'contact-submissions';
+        value: string | ContactSubmission;
+      } | null)
+    | ({
+        relationTo: 'users';
+        value: string | User;
       } | null);
   globalSlug?: string | null;
   user: {
@@ -237,6 +544,224 @@ export interface PayloadMigration {
 }
 /**
  * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "ventures_select".
+ */
+export interface VenturesSelect<T extends boolean = true> {
+  name?: T;
+  tagline?: T;
+  role?: T;
+  type?: T;
+  year?: T;
+  status?: T;
+  summary?: T;
+  cover?:
+    | T
+    | {
+        label?: T;
+        caption?: T;
+        image?: T;
+      };
+  stack?: T;
+  metrics?:
+    | T
+    | {
+        label?: T;
+        value?: T;
+        id?: T;
+      };
+  vision?: T;
+  problem?: T;
+  build?:
+    | T
+    | {
+        point?: T;
+        id?: T;
+      };
+  outcome?: T;
+  links?:
+    | T
+    | {
+        label?: T;
+        url?: T;
+        id?: T;
+      };
+  gallery?:
+    | T
+    | {
+        label?: T;
+        caption?: T;
+        image?: T;
+        id?: T;
+      };
+  featured?: T;
+  order?: T;
+  slug?: T;
+  updatedAt?: T;
+  createdAt?: T;
+  _status?: T;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "articles_select".
+ */
+export interface ArticlesSelect<T extends boolean = true> {
+  title?: T;
+  excerpt?: T;
+  category?: T;
+  readTime?: T;
+  date?: T;
+  dateLabel?: T;
+  tags?: T;
+  cover?:
+    | T
+    | {
+        label?: T;
+        caption?: T;
+        image?: T;
+      };
+  body?:
+    | T
+    | {
+        paragraph?:
+          | T
+          | {
+              text?: T;
+              id?: T;
+              blockName?: T;
+            };
+        heading?:
+          | T
+          | {
+              text?: T;
+              id?: T;
+              blockName?: T;
+            };
+        quote?:
+          | T
+          | {
+              text?: T;
+              id?: T;
+              blockName?: T;
+            };
+        image?:
+          | T
+          | {
+              image?: T;
+              caption?: T;
+              id?: T;
+              blockName?: T;
+            };
+      };
+  featured?: T;
+  slug?: T;
+  updatedAt?: T;
+  createdAt?: T;
+  _status?: T;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "achievements_select".
+ */
+export interface AchievementsSelect<T extends boolean = true> {
+  title?: T;
+  organization?: T;
+  date?: T;
+  dateLabel?: T;
+  type?: T;
+  description?: T;
+  link?: T;
+  featured?: T;
+  order?: T;
+  updatedAt?: T;
+  createdAt?: T;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "certificates_select".
+ */
+export interface CertificatesSelect<T extends boolean = true> {
+  title?: T;
+  issuer?: T;
+  date?: T;
+  dateLabel?: T;
+  credentialId?: T;
+  skills?: T;
+  key?: T;
+  order?: T;
+  updatedAt?: T;
+  createdAt?: T;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "media_select".
+ */
+export interface MediaSelect<T extends boolean = true> {
+  alt?: T;
+  caption?: T;
+  updatedAt?: T;
+  createdAt?: T;
+  url?: T;
+  thumbnailURL?: T;
+  filename?: T;
+  mimeType?: T;
+  filesize?: T;
+  width?: T;
+  height?: T;
+  focalX?: T;
+  focalY?: T;
+  sizes?:
+    | T
+    | {
+        thumbnail?:
+          | T
+          | {
+              url?: T;
+              width?: T;
+              height?: T;
+              mimeType?: T;
+              filesize?: T;
+              filename?: T;
+            };
+        card?:
+          | T
+          | {
+              url?: T;
+              width?: T;
+              height?: T;
+              mimeType?: T;
+              filesize?: T;
+              filename?: T;
+            };
+        hero?:
+          | T
+          | {
+              url?: T;
+              width?: T;
+              height?: T;
+              mimeType?: T;
+              filesize?: T;
+              filename?: T;
+            };
+      };
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "contact-submissions_select".
+ */
+export interface ContactSubmissionsSelect<T extends boolean = true> {
+  name?: T;
+  email?: T;
+  message?: T;
+  meta?:
+    | T
+    | {
+        submittedFrom?: T;
+      };
+  updatedAt?: T;
+  createdAt?: T;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
  * via the `definition` "users_select".
  */
 export interface UsersSelect<T extends boolean = true> {
@@ -256,24 +781,6 @@ export interface UsersSelect<T extends boolean = true> {
         createdAt?: T;
         expiresAt?: T;
       };
-}
-/**
- * This interface was referenced by `Config`'s JSON-Schema
- * via the `definition` "media_select".
- */
-export interface MediaSelect<T extends boolean = true> {
-  alt?: T;
-  updatedAt?: T;
-  createdAt?: T;
-  url?: T;
-  thumbnailURL?: T;
-  filename?: T;
-  mimeType?: T;
-  filesize?: T;
-  width?: T;
-  height?: T;
-  focalX?: T;
-  focalY?: T;
 }
 /**
  * This interface was referenced by `Config`'s JSON-Schema
@@ -314,6 +821,338 @@ export interface PayloadMigrationsSelect<T extends boolean = true> {
   batch?: T;
   updatedAt?: T;
   createdAt?: T;
+}
+/**
+ * Name, links, navigation and SEO defaults used across the whole site.
+ *
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "site-settings".
+ */
+export interface SiteSetting {
+  id: string;
+  /**
+   * Full name, e.g. "Muztahid Rahman".
+   */
+  name: string;
+  /**
+   * First name / wordmark.
+   */
+  shortName: string;
+  role: string;
+  location: string;
+  tagline: string;
+  availability?: string | null;
+  email: string;
+  github: string;
+  linkedin: string;
+  /**
+   * Default SEO / social description.
+   */
+  metaDescription: string;
+  /**
+   * Primary navigation links (nav + footer).
+   */
+  nav?:
+    | {
+        label: string;
+        href: string;
+        id?: string | null;
+      }[]
+    | null;
+  /**
+   * Fallback Open Graph / social share image.
+   */
+  defaultOgImage?: (string | null) | Media;
+  /**
+   * Academic CV (PDF) served by the download CTA.
+   */
+  cvFile?: (string | null) | Media;
+  updatedAt?: string | null;
+  createdAt?: string | null;
+}
+/**
+ * The landing page — hero, marquee, what you are doing now, and stats.
+ *
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "home".
+ */
+export interface Home {
+  id: string;
+  eyebrow: string;
+  /**
+   * Each row is one line of the big headline.
+   */
+  headline: {
+    line: string;
+    id?: string | null;
+  }[];
+  /**
+   * A word within the headline to italicise (must match exactly).
+   */
+  headlineAccent?: string | null;
+  /**
+   * Small handwritten accent line.
+   */
+  script?: string | null;
+  lede: string;
+  primaryCta: {
+    label: string;
+    href: string;
+  };
+  secondaryCta: {
+    label: string;
+    href: string;
+  };
+  /**
+   * Scrolling list of org / project names.
+   */
+  marquee?:
+    | {
+        text: string;
+        id?: string | null;
+      }[]
+    | null;
+  /**
+   * "What I am doing now" rows.
+   */
+  now?:
+    | {
+        label: string;
+        value: string;
+        id?: string | null;
+      }[]
+    | null;
+  stats?:
+    | {
+        value: number;
+        /**
+         * e.g. "+"
+         */
+        suffix?: string | null;
+        label: string;
+        id?: string | null;
+      }[]
+    | null;
+  updatedAt?: string | null;
+  createdAt?: string | null;
+}
+/**
+ * The founder story — narrative, philosophy, values and journey.
+ *
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "about".
+ */
+export interface About {
+  id: string;
+  eyebrow: string;
+  title: string;
+  intro: string;
+  portrait?: {
+    label?: string | null;
+    caption?: string | null;
+    image?: (string | null) | Media;
+  };
+  narrative: {
+    text: string;
+    id?: string | null;
+  }[];
+  philosophy: {
+    quote: string;
+    body: string;
+  };
+  values?:
+    | {
+        title: string;
+        body: string;
+        id?: string | null;
+      }[]
+    | null;
+  journey?:
+    | {
+        year: string;
+        title: string;
+        detail: string;
+        id?: string | null;
+      }[]
+    | null;
+  /**
+   * Closing "what is next" paragraph.
+   */
+  next: string;
+  updatedAt?: string | null;
+  createdAt?: string | null;
+}
+/**
+ * Contact page heading, blurb and the list of channels.
+ *
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "contact".
+ */
+export interface Contact {
+  id: string;
+  eyebrow: string;
+  title: string;
+  blurb: string;
+  channels?:
+    | {
+        label: string;
+        value: string;
+        /**
+         * Optional link (mailto:, https:, ...).
+         */
+        href?: string | null;
+        id?: string | null;
+      }[]
+    | null;
+  updatedAt?: string | null;
+  createdAt?: string | null;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "site-settings_select".
+ */
+export interface SiteSettingsSelect<T extends boolean = true> {
+  name?: T;
+  shortName?: T;
+  role?: T;
+  location?: T;
+  tagline?: T;
+  availability?: T;
+  email?: T;
+  github?: T;
+  linkedin?: T;
+  metaDescription?: T;
+  nav?:
+    | T
+    | {
+        label?: T;
+        href?: T;
+        id?: T;
+      };
+  defaultOgImage?: T;
+  cvFile?: T;
+  updatedAt?: T;
+  createdAt?: T;
+  globalType?: T;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "home_select".
+ */
+export interface HomeSelect<T extends boolean = true> {
+  eyebrow?: T;
+  headline?:
+    | T
+    | {
+        line?: T;
+        id?: T;
+      };
+  headlineAccent?: T;
+  script?: T;
+  lede?: T;
+  primaryCta?:
+    | T
+    | {
+        label?: T;
+        href?: T;
+      };
+  secondaryCta?:
+    | T
+    | {
+        label?: T;
+        href?: T;
+      };
+  marquee?:
+    | T
+    | {
+        text?: T;
+        id?: T;
+      };
+  now?:
+    | T
+    | {
+        label?: T;
+        value?: T;
+        id?: T;
+      };
+  stats?:
+    | T
+    | {
+        value?: T;
+        suffix?: T;
+        label?: T;
+        id?: T;
+      };
+  updatedAt?: T;
+  createdAt?: T;
+  globalType?: T;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "about_select".
+ */
+export interface AboutSelect<T extends boolean = true> {
+  eyebrow?: T;
+  title?: T;
+  intro?: T;
+  portrait?:
+    | T
+    | {
+        label?: T;
+        caption?: T;
+        image?: T;
+      };
+  narrative?:
+    | T
+    | {
+        text?: T;
+        id?: T;
+      };
+  philosophy?:
+    | T
+    | {
+        quote?: T;
+        body?: T;
+      };
+  values?:
+    | T
+    | {
+        title?: T;
+        body?: T;
+        id?: T;
+      };
+  journey?:
+    | T
+    | {
+        year?: T;
+        title?: T;
+        detail?: T;
+        id?: T;
+      };
+  next?: T;
+  updatedAt?: T;
+  createdAt?: T;
+  globalType?: T;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "contact_select".
+ */
+export interface ContactSelect<T extends boolean = true> {
+  eyebrow?: T;
+  title?: T;
+  blurb?: T;
+  channels?:
+    | T
+    | {
+        label?: T;
+        value?: T;
+        href?: T;
+        id?: T;
+      };
+  updatedAt?: T;
+  createdAt?: T;
+  globalType?: T;
 }
 /**
  * This interface was referenced by `Config`'s JSON-Schema

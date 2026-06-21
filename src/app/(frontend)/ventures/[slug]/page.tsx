@@ -1,9 +1,10 @@
 import type { Metadata } from 'next'
 import { notFound } from 'next/navigation'
-import { ventures } from '@/lib/portfolio-data'
+import { getVenture, getVentures } from '@/lib/content'
 import VentureDetail from '../../components/ventures/venture-detail'
 
-export function generateStaticParams() {
+export async function generateStaticParams() {
+  const ventures = await getVentures()
   return ventures.map((v) => ({ slug: v.slug }))
 }
 
@@ -13,7 +14,7 @@ export async function generateMetadata({
   params: Promise<{ slug: string }>
 }): Promise<Metadata> {
   const { slug } = await params
-  const v = ventures.find((x) => x.slug === slug)
+  const v = await getVenture(slug)
   if (!v) return { title: 'Venture not found' }
   return {
     title: v.name,
@@ -24,6 +25,7 @@ export async function generateMetadata({
 
 export default async function Page({ params }: { params: Promise<{ slug: string }> }) {
   const { slug } = await params
+  const ventures = await getVentures()
   const i = ventures.findIndex((x) => x.slug === slug)
   if (i === -1) notFound()
   return (
