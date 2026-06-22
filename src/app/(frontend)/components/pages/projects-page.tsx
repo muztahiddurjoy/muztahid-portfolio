@@ -1,6 +1,6 @@
 'use client'
 
-import { useRef, useState } from 'react'
+import { useMemo, useRef, useState } from 'react'
 import { ArrowUpRight } from 'lucide-react'
 import { gsap } from '@/lib/gsap'
 import { useIsoLayoutEffect } from '@/lib/use-iso-layout-effect'
@@ -16,14 +16,37 @@ import { ImageFrame } from '../ui/image-frame'
 import { Eyebrow, Tag } from '../ui/primitives'
 import { TransitionLink } from '../ui/transition-link'
 
-type Filter = 'all' | ProjectType
+type TypeFilter = 'all' | ProjectType
+type View = 'curated' | 'recent' | 'featured'
 
-const filters: { key: Filter; label: string }[] = [
+const typeFilters: { key: TypeFilter; label: string }[] = [
   { key: 'all', label: 'All' },
   ...(Object.entries(projectTypeMeta) as [ProjectType, { label: string }][]).map(
     ([key, meta]) => ({ key, label: meta.label }),
   ),
 ]
+
+const views: { key: View; label: string }[] = [
+  { key: 'curated', label: 'Curated' },
+  { key: 'recent', label: 'Recent' },
+  { key: 'featured', label: 'Featured' },
+]
+
+// A sortable timestamp for the "Recent" view: prefer the explicit ISO date,
+// fall back to the first 4-digit year in the (possibly ranged) year string,
+// else 0 so undated projects sink to the bottom rather than jumping the queue.
+const recencyOf = (p: Project): number => {
+  if (p.date) {
+    const t = Date.parse(p.date)
+    if (!Number.isNaN(t)) return t
+  }
+  const m = p.year.match(/\d{4}/)
+  if (m) {
+    const t = Date.parse(`${m[0]}-01-01`)
+    if (!Number.isNaN(t)) return t
+  }
+  return 0
+}
 
 // background-clip animated underline that grows on row hover/focus (theme-aware,
 // uses currentColor so it works across all 12 palettes)
@@ -31,14 +54,24 @@ const underlineGrow =
   'bg-[linear-gradient(currentColor,currentColor)] bg-no-repeat bg-[length:0%_1.5px] [background-position:0_100%] transition-[background-size] duration-500 ease-[cubic-bezier(0.22,1,0.36,1)] group-hover:bg-[length:100%_1.5px] group-focus-visible:bg-[length:100%_1.5px]'
 
 export default function ProjectsPage({ projects }: { projects: Project[] }) {
-  const [active, setActive] = useState<Filter>('all')
+  const [view, setView] = useState<View>('curated')
+  const [type, setType] = useState<TypeFilter>('all')
   const listRef = useRef<HTMLUListElement | null>(null)
 
-  const filtered = active === 'all' ? projects : projects.filter((v) => v.type === active)
   const total = String(projects.length).padStart(2, '0')
 
-  // Soft re-stagger of the rows whenever the filter changes. The list is re-keyed
-  // (key={active}) so React remounts the rows; this effect then fades them up.
+  // Compose view + type. Featured narrows the set; Recent re-sorts by recency;
+  // Curated keeps the editor's order (projects arrive pre-sorted by order/year).
+  const filtered = useMemo(() => {
+    let list = projects
+    if (view === 'featured') list = list.filter((p) => p.featured)
+    if (type !== 'all') list = list.filter((p) => p.type === type)
+    if (view === 'recent') list = [...list].sort((a, b) => recencyOf(b) - recencyOf(a))
+    return list
+  }, [projects, view, type])
+
+  // Soft re-stagger of the rows whenever the view/filter changes. The list is
+  // re-keyed so React remounts the rows; this effect then fades them up.
   useIsoLayoutEffect(() => {
     const root = listRef.current
     if (!root) return
@@ -59,7 +92,12 @@ export default function ProjectsPage({ projects }: { projects: Project[] }) {
       })
     }, listRef)
     return () => ctx.revert()
-  }, [active])
+  }, [view, type])
+
+  const reset = () => {
+    setView('curated')
+    setType('all')
+  }
 
   return (
     <div className="pt-28 md:pt-32">
@@ -93,22 +131,51 @@ export default function ProjectsPage({ projects }: { projects: Project[] }) {
         </Reveal>
       </section>
 
-      {/* ---------------- Filter + List ---------------- */}
+      {/* ---------------- Controls + List ---------------- */}
       <section className="container-page pb-20 md:pb-28" aria-label="Projects">
-        {/* filter bar */}
         <Reveal>
-          <div className="flex flex-col gap-5 border-y border-border py-6 sm:flex-row sm:items-center sm:justify-between">
+          <div className="flex flex-col gap-5 border-y border-border py-6">
+            {/* view: curated / recent / featured */}
+            <div className="flex flex-col gap-3 sm:flex-row sm:items-center sm:justify-between">
+              <div className="flex items-center gap-3" role="group" aria-label="Project view">
+                <span className="eyebrow">View</span>
+                <div className="flex rounded-full border border-border p-1">
+                  {views.map((v) => (
+                    <button
+                      key={v.key}
+                      type="button"
+                      onClick={() => setView(v.key)}
+                      data-cursor
+                      aria-pressed={view === v.key}
+                      className={cn(
+                        'rounded-full px-4 py-1.5 text-sm tracking-tight transition-colors duration-300',
+                        view === v.key
+                          ? 'bg-foreground text-background'
+                          : 'text-muted-foreground hover:text-foreground',
+                      )}
+                    >
+                      {v.label}
+                    </button>
+                  ))}
+                </div>
+              </div>
+              <p className="eyebrow shrink-0" aria-live="polite">
+                {String(filtered.length).padStart(2, '0')} of {total}
+              </p>
+            </div>
+
+            {/* type chips */}
             <div className="flex flex-wrap gap-2.5" role="group" aria-label="Filter projects by type">
-              {filters.map((f) => (
+              {typeFilters.map((f) => (
                 <button
                   key={f.key}
                   type="button"
-                  onClick={() => setActive(f.key)}
+                  onClick={() => setType(f.key)}
                   data-cursor
-                  aria-pressed={active === f.key}
+                  aria-pressed={type === f.key}
                   className={cn(
                     'rounded-full border px-4 py-2 text-sm tracking-tight transition-all duration-300',
-                    active === f.key
+                    type === f.key
                       ? 'border-foreground bg-foreground text-background'
                       : 'border-border text-muted-foreground hover:border-border-strong hover:text-foreground',
                   )}
@@ -117,17 +184,14 @@ export default function ProjectsPage({ projects }: { projects: Project[] }) {
                 </button>
               ))}
             </div>
-            <p className="eyebrow shrink-0" aria-live="polite">
-              {String(filtered.length).padStart(2, '0')} of {total}
-            </p>
           </div>
         </Reveal>
 
         {/* rows */}
         {filtered.length === 0 ? (
-          <EmptyState onReset={() => setActive('all')} />
+          <EmptyState view={view} onReset={reset} />
         ) : (
-          <ul key={active} ref={listRef} className="list-none">
+          <ul key={`${view}-${type}`} ref={listRef} className="list-none">
             {filtered.map((v, i) => (
               <li key={v.slug}>
                 <ProjectRow project={v} index={i} />
@@ -228,13 +292,15 @@ function ProjectRow({ project: v, index }: { project: Project; index: number }) 
 }
 
 /* ---------------- Empty state ---------------- */
-function EmptyState({ onReset }: { onReset: () => void }) {
+function EmptyState({ view, onReset }: { view: View; onReset: () => void }) {
+  const message =
+    view === 'featured'
+      ? 'No featured projects match this filter yet. Browse the full set instead.'
+      : 'No projects match this filter. The next one might still be on the workbench.'
   return (
     <div className="border-t border-border py-24 text-center md:py-32">
       <p className="font-script text-4xl text-muted-foreground md:text-5xl">nothing here… yet</p>
-      <p className="mx-auto mt-5 max-w-sm text-muted-foreground">
-        No projects match this filter. The next one might still be on the workbench.
-      </p>
+      <p className="mx-auto mt-5 max-w-sm text-muted-foreground">{message}</p>
       <button
         type="button"
         onClick={onReset}
