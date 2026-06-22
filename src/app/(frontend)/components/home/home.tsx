@@ -166,7 +166,7 @@ export function Home({
             <div data-hero-parallax className="will-change-transform">
               <ImageFrame
                 label={siteConfig.shortName}
-                caption="Founder · Dhaka"
+                caption="Engineer · Dhaka"
                 ratio="aspect-[4/5]"
               />
             </div>
@@ -219,7 +219,7 @@ export function Home({
             </Reveal>
             <Reveal as="h2" delay={0.08} className="mt-8 max-w-2xl font-display text-[clamp(1.7rem,3.4vw,2.95rem)] leading-[1.14] tracking-tight">
               I&rsquo;d rather <span className="display-italic">build</span> the future than predict
-              it &mdash; so I start the companies, lead the engineers, and ship the systems that turn a
+              it &mdash; so I write the code, lead the engineers, and ship the systems that turn a
               bold idea into something the world can actually hold.
             </Reveal>
             <Reveal as="p" delay={0.16} className="mt-7 max-w-md text-muted-foreground">
@@ -248,7 +248,7 @@ export function Home({
       </section>
 
       {/* ============================================================
-          03 · FEATURED VENTURES
+          03 · FEATURED PROJECTS
           ============================================================ */}
       <section className="border-t border-border">
         <div className="container-page py-24 md:py-32">

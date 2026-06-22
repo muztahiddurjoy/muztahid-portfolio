@@ -48,8 +48,8 @@ export default function WritingPage({ articles }: { articles: Article[] }) {
         <div className="mt-9 max-w-2xl">
           <Reveal delay={0.15}>
             <p className="text-lg leading-relaxed text-muted-foreground md:text-xl">
-              Field notes from the workshop — essays on founding companies, engineering the systems
-              beneath them, teaching robots to hold their line on unforgiving terrain, and the
+              Field notes from the workshop — essays on building, engineering the systems
+              beneath the products, teaching robots to hold their line on unforgiving terrain, and the
               occasional argument about why things should be{' '}
               <span className="display-italic text-foreground">built to last</span>.
             </p>
@@ -61,7 +61,7 @@ export default function WritingPage({ articles }: { articles: Article[] }) {
             <Signature className="text-xl text-foreground">from the desk</Signature>
             <span className="hidden h-px w-8 bg-border-strong sm:block" />
             <span>
-              {articles.length} essays · founding, engineering, robotics &amp; the long view
+              {articles.length} essays · building, engineering, robotics &amp; the long view
             </span>
           </p>
         </Reveal>

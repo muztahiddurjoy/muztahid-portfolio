@@ -65,7 +65,7 @@ export function AboutPage({ story }: { story: Story }) {
   return (
     <main ref={scope} className="pt-28 md:pt-32">
       {/* ============================================================
-          01 · HERO — the founder, the thesis, the signature
+          01 · HERO — the builder, the thesis, the signature
           ============================================================ */}
       <section data-hero className="container-page pb-20 md:pb-28">
         <div className="grid items-center gap-12 lg:grid-cols-[1.05fr_0.95fr] lg:gap-16">
@@ -196,7 +196,7 @@ export function AboutPage({ story }: { story: Story }) {
           <Eyebrow index="03">What I build by</Eyebrow>
         </Reveal>
         <Reveal as="p" delay={0.08} className="mt-7 max-w-xl text-lg text-muted-foreground">
-          Four convictions that shape every venture, every team, and every line of code.
+          Four convictions that shape every build, every team, and every line of code.
         </Reveal>
 
         <div className="mt-14 grid md:mt-16 md:grid-cols-2">

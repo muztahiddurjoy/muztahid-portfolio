@@ -124,7 +124,7 @@ export default function AchievementsPage({ achievements }: { achievements: Achie
             and the milestones that marked a company quietly coming alive.
           </p>
           <Signature className="shrink-0 text-2xl text-muted-foreground md:text-3xl">
-            a founder&rsquo;s proof of showing up
+            a builder&rsquo;s proof of showing up
           </Signature>
         </Reveal>
       </section>
@@ -259,7 +259,7 @@ export default function AchievementsPage({ achievements }: { achievements: Achie
           ))}
         </ol>
 
-        {/* closing — cross-link, founder framing */}
+        {/* closing — cross-link, builder framing */}
         <Reveal className="mt-12 flex flex-col gap-6 border-t border-border pt-10 md:flex-row md:items-center md:justify-between">
           <p className="max-w-md font-display text-xl leading-snug md:text-2xl">
             Every line here is <span className="display-italic">proof of the next</span> one.

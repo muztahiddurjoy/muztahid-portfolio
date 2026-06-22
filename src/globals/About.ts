@@ -2,11 +2,11 @@ import type { GlobalConfig } from 'payload'
 
 const authed = ({ req }: { req: { user?: unknown } }) => Boolean(req.user)
 
-/** The founder story / about page content. */
+/** The story / about page content. */
 export const About: GlobalConfig = {
   slug: 'about',
   label: 'About Page',
-  admin: { description: 'The founder story — narrative, philosophy, values and journey.' },
+  admin: { description: 'The story — narrative, philosophy, values and journey.' },
   access: {
     read: () => true,
     update: authed,

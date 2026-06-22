@@ -85,7 +85,7 @@ export default function CertificatesPage({ certificates }: { certificates: Certi
             delay={0.12}
             className="mt-7 max-w-2xl text-lg leading-relaxed text-muted-foreground"
           >
-            A founder is only as sharp as their last lesson. These are the credentials I have
+            An engineer is only as sharp as their last lesson. These are the credentials I have
             collected keeping pace across{' '}
             <span className="text-foreground">cloud, AI, robotics, and the web</span> — proof that
             the curiosity that started everything never quietly switched off.

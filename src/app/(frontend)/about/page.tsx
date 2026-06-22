@@ -4,7 +4,7 @@ import AboutPage from '../components/pages/about-page'
 
 export const metadata: Metadata = {
   title: 'Story',
-  description: 'The story of a founder who builds companies and the technology that makes them inevitable.',
+  description: 'The story of a full-stack engineer and relentless builder who ships products, systems, and autonomous robots.',
 }
 
 export default async function Page() {

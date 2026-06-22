@@ -942,7 +942,7 @@ export interface Home {
   createdAt?: string | null;
 }
 /**
- * The founder story — narrative, philosophy, values and journey.
+ * The story — narrative, philosophy, values and journey.
  *
  * This interface was referenced by `Config`'s JSON-Schema
  * via the `definition` "about".

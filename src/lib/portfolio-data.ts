@@ -6,15 +6,15 @@
 export const siteConfig = {
   name: 'Muztahid Rahman',
   shortName: 'Muztahid',
-  role: 'Founder & Engineer',
-  tagline: 'Building the future, one venture at a time.',
+  role: 'Full-Stack Engineer & Hustler',
+  tagline: 'I build things — full-stack, shipped, and built to last.',
   location: 'Dhaka, Bangladesh',
   email: 'muztahid.appbaksho@gmail.com',
   github: 'https://github.com/muztahiddurjoy',
   linkedin: 'https://www.linkedin.com/in/muztahiddurjoy',
-  availability: 'Building · open to bold collaborations',
+  availability: 'Heads-down building · open to bold collaborations',
   metaDescription:
-    'Muztahid Rahman is a founder and engineer building companies and the technology behind them — from autonomous robotics to scalable products.',
+    'Muztahid Rahman is a full-stack software engineer and relentless builder — shipping products, scalable systems, and autonomous robots from Dhaka.',
   nav: [
     { label: 'Story', href: '/about' },
     { label: 'Projects', href: '/projects' },
@@ -27,13 +27,13 @@ export const siteConfig = {
 
 /* ---------------- Home ---------------- */
 export const home = {
-  eyebrow: 'Founder · Engineer · Builder',
-  headline: ['Building the', 'future, one', 'venture at a time.'],
+  eyebrow: 'Engineer · Builder · Hustler',
+  headline: ['Full-stack', 'engineer who', 'loves to build.'],
   // word(s) to italicize per line index → softens the serif headline
-  headlineAccent: 'venture',
+  headlineAccent: 'build',
   script: 'from idea to shipped',
   lede:
-    'I’m Muztahid — a founder who builds companies and the technology underneath them. I started a software studio, lead engineering teams, and ship autonomous systems. I’m most alive in the gap between a bold idea and the machine that makes it real.',
+    'I’m Muztahid — a full-stack engineer and relentless builder. I ship products end to end, lead engineering teams, and put autonomous robots on rough terrain. I’m happiest in the gap between an idea and the working thing that proves it.',
   primaryCta: { label: 'See what I build', href: '/projects' },
   secondaryCta: { label: 'Read my story', href: '/about' },
   marquee: [
@@ -46,36 +46,36 @@ export const home = {
     'BRAC University',
   ],
   now: [
-    { label: 'Founding', value: 'Appbaksho — a software studio shipping products for ambitious teams' },
+    { label: 'Building', value: 'Appbaksho — a software studio shipping products for ambitious teams' },
     { label: 'Leading', value: 'Engineering at BOT Engineers as Chief Software Engineer' },
-    { label: 'Building', value: 'Autonomous navigation with BRACU Mongol-Tori' },
+    { label: 'Shipping', value: 'Autonomous navigation with BRACU Mongol-Tori' },
     { label: 'Studying', value: 'Computer Science at BRAC University' },
   ],
 }
 
 export const stats = [
-  { value: 5, suffix: '+', label: 'Ventures founded & led' },
-  { value: 15, suffix: '+', label: 'Products shipped' },
+  { value: 5, suffix: '+', label: 'Years shipping in production' },
+  { value: 15, suffix: '+', label: 'Products shipped end-to-end' },
   { value: 12, suffix: '', label: 'Awards & recognitions' },
-  { value: 3, suffix: '', label: 'Organizations built' },
+  { value: 3, suffix: '', label: 'Teams & studios built' },
 ]
 
-/* ---------------- Founder story (About) ---------------- */
+/* ---------------- Story (About) ---------------- */
 export const story = {
   eyebrow: 'The story',
-  title: 'I build companies — and the technology that makes them inevitable.',
+  title: 'I’m an engineer who loves to build — end to end, and built to last.',
   intro:
-    'My work lives where vision meets the soldering iron. I don’t just imagine products; I architect the systems, lead the teams, and ship the things that turn an idea into a company.',
-  portrait: { label: 'Muztahid Rahman', caption: 'Founder · Dhaka' },
+    'My work lives where vision meets the soldering iron. I don’t just imagine products; I architect the systems, write the code, lead the teams, and ship the things that turn an idea into a working product.',
+  portrait: { label: 'Muztahid Rahman', caption: 'Engineer · Dhaka' },
   narrative: [
     'I grew up taking things apart to understand how they worked — then putting them back together better. That instinct never left. Today it shows up as the same loop at a bigger scale: see a gap, build the system that closes it, and rally people around the result.',
-    'I founded Appbaksho to give ambitious teams a studio that ships like a startup and engineers like a veteran. As Chief Software Engineer at BOT Engineers, I lead a cross-functional team building production platforms, set the engineering culture, and turn roadmaps into shipped software. With BRACU Mongol-Tori, I push autonomy onto terrain that punishes shortcuts.',
-    'What ties it together is a founder’s appetite for ownership: I want to be responsible for the whole arc — the pitch, the architecture, the team, and the metric that says it worked. Competitions like the World Invention Competition and the Future of Capitalism startup challenge sharpened the instinct to frame engineering as value, not just code.',
+    'I built Appbaksho to give ambitious teams a studio that ships like a startup and engineers like a veteran. As Chief Software Engineer at BOT Engineers, I lead a cross-functional team building production platforms, set the engineering culture, and turn roadmaps into shipped software. With BRACU Mongol-Tori, I push autonomy onto terrain that punishes shortcuts.',
+    'What ties it together is a builder’s appetite for ownership: I want to be responsible for the whole arc — the architecture, the code, the team, and the metric that says it worked. Competitions like the World Invention Competition and the Future of Capitalism challenge sharpened the instinct to frame engineering as value, not just code.',
   ],
   philosophy: {
     quote:
       'Build like the W123 — over-engineered, mechanically pure, and made to outlast its creator.',
-    body: 'Every venture, every line of code, every 3D-printed bracket should carry that intent: built to last, built to be trusted, built so the next person can stand on it.',
+    body: 'Everything I build, every line of code, every 3D-printed bracket should carry that intent: built to last, built to be trusted, built so the next person can stand on it.',
   },
   values: [
     {
@@ -88,7 +88,7 @@ export const story = {
     },
     {
       title: 'Bridge the layers',
-      body: 'The edge is where hardware meets software, where founders meet engineers. Live there.',
+      body: 'The edge is where hardware meets software, where builders meet engineers. Live there.',
     },
     {
       title: 'Build to outlast',
@@ -164,7 +164,7 @@ export const projects: Project[] = [
     vision:
       'Most agencies either move fast and break things or move slow and over-charge. I wanted a third option: a studio that ships at startup velocity without sacrificing the engineering rigor a real product needs.',
     problem:
-      'New ventures need a full digital presence and the un-glamorous machinery of a business — legal documents, compliance, internal tooling — all at once, under tight timelines and tighter budgets.',
+      'Early-stage teams need a full digital presence and the un-glamorous machinery of a business — legal documents, compliance, internal tooling — all at once, under tight timelines and tighter budgets.',
     build: [
       'Stood up a modular Next.js delivery stack so each client project starts at 60% done, not zero.',
       'Built an automated legal-document generation pipeline that templates compliance paperwork from structured inputs.',
@@ -357,7 +357,7 @@ export const projects: Project[] = [
     ],
     stack: ['Fusion 360', 'CAD', 'FDM/FFF', 'Bambu Lab'],
     vision:
-      'A founder who can prototype hardware as fast as software moves twice as quick. I built a practice to close the loop between an idea and a part you can hold.',
+      'A builder who can prototype hardware as fast as software moves twice as quick. I built a practice to close the loop between an idea and a part you can hold.',
     problem:
       'Robotic assemblies need custom enclosures, mounts, and brackets that no off-the-shelf part fits — each iteration must go from idea to validated physical part fast and repeatably.',
     build: [
@@ -381,7 +381,7 @@ export const projects: Project[] = [
 export type WritingCategory = 'building' | 'engineering' | 'robotics' | 'essays'
 
 export const writingCategoryMeta: Record<WritingCategory, { label: string }> = {
-  building: { label: 'Building & Founding' },
+  building: { label: 'Building & Shipping' },
   engineering: { label: 'Engineering' },
   robotics: { label: 'Robotics' },
   essays: { label: 'Essays' },
@@ -506,7 +506,7 @@ export const articles: Article[] = [
     featured: false,
     cover: { label: 'W123', caption: 'On building to last' },
     body: loremBuild(
-      'The Mercedes W123 was over-engineered on purpose — built so the next owner, decades later, could still trust it. I want every venture I build to carry that same quiet promise.',
+      'The Mercedes W123 was over-engineered on purpose — built so the next owner, decades later, could still trust it. I want everything I build to carry that same quiet promise.',
     ),
   },
   {
@@ -585,7 +585,7 @@ export const achievements: Achievement[] = [
     dateLabel: 'April 2024',
     type: 'competition',
     description:
-      'Pitched a venture concept on the startup stage — sharpening the founder’s craft of turning engineering into a story of value, market, and momentum.',
+      'Pitched a product concept on the startup stage — sharpening the craft of turning engineering into a story of value, market, and momentum.',
     featured: true,
   },
   {
@@ -734,7 +734,7 @@ export const contact = {
   eyebrow: 'Let’s build',
   title: 'Have something audacious in mind?',
   blurb:
-    'Whether it’s a venture worth founding, a product worth shipping, or a system worth bridging hardware and software — I read every message. Let’s make something that lasts.',
+    'Whether it’s a product worth shipping, a system worth architecting, or a robot worth teaching to think — I read every message. Let’s build something that lasts.',
   channels: [
     { label: 'Email', value: 'muztahid.appbaksho@gmail.com', href: 'mailto:muztahid.appbaksho@gmail.com' },
     { label: 'GitHub', value: 'github.com/muztahiddurjoy', href: 'https://github.com/muztahiddurjoy' },

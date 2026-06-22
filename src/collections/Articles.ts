@@ -60,7 +60,7 @@ export const Articles: CollectionConfig = {
           required: true,
           defaultValue: 'building',
           options: [
-            { label: 'Building & Founding', value: 'building' },
+            { label: 'Building & Shipping', value: 'building' },
             { label: 'Engineering', value: 'engineering' },
             { label: 'Robotics', value: 'robotics' },
             { label: 'Essays', value: 'essays' },
