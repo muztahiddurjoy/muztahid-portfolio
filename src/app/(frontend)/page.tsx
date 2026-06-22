@@ -1,10 +1,10 @@
-import { getSite, getHome, getVentures, getArticles, getAchievements } from '@/lib/content'
+import { getSite, getHome, getProjects, getArticles, getAchievements } from '@/lib/content'
 import { Home } from './components/home/home'
 
 export default async function HomePage() {
   const site = await getSite()
   const { home, stats } = await getHome()
-  const ventures = await getVentures()
+  const projects = await getProjects()
   const articles = await getArticles()
   const achievements = await getAchievements()
 
@@ -29,7 +29,7 @@ export default async function HomePage() {
         siteConfig={site}
         home={home}
         stats={stats}
-        ventures={ventures}
+        projects={projects}
         articles={articles}
         achievements={achievements}
       />

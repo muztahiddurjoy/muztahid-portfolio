@@ -283,8 +283,8 @@ export function AboutPage({ story }: { story: Story }) {
         </Reveal>
 
         <Reveal delay={0.16} className="mt-10 flex flex-wrap items-center gap-x-5 gap-y-4">
-          <CtaButton href="/ventures" variant="solid" icon="arrow-right">
-            See my ventures
+          <CtaButton href="/projects" variant="solid" icon="arrow-right">
+            See what I’ve built
           </CtaButton>
           <CtaButton href="/contact" variant="text" icon="arrow-up">
             Get in touch

@@ -6,9 +6,9 @@ import { gsap } from '@/lib/gsap'
 import { useIsoLayoutEffect } from '@/lib/use-iso-layout-effect'
 import { cn } from '@/lib/utils'
 import {
-  ventureTypeMeta,
-  type Venture,
-  type VentureType,
+  projectTypeMeta,
+  type Project,
+  type ProjectType,
 } from '@/lib/portfolio-data'
 import { Reveal } from '../ui/reveal'
 import { AnimatedHeading } from '../ui/animated-heading'
@@ -16,11 +16,11 @@ import { ImageFrame } from '../ui/image-frame'
 import { Eyebrow, Tag } from '../ui/primitives'
 import { TransitionLink } from '../ui/transition-link'
 
-type Filter = 'all' | VentureType
+type Filter = 'all' | ProjectType
 
 const filters: { key: Filter; label: string }[] = [
   { key: 'all', label: 'All' },
-  ...(Object.entries(ventureTypeMeta) as [VentureType, { label: string }][]).map(
+  ...(Object.entries(projectTypeMeta) as [ProjectType, { label: string }][]).map(
     ([key, meta]) => ({ key, label: meta.label }),
   ),
 ]
@@ -30,12 +30,12 @@ const filters: { key: Filter; label: string }[] = [
 const underlineGrow =
   'bg-[linear-gradient(currentColor,currentColor)] bg-no-repeat bg-[length:0%_1.5px] [background-position:0_100%] transition-[background-size] duration-500 ease-[cubic-bezier(0.22,1,0.36,1)] group-hover:bg-[length:100%_1.5px] group-focus-visible:bg-[length:100%_1.5px]'
 
-export default function VenturesPage({ ventures }: { ventures: Venture[] }) {
+export default function ProjectsPage({ projects }: { projects: Project[] }) {
   const [active, setActive] = useState<Filter>('all')
   const listRef = useRef<HTMLUListElement | null>(null)
 
-  const filtered = active === 'all' ? ventures : ventures.filter((v) => v.type === active)
-  const total = String(ventures.length).padStart(2, '0')
+  const filtered = active === 'all' ? projects : projects.filter((v) => v.type === active)
+  const total = String(projects.length).padStart(2, '0')
 
   // Soft re-stagger of the rows whenever the filter changes. The list is re-keyed
   // (key={active}) so React remounts the rows; this effect then fades them up.
@@ -66,7 +66,7 @@ export default function VenturesPage({ ventures }: { ventures: Venture[] }) {
       {/* ---------------- Hero ---------------- */}
       <section className="container-page pb-14 md:pb-20">
         <Reveal>
-          <Eyebrow index={total}>Ventures</Eyebrow>
+          <Eyebrow index={total}>Projects</Eyebrow>
         </Reveal>
 
         <h1 className="mt-7 font-display text-[clamp(2.7rem,7.2vw,6rem)] leading-[0.95] tracking-tight">
@@ -83,23 +83,22 @@ export default function VenturesPage({ ventures }: { ventures: Venture[] }) {
         <Reveal delay={0.1}>
           <div className="mt-9 flex flex-col gap-8 border-t border-border pt-9 md:flex-row md:items-end md:justify-between md:gap-16">
             <p className="max-w-xl text-lg leading-relaxed text-muted-foreground">
-              Companies I’ve founded, products I’ve shipped, and robots I’ve taught to think.
-              Each venture is a bet on a future I wanted to exist — and the engineering that made
-              it real.
+              Products I’ve shipped, systems I’ve architected, and robots I’ve taught to think.
+              Every project is something I wanted to exist — so I built it, end to end.
             </p>
             <p className="shrink-0 font-script text-3xl leading-none text-muted-foreground md:text-4xl">
-              {total} ventures
+              {total} projects
             </p>
           </div>
         </Reveal>
       </section>
 
       {/* ---------------- Filter + List ---------------- */}
-      <section className="container-page pb-20 md:pb-28" aria-label="Ventures">
+      <section className="container-page pb-20 md:pb-28" aria-label="Projects">
         {/* filter bar */}
         <Reveal>
           <div className="flex flex-col gap-5 border-y border-border py-6 sm:flex-row sm:items-center sm:justify-between">
-            <div className="flex flex-wrap gap-2.5" role="group" aria-label="Filter ventures by type">
+            <div className="flex flex-wrap gap-2.5" role="group" aria-label="Filter projects by type">
               {filters.map((f) => (
                 <button
                   key={f.key}
@@ -131,7 +130,7 @@ export default function VenturesPage({ ventures }: { ventures: Venture[] }) {
           <ul key={active} ref={listRef} className="list-none">
             {filtered.map((v, i) => (
               <li key={v.slug}>
-                <VentureRow venture={v} index={i} />
+                <ProjectRow project={v} index={i} />
               </li>
             ))}
           </ul>
@@ -141,14 +140,14 @@ export default function VenturesPage({ ventures }: { ventures: Venture[] }) {
   )
 }
 
-/* ---------------- Venture row ---------------- */
-function VentureRow({ venture: v, index }: { venture: Venture; index: number }) {
+/* ---------------- Project row ---------------- */
+function ProjectRow({ project: v, index }: { project: Project; index: number }) {
   const flip = index % 2 === 1
   const num = String(index + 1).padStart(2, '0')
 
   return (
     <TransitionLink
-      href={`/ventures/${v.slug}`}
+      href={`/projects/${v.slug}`}
       data-row
       data-cursor
       data-cursor-label="View"
@@ -166,6 +165,7 @@ function VentureRow({ venture: v, index }: { venture: Venture; index: number }) 
           <ImageFrame
             label={v.cover.label}
             caption={v.cover.caption}
+            src={v.cover.image}
             ratio="aspect-[16/10]"
           />
         </div>
@@ -187,7 +187,7 @@ function VentureRow({ venture: v, index }: { venture: Venture; index: number }) 
           </div>
 
           <div className="mt-5">
-            <Tag>{ventureTypeMeta[v.type].label}</Tag>
+            <Tag>{projectTypeMeta[v.type].label}</Tag>
           </div>
 
           <h2
@@ -218,7 +218,7 @@ function VentureRow({ venture: v, index }: { venture: Venture; index: number }) 
 
           {/* arrow / cta */}
           <span className="mt-7 inline-flex items-center gap-2 text-sm font-medium">
-            <span className={cn('inline', underlineGrow)}>View venture</span>
+            <span className={cn('inline', underlineGrow)}>View project</span>
             <ArrowUpRight className="h-4 w-4 transition-transform duration-300 group-hover:translate-x-1 group-hover:-translate-y-1 group-focus-visible:translate-x-1 group-focus-visible:-translate-y-1" />
           </span>
         </div>
@@ -233,7 +233,7 @@ function EmptyState({ onReset }: { onReset: () => void }) {
     <div className="border-t border-border py-24 text-center md:py-32">
       <p className="font-script text-4xl text-muted-foreground md:text-5xl">nothing here… yet</p>
       <p className="mx-auto mt-5 max-w-sm text-muted-foreground">
-        No ventures match this filter. The next one might still be on the workbench.
+        No projects match this filter. The next one might still be on the workbench.
       </p>
       <button
         type="button"
@@ -241,7 +241,7 @@ function EmptyState({ onReset }: { onReset: () => void }) {
         data-cursor
         className="btn-inverse mt-8 inline-flex items-center rounded-full px-6 py-3 text-sm font-medium tracking-tight"
       >
-        View all ventures
+        View all projects
       </button>
     </div>
   )

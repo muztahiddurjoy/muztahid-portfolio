@@ -67,7 +67,7 @@ export interface Config {
   };
   blocks: {};
   collections: {
-    ventures: Venture;
+    projects: Project;
     articles: Article;
     achievements: Achievement;
     certificates: Certificate;
@@ -81,7 +81,7 @@ export interface Config {
   };
   collectionsJoins: {};
   collectionsSelect: {
-    ventures: VenturesSelect<false> | VenturesSelect<true>;
+    projects: ProjectsSelect<false> | ProjectsSelect<true>;
     articles: ArticlesSelect<false> | ArticlesSelect<true>;
     achievements: AchievementsSelect<false> | AchievementsSelect<true>;
     certificates: CertificatesSelect<false> | CertificatesSelect<true>;
@@ -138,17 +138,17 @@ export interface UserAuthOperations {
   };
 }
 /**
- * Companies, products, robotics & research — the work, founder-framed.
+ * Products, systems, robots & experiments — the things I build.
  *
  * This interface was referenced by `Config`'s JSON-Schema
- * via the `definition` "ventures".
+ * via the `definition` "projects".
  */
-export interface Venture {
+export interface Project {
   id: string;
   name: string;
   tagline: string;
   role: string;
-  type: 'company' | 'product' | 'robotics' | 'research';
+  type: 'product' | 'company' | 'robotics' | 'research';
   year: string;
   /**
    * e.g. Active, Shipped, Ongoing
@@ -159,7 +159,7 @@ export interface Venture {
    */
   summary: string;
   /**
-   * Card / case-study hero. Image optional; label+caption are the text placeholder.
+   * Card / case-study hero. Image optional; label+caption are the text placeholder shown until an image is added.
    */
   cover?: {
     label?: string | null;
@@ -217,11 +217,15 @@ export interface Venture {
       }[]
     | null;
   /**
-   * Surface on the homepage & top of the list.
+   * Surface on the homepage & pin to the top of the list.
    */
   featured?: boolean | null;
   /**
-   * Manual sort. Lower shows first.
+   * Build / ship date. Drives the "Recent" view. Falls back to the Year field when blank.
+   */
+  date?: string | null;
+  /**
+   * Manual / curated sort. Lower shows first.
    */
   order?: number | null;
   /**
@@ -473,8 +477,8 @@ export interface PayloadLockedDocument {
   id: string;
   document?:
     | ({
-        relationTo: 'ventures';
-        value: string | Venture;
+        relationTo: 'projects';
+        value: string | Project;
       } | null)
     | ({
         relationTo: 'articles';
@@ -544,9 +548,9 @@ export interface PayloadMigration {
 }
 /**
  * This interface was referenced by `Config`'s JSON-Schema
- * via the `definition` "ventures_select".
+ * via the `definition` "projects_select".
  */
-export interface VenturesSelect<T extends boolean = true> {
+export interface ProjectsSelect<T extends boolean = true> {
   name?: T;
   tagline?: T;
   role?: T;
@@ -594,6 +598,7 @@ export interface VenturesSelect<T extends boolean = true> {
         id?: T;
       };
   featured?: T;
+  date?: T;
   order?: T;
   slug?: T;
   updatedAt?: T;

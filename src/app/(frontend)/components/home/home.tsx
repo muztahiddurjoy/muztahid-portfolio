@@ -6,14 +6,14 @@ import { gsap } from '@/lib/gsap'
 import { useIsoLayoutEffect } from '@/lib/use-iso-layout-effect'
 import { cn } from '@/lib/utils'
 import {
-  ventureTypeMeta,
+  projectTypeMeta,
   writingCategoryMeta,
   achievementTypeMeta,
   type AchievementType,
   type SiteConfig,
   type HomeData,
   type Stat,
-  type Venture,
+  type Project,
   type Article,
   type Achievement,
 } from '@/lib/portfolio-data'
@@ -37,18 +37,18 @@ export function Home({
   siteConfig,
   home,
   stats,
-  ventures,
+  projects,
   articles,
   achievements,
 }: {
   siteConfig: SiteConfig
   home: HomeData
   stats: Stat[]
-  ventures: Venture[]
+  projects: Project[]
   articles: Article[]
   achievements: Achievement[]
 }) {
-  const featuredVentures = ventures.filter((v) => v.featured)
+  const featuredProjects = projects.filter((v) => v.featured)
   const latestPosts = articles.slice(0, 3)
   const featuredWins = achievements.filter((a) => a.featured).slice(0, 3)
 
@@ -255,41 +255,41 @@ export function Home({
           <div className="flex flex-wrap items-end justify-between gap-x-10 gap-y-6">
             <div>
               <Reveal>
-                <Eyebrow index="03">Selected ventures</Eyebrow>
+                <Eyebrow index="03">Selected projects</Eyebrow>
               </Reveal>
               <h2 className="mt-7 font-display text-[clamp(2rem,4.6vw,3.6rem)] leading-[1.04] tracking-tight">
-                <AnimatedHeading as="span" className="block" text="Companies &amp; systems" />
+                <AnimatedHeading as="span" className="block" text="Things I&rsquo;ve" />
                 <AnimatedHeading
                   as="span"
                   className="block"
                   wordClassName="display-italic"
-                  text="I&rsquo;ve brought to life."
+                  text="actually shipped."
                   delay={0.08}
                 />
               </h2>
             </div>
             <Reveal as="p" delay={0.15} className="max-w-xs text-muted-foreground">
-              The ventures I&rsquo;ve founded, led, and engineered &mdash; from software studios to
+              The projects I&rsquo;ve built, shipped, and engineered &mdash; from software studios to
               autonomous machines.
             </Reveal>
           </div>
 
           <div className="mt-16 space-y-20 md:mt-20 md:space-y-28">
-            {featuredVentures.map((v, i) => {
+            {featuredProjects.map((v, i) => {
               const flip = i % 2 === 1
-              const href = `/ventures/${v.slug}`
+              const href = `/projects/${v.slug}`
               return (
                 <article key={v.slug} className="grid items-center gap-8 md:grid-cols-2 md:gap-14">
                   <Reveal y={40} className={cn('relative', flip && 'md:order-2')}>
                     <TransitionLink href={href} data-cursor aria-label={`View ${v.name}`} className="block">
-                      <ImageFrame label={v.cover.label} caption={v.cover.caption} ratio="aspect-[16/12]" />
+                      <ImageFrame label={v.cover.label} caption={v.cover.caption} src={v.cover.image} ratio="aspect-[16/12]" />
                     </TransitionLink>
                   </Reveal>
 
                   <Reveal y={30} delay={0.1} className={cn(flip && 'md:order-1')}>
                     <div className="flex items-center gap-4">
                       <Signature className="text-xl text-muted-foreground">0{i + 1}</Signature>
-                      <Tag>{ventureTypeMeta[v.type].label}</Tag>
+                      <Tag>{projectTypeMeta[v.type].label}</Tag>
                     </div>
 
                     <h3 className="mt-5 font-display text-title leading-[1.05] tracking-tight">
@@ -314,7 +314,7 @@ export function Home({
 
                     <div className="mt-8">
                       <CtaButton href={href} variant="text" icon="arrow-up">
-                        View venture
+                        View project
                       </CtaButton>
                     </div>
                   </Reveal>
@@ -324,8 +324,8 @@ export function Home({
           </div>
 
           <Reveal className="mt-16 flex justify-center md:mt-20">
-            <CtaButton href="/ventures" variant="outline" icon="arrow-right">
-              All ventures
+            <CtaButton href="/projects" variant="outline" icon="arrow-right">
+              All projects
             </CtaButton>
           </Reveal>
         </div>

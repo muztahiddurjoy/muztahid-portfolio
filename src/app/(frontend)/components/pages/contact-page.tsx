@@ -358,7 +358,7 @@ export default function ContactPage({
                     <p data-rise className="mt-5 max-w-sm text-muted-foreground">
                       Thank you for reaching out{firstName ? `, ${firstName}` : ''}. Your note
                       landed safely. In the meantime, the work speaks for itself — feel free to
-                      wander the ventures.
+                      wander the projects.
                     </p>
                     <button
                       data-rise

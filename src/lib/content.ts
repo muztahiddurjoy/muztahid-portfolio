@@ -7,11 +7,11 @@ import {
   stats as staticStats,
   story as staticStory,
   contact as staticContact,
-  ventures as staticVentures,
+  projects as staticProjects,
   articles as staticArticles,
   achievements as staticAchievements,
   certificates as staticCertificates,
-  type Venture,
+  type Project,
   type Article,
   type Achievement,
   type Certificate,
@@ -155,20 +155,29 @@ export async function getContact(): Promise<ContactContent> {
   }, staticContact)
 }
 
-/* ------------------------------- ventures ------------------------------- */
-function mapVenture(d: Record<string, unknown>): Venture {
+/* ------------------------------- projects ------------------------------- */
+/** Pull a usable image URL out of a Payload upload field (depth ≥ 1). */
+const mediaUrl = (v: unknown): string | undefined => {
+  if (typeof v === 'string') return undefined // unpopulated relationship id
+  const o = (v ?? {}) as Record<string, unknown>
+  return str(o.url) || undefined
+}
+
+function mapProject(d: Record<string, unknown>): Project {
   const cover = (d.cover ?? {}) as Record<string, unknown>
+  const image = mediaUrl(cover.image)
   return {
     slug: str(d.slug),
     name: str(d.name),
     tagline: str(d.tagline),
     role: str(d.role),
-    type: str(d.type, 'product') as Venture['type'],
+    type: str(d.type, 'product') as Project['type'],
     year: str(d.year),
+    ...(str(d.date) ? { date: str(d.date) } : {}),
     status: str(d.status),
     featured: Boolean(d.featured),
     summary: str(d.summary),
-    cover: { label: str(cover.label), caption: str(cover.caption) },
+    cover: { label: str(cover.label), caption: str(cover.caption), ...(image ? { image } : {}) },
     metrics: arr<{ label: string; value: string }>(d.metrics).map((m) => ({ label: str(m.label), value: str(m.value) })),
     stack: arr<string>(d.stack),
     vision: str(d.vision),
@@ -180,22 +189,22 @@ function mapVenture(d: Record<string, unknown>): Venture {
   }
 }
 
-export async function getVentures(): Promise<Venture[]> {
+export async function getProjects(): Promise<Project[]> {
   return safe(async () => {
     const payload = await client()
-    const { docs } = await payload.find({ collection: 'ventures', limit: 100, depth: 1, sort: ['order', 'year'] })
+    const { docs } = await payload.find({ collection: 'projects', limit: 100, depth: 1, sort: ['order', 'year'] })
     if (!docs.length) return null
-    return docs.map((d) => mapVenture(d as unknown as Record<string, unknown>))
-  }, staticVentures)
+    return docs.map((d) => mapProject(d as unknown as Record<string, unknown>))
+  }, staticProjects)
 }
 
-export async function getVenture(slug: string): Promise<Venture | null> {
+export async function getProject(slug: string): Promise<Project | null> {
   return safe(async () => {
     const payload = await client()
-    const { docs } = await payload.find({ collection: 'ventures', where: { slug: { equals: slug } }, limit: 1, depth: 1 })
-    if (docs[0]) return mapVenture(docs[0] as unknown as Record<string, unknown>)
-    return staticVentures.find((v) => v.slug === slug) ?? null
-  }, staticVentures.find((v) => v.slug === slug) ?? null)
+    const { docs } = await payload.find({ collection: 'projects', where: { slug: { equals: slug } }, limit: 1, depth: 1 })
+    if (docs[0]) return mapProject(docs[0] as unknown as Record<string, unknown>)
+    return staticProjects.find((v) => v.slug === slug) ?? null
+  }, staticProjects.find((v) => v.slug === slug) ?? null)
 }
 
 /* ------------------------------- articles ------------------------------- */

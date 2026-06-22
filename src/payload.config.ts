@@ -8,7 +8,7 @@ import sharp from 'sharp'
 
 import { Users } from './collections/Users'
 import { Media } from './collections/Media'
-import { Ventures } from './collections/Ventures'
+import { Projects } from './collections/Projects'
 import { Articles } from './collections/Articles'
 import { Achievements } from './collections/Achievements'
 import { Certificates } from './collections/Certificates'
@@ -47,7 +47,7 @@ export default buildConfig({
     },
   },
   collections: [
-    Ventures,
+    Projects,
     Articles,
     Achievements,
     Certificates,

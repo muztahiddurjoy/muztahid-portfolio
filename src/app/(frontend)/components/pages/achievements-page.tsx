@@ -265,8 +265,8 @@ export default function AchievementsPage({ achievements }: { achievements: Achie
             Every line here is <span className="display-italic">proof of the next</span> one.
           </p>
           <div className="flex flex-wrap items-center gap-4">
-            <CtaButton href="/ventures" variant="outline" icon="arrow-right">
-              See the ventures
+            <CtaButton href="/projects" variant="outline" icon="arrow-right">
+              See the projects
             </CtaButton>
             <CtaButton href="/about" variant="text" icon="arrow-up">
               Read the story

@@ -14,6 +14,14 @@ const nextConfig: NextConfig = {
       },
     ],
   },
+  // Permanent redirects so the old founder-era /ventures URLs (and any indexed
+  // deep links) never 404 after the rename to /projects.
+  async redirects() {
+    return [
+      { source: '/ventures', destination: '/projects', permanent: true },
+      { source: '/ventures/:slug', destination: '/projects/:slug', permanent: true },
+    ]
+  },
   webpack: (webpackConfig) => {
     webpackConfig.resolve.extensionAlias = {
       '.cjs': ['.cts', '.cjs'],

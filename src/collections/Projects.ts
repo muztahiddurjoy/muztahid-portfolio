@@ -4,17 +4,18 @@ import { slugField } from '../fields/slug'
 const authed = ({ req }: { req: { user?: unknown } }) => Boolean(req.user)
 
 /**
- * Ventures = the founder-framed projects/companies. Card data + a fixed
- * case-study structure (vision / problem / build / outcome) rendered at
- * /ventures/[slug]. Drafts enabled so work-in-progress stays hidden.
+ * Projects = the things I build. Card data + a fixed case-study structure
+ * (vision / problem / build / outcome) rendered at /projects/[slug].
+ * `featured` surfaces a project on the homepage; `date` drives the "Recent"
+ * view; `order` is the manual/curated sort. Drafts keep WIP hidden.
  */
-export const Ventures: CollectionConfig = {
-  slug: 'ventures',
-  labels: { singular: 'Venture', plural: 'Ventures' },
+export const Projects: CollectionConfig = {
+  slug: 'projects',
+  labels: { singular: 'Project', plural: 'Projects' },
   admin: {
     useAsTitle: 'name',
     defaultColumns: ['name', 'type', 'year', 'status', 'featured', '_status'],
-    description: 'Companies, products, robotics & research — the work, founder-framed.',
+    description: 'Products, systems, robots & experiments — the things I build.',
   },
   access: {
     read: () => true,
@@ -41,8 +42,8 @@ export const Ventures: CollectionConfig = {
           required: true,
           defaultValue: 'product',
           options: [
-            { label: 'Company', value: 'company' },
             { label: 'Product', value: 'product' },
+            { label: 'Company', value: 'company' },
             { label: 'Robotics', value: 'robotics' },
             { label: 'Research', value: 'research' },
           ],
@@ -55,7 +56,7 @@ export const Ventures: CollectionConfig = {
     {
       name: 'cover',
       type: 'group',
-      admin: { description: 'Card / case-study hero. Image optional; label+caption are the text placeholder.' },
+      admin: { description: 'Card / case-study hero. Image optional; label+caption are the text placeholder shown until an image is added.' },
       fields: [
         { name: 'label', type: 'text' },
         { name: 'caption', type: 'text' },
@@ -116,13 +117,22 @@ export const Ventures: CollectionConfig = {
       name: 'featured',
       type: 'checkbox',
       defaultValue: false,
-      admin: { position: 'sidebar', description: 'Surface on the homepage & top of the list.' },
+      admin: { position: 'sidebar', description: 'Surface on the homepage & pin to the top of the list.' },
+    },
+    {
+      name: 'date',
+      type: 'date',
+      admin: {
+        position: 'sidebar',
+        date: { pickerAppearance: 'dayOnly' },
+        description: 'Build / ship date. Drives the "Recent" view. Falls back to the Year field when blank.',
+      },
     },
     {
       name: 'order',
       type: 'number',
       defaultValue: 0,
-      admin: { position: 'sidebar', description: 'Manual sort. Lower shows first.' },
+      admin: { position: 'sidebar', description: 'Manual / curated sort. Lower shows first.' },
     },
     slugField('name'),
   ],

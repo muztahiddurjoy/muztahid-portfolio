@@ -1,6 +1,6 @@
 /* ============================================================
-   MUZTAHID RAHMAN — founder portfolio data (hardcoded prototype)
-   Founder-first framing: vision + impact, technical depth as proof.
+   MUZTAHID RAHMAN — portfolio data (static fallback / seed source)
+   Builder-first framing: a full-stack engineer & hustler who ships.
    ============================================================ */
 
 export const siteConfig = {
@@ -17,7 +17,7 @@ export const siteConfig = {
     'Muztahid Rahman is a founder and engineer building companies and the technology behind them — from autonomous robotics to scalable products.',
   nav: [
     { label: 'Story', href: '/about' },
-    { label: 'Ventures', href: '/ventures' },
+    { label: 'Projects', href: '/projects' },
     { label: 'Writing', href: '/writing' },
     { label: 'Achievements', href: '/achievements' },
     { label: 'Certificates', href: '/certificates' },
@@ -34,7 +34,7 @@ export const home = {
   script: 'from idea to shipped',
   lede:
     'I’m Muztahid — a founder who builds companies and the technology underneath them. I started a software studio, lead engineering teams, and ship autonomous systems. I’m most alive in the gap between a bold idea and the machine that makes it real.',
-  primaryCta: { label: 'Explore my ventures', href: '/ventures' },
+  primaryCta: { label: 'See what I build', href: '/projects' },
   secondaryCta: { label: 'Read my story', href: '/about' },
   marquee: [
     'Appbaksho',
@@ -106,27 +106,29 @@ export const story = {
   next: 'Next, I’m scaling Appbaksho beyond services into products, and pushing autonomy research toward harder, less forgiving environments. If you’re building something audacious, let’s talk.',
 }
 
-/* ---------------- Ventures (projects, founder-framed) ---------------- */
-export type VentureType = 'company' | 'product' | 'robotics' | 'research'
+/* ---------------- Projects (the things I build) ---------------- */
+export type ProjectType = 'product' | 'company' | 'robotics' | 'research'
 
-export const ventureTypeMeta: Record<VentureType, { label: string }> = {
-  company: { label: 'Company' },
+export const projectTypeMeta: Record<ProjectType, { label: string }> = {
   product: { label: 'Product' },
+  company: { label: 'Company' },
   robotics: { label: 'Robotics' },
   research: { label: 'Research' },
 }
 
-export type Venture = {
+export type Project = {
   slug: string
   name: string
   tagline: string
   role: string
-  type: VentureType
+  type: ProjectType
   year: string
+  /** ISO build/ship date — drives the "Recent" view. Optional; falls back to `year`. */
+  date?: string
   status: string
   featured: boolean
   summary: string
-  cover: { label: string; caption: string }
+  cover: { label: string; caption: string; image?: string }
   metrics: { label: string; value: string }[]
   stack: string[]
   // case study
@@ -138,9 +140,10 @@ export type Venture = {
   gallery: { label: string; caption: string }[]
 }
 
-export const ventures: Venture[] = [
+export const projects: Project[] = [
   {
     slug: 'appbaksho',
+    date: '2023-03-01',
     name: 'Appbaksho',
     tagline: 'A software studio that ships like a startup.',
     role: 'Founder & Lead Developer',
@@ -179,6 +182,7 @@ export const ventures: Venture[] = [
   },
   {
     slug: 'bot-engineers',
+    date: '2024-09-01',
     name: 'BOT Engineers',
     tagline: 'Leading the engine that ships the product.',
     role: 'Chief Software Engineer',
@@ -217,6 +221,7 @@ export const ventures: Venture[] = [
   },
   {
     slug: 'enterprise-commerce',
+    date: '2024-06-01',
     name: 'zf-emart & zf-foods',
     tagline: 'Multi-tenant commerce that runs itself.',
     role: 'Full-Stack Architect',
@@ -255,6 +260,7 @@ export const ventures: Venture[] = [
   },
   {
     slug: 'mongol-tori-autonomy',
+    date: '2024-11-01',
     name: 'Mongol-Tori Autonomy',
     tagline: 'Teaching a rover to think for itself.',
     role: 'AI & Autonomy Lead',
@@ -293,6 +299,7 @@ export const ventures: Venture[] = [
   },
   {
     slug: 'space-apps-telemetry',
+    date: '2023-10-01',
     name: 'Orbital Telemetry Visualiser',
     tagline: '48 hours from raw signal to story.',
     role: 'Data & Frontend',
@@ -331,6 +338,7 @@ export const ventures: Venture[] = [
   },
   {
     slug: 'fabrication-studio',
+    date: '2024-02-01',
     name: 'Fabrication Studio',
     tagline: 'Where digital designs become physical things.',
     role: 'Design & Fabrication',

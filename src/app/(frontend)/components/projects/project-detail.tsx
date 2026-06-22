@@ -5,7 +5,7 @@ import { ArrowLeft, ArrowRight, ArrowUpRight } from 'lucide-react'
 import { gsap } from '@/lib/gsap'
 import { useIsoLayoutEffect } from '@/lib/use-iso-layout-effect'
 import { cn } from '@/lib/utils'
-import { ventureTypeMeta, type Venture } from '@/lib/portfolio-data'
+import { projectTypeMeta, type Project } from '@/lib/portfolio-data'
 import { AnimatedHeading } from '../ui/animated-heading'
 import { Reveal } from '../ui/reveal'
 import { Magnetic } from '../ui/magnetic'
@@ -29,11 +29,11 @@ function MetricValue({ value, className }: { value: string; className?: string }
 }
 
 /* prev/next pager cell */
-function PagerCell({ venture, dir }: { venture: Venture; dir: 'prev' | 'next' }) {
+function PagerCell({ project, dir }: { project: Project; dir: 'prev' | 'next' }) {
   const isNext = dir === 'next'
   return (
     <TransitionLink
-      href={`/ventures/${venture.slug}`}
+      href={`/projects/${project.slug}`}
       data-cursor
       className={cn(
         'group flex flex-col gap-3 p-8 transition-colors duration-500 hover:bg-elevated md:p-12',
@@ -46,12 +46,12 @@ function PagerCell({ venture, dir }: { venture: Venture; dir: 'prev' | 'next' })
         ) : (
           <ArrowLeft className="h-3.5 w-3.5 transition-transform duration-300 group-hover:-translate-x-1" />
         )}
-        {isNext ? 'Next venture' : 'Previous venture'}
+        {isNext ? 'Next project' : 'Previous project'}
       </span>
       <span className="font-display text-[clamp(1.6rem,3.2vw,2.6rem)] leading-[1.05] tracking-tight">
-        {venture.name}
+        {project.name}
       </span>
-      <span className="eyebrow">{ventureTypeMeta[venture.type].label}</span>
+      <span className="eyebrow">{projectTypeMeta[project.type].label}</span>
     </TransitionLink>
   )
 }
@@ -61,7 +61,7 @@ function PagerEnd({ dir }: { dir: 'prev' | 'next' }) {
   const isNext = dir === 'next'
   return (
     <TransitionLink
-      href="/ventures"
+      href="/projects"
       data-cursor
       className={cn(
         'group flex flex-col gap-3 p-8 text-muted-foreground transition-colors duration-500 hover:bg-elevated md:p-12',
@@ -70,31 +70,31 @@ function PagerEnd({ dir }: { dir: 'prev' | 'next' }) {
     >
       <span className="eyebrow">{isNext ? 'That’s the latest' : 'Back to the start'}</span>
       <span className="font-display text-[clamp(1.6rem,3.2vw,2.6rem)] leading-[1.05] tracking-tight text-foreground">
-        All ventures
+        All projects
       </span>
       <span className="font-script text-lg">the full body of work</span>
     </TransitionLink>
   )
 }
 
-export default function VentureDetail({
-  venture,
+export default function ProjectDetail({
+  project,
   prev,
   next,
 }: {
-  venture: Venture
-  prev: Venture | null
-  next: Venture | null
+  project: Project
+  prev: Project | null
+  next: Project | null
 }) {
   const scopeRef = useRef<HTMLDivElement>(null)
   const coverRef = useRef<HTMLDivElement>(null)
 
   // split the name so the final word carries an italic serif accent
-  const words = venture.name.trim().split(/\s+/)
+  const words = project.name.trim().split(/\s+/)
   const lead = words.slice(0, -1).join(' ')
   const tail = words[words.length - 1]
 
-  const headlineMetric = venture.metrics[0]
+  const headlineMetric = project.metrics[0]
   const valueClass = 'font-display leading-none tracking-tight'
 
   // soft parallax drift on the cover — pure polish, final state shown without motion
@@ -119,29 +119,29 @@ export default function VentureDetail({
       )
     }, scopeRef)
     return () => ctx.revert()
-  }, [venture.slug])
+  }, [project.slug])
 
   return (
     <div ref={scopeRef} className="pt-28 md:pt-32">
       {/* ---------- back bar / breadcrumb ---------- */}
       <div className="container-page flex flex-wrap items-center justify-between gap-4 pb-10">
         <TransitionLink
-          href="/ventures"
+          href="/projects"
           data-cursor
           className="group inline-flex items-center gap-2 text-sm text-muted-foreground transition-colors hover:text-foreground"
         >
           <ArrowLeft className="h-4 w-4 transition-transform duration-300 group-hover:-translate-x-0.5" />
-          <span className="link-underline">All ventures</span>
+          <span className="link-underline">All projects</span>
         </TransitionLink>
         <p className="eyebrow">
-          ventures <span className="mx-1 opacity-50">/</span> {ventureTypeMeta[venture.type].label}
+          projects <span className="mx-1 opacity-50">/</span> {projectTypeMeta[project.type].label}
         </p>
       </div>
 
       {/* ---------- hero ---------- */}
       <header className="container-page pb-16 md:pb-24">
         <Reveal y={16}>
-          <Tag>{ventureTypeMeta[venture.type].label}</Tag>
+          <Tag>{projectTypeMeta[project.type].label}</Tag>
         </Reveal>
 
         <h1 className="mt-7 max-w-[14ch] text-[clamp(2.6rem,7.5vw,6.5rem)] leading-[0.95]">
@@ -158,21 +158,21 @@ export default function VentureDetail({
 
         <Reveal delay={0.15} className="mt-8 max-w-3xl">
           <p className="font-display text-[clamp(1.4rem,2.6vw,2.1rem)] leading-snug tracking-tight">
-            {venture.tagline}
+            {project.tagline}
           </p>
           <p className="mt-5 max-w-2xl text-lg leading-relaxed text-muted-foreground">
-            {venture.summary}
+            {project.summary}
           </p>
         </Reveal>
 
         {/* meta row */}
         <Reveal delay={0.22} y={16}>
           <div className="mt-9 flex flex-wrap items-center gap-x-4 gap-y-2 text-sm text-muted-foreground">
-            <span className="text-foreground">{venture.role}</span>
+            <span className="text-foreground">{project.role}</span>
             <Dot />
-            <span>{venture.year}</span>
+            <span>{project.year}</span>
             <Dot />
-            <span>{venture.status}</span>
+            <span>{project.status}</span>
           </div>
         </Reveal>
 
@@ -182,15 +182,15 @@ export default function VentureDetail({
             <div>
               <Signature className="text-lg text-muted-foreground">built with</Signature>
               <div className="mt-3 flex flex-wrap gap-2">
-                {venture.stack.map((tech) => (
+                {project.stack.map((tech) => (
                   <Tag key={tech}>{tech}</Tag>
                 ))}
               </div>
             </div>
 
-            {venture.links.length > 0 && (
+            {project.links.length > 0 && (
               <div className="flex flex-wrap gap-3">
-                {venture.links.map((link) => {
+                {project.links.map((link) => {
                   const isGithub = /github/i.test(link.label) || /github/i.test(link.url)
                   return (
                     <Magnetic key={link.url} strength={0.3}>
@@ -217,8 +217,9 @@ export default function VentureDetail({
         <Reveal delay={0.1} className="mt-14">
           <div ref={coverRef} className="will-change-transform">
             <ImageFrame
-              label={venture.cover.label}
-              caption={venture.cover.caption}
+              label={project.cover.label}
+              caption={project.cover.caption}
+              src={project.cover.image}
               ratio="aspect-[16/9]"
             />
           </div>
@@ -230,7 +231,7 @@ export default function VentureDetail({
         <div className="container-page py-4">
           <Reveal>
             <div className="grid grid-cols-2 border-l border-t border-border md:grid-cols-4">
-              {venture.metrics.map((metric) => (
+              {project.metrics.map((metric) => (
                 <div
                   key={metric.label}
                   className="border-b border-r border-border px-6 py-8 md:px-8 md:py-10"
@@ -253,7 +254,7 @@ export default function VentureDetail({
         <Reveal as="section">
           <Eyebrow index="01">The Vision</Eyebrow>
           <p className="mt-6 font-display text-[clamp(1.5rem,2.8vw,2.1rem)] leading-[1.35] tracking-tight">
-            {venture.vision}
+            {project.vision}
           </p>
         </Reveal>
 
@@ -261,7 +262,7 @@ export default function VentureDetail({
         <Reveal as="section" className="mt-20 md:mt-28">
           <Eyebrow index="02">The Problem</Eyebrow>
           <p className="mt-6 text-lg leading-relaxed text-foreground/90 md:text-xl">
-            {venture.problem}
+            {project.problem}
           </p>
         </Reveal>
 
@@ -269,7 +270,7 @@ export default function VentureDetail({
         <Reveal as="section" className="mt-20 md:mt-28">
           <Eyebrow index="03">What I Built</Eyebrow>
           <ol className="mt-8 border-t border-border">
-            {venture.build.map((step, i) => (
+            {project.build.map((step, i) => (
               <li
                 key={i}
                 className="flex flex-col gap-3 border-b border-border py-7 sm:flex-row sm:gap-8"
@@ -287,7 +288,7 @@ export default function VentureDetail({
         <Reveal as="section" className="mt-20 md:mt-28">
           <Eyebrow index="04">The Outcome</Eyebrow>
           <p className="mt-6 text-lg leading-relaxed text-foreground/90 md:text-xl">
-            {venture.outcome}
+            {project.outcome}
           </p>
 
           {headlineMetric && (
@@ -305,14 +306,14 @@ export default function VentureDetail({
       </article>
 
       {/* ---------- gallery ---------- */}
-      {venture.gallery.length > 0 && (
+      {project.gallery.length > 0 && (
         <section aria-label="Gallery" className="border-t border-border bg-card">
           <div className="container-page py-24 md:py-32">
             <Reveal>
               <Eyebrow index="05">In the Build</Eyebrow>
             </Reveal>
             <div className="mt-10 grid gap-6 sm:grid-cols-3">
-              {venture.gallery.map((shot, i) => (
+              {project.gallery.map((shot, i) => (
                 <Reveal key={shot.label + i} delay={i * 0.08}>
                   <ImageFrame
                     label={shot.label}
@@ -329,11 +330,11 @@ export default function VentureDetail({
 
       {/* ---------- prev / next pager ---------- */}
       <nav
-        aria-label="More ventures"
+        aria-label="More projects"
         className="grid divide-y divide-border border-t border-border sm:grid-cols-2 sm:divide-x sm:divide-y-0"
       >
-        {prev ? <PagerCell venture={prev} dir="prev" /> : <PagerEnd dir="prev" />}
-        {next ? <PagerCell venture={next} dir="next" /> : <PagerEnd dir="next" />}
+        {prev ? <PagerCell project={prev} dir="prev" /> : <PagerEnd dir="prev" />}
+        {next ? <PagerCell project={next} dir="next" /> : <PagerEnd dir="next" />}
       </nav>
     </div>
   )

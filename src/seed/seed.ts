@@ -20,14 +20,14 @@ import {
   stats,
   story,
   contact,
-  ventures,
+  projects,
   articles,
   achievements,
   certificates,
 } from '../lib/portfolio-data'
 
 type AnyCollection =
-  | 'ventures'
+  | 'projects'
   | 'articles'
   | 'achievements'
   | 'certificates'
@@ -104,10 +104,10 @@ const run = async () => {
     }
   }
 
-  await reset('ventures')
-  for (const v of ventures) {
+  await reset('projects')
+  for (const v of projects) {
     await payload.create({
-      collection: 'ventures',
+      collection: 'projects',
       data: {
         name: v.name,
         slug: v.slug,
@@ -115,6 +115,7 @@ const run = async () => {
         role: v.role,
         type: v.type,
         year: v.year,
+        ...(v.date ? { date: v.date } : {}),
         status: v.status,
         featured: v.featured,
         summary: v.summary,
@@ -190,7 +191,7 @@ const run = async () => {
   }
 
   payload.logger.info(
-    `✅ Seed complete — ${ventures.length} ventures, ${articles.length} articles, ${achievements.length} achievements, ${certificates.length} certificates.`,
+    `✅ Seed complete — ${projects.length} projects, ${articles.length} articles, ${achievements.length} achievements, ${certificates.length} certificates.`,
   )
   process.exit(0)
 }
