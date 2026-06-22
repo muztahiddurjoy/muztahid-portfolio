@@ -7,7 +7,6 @@ import type { SiteConfig } from '@/lib/portfolio-data'
 import { cn } from '@/lib/utils'
 import { gsap } from '@/lib/gsap'
 import { TransitionLink } from './ui/transition-link'
-import { ThemeSwitcher } from './ui/theme-switcher'
 import { GithubIcon, LinkedinIcon } from './ui/brand-icons'
 
 export function SiteNav({ site }: { site: SiteConfig }) {
@@ -82,7 +81,6 @@ export function SiteNav({ site }: { site: SiteConfig }) {
             </div>
 
             <div className="flex items-center gap-3">
-              <ThemeSwitcher className="hidden sm:block" />
               <button
                 onClick={() => setOpen((v) => !v)}
                 aria-label="Toggle menu"
@@ -122,7 +120,6 @@ export function SiteNav({ site }: { site: SiteConfig }) {
           <a href={site.linkedin} target="_blank" rel="noopener noreferrer" aria-label="LinkedIn" className="grid h-11 w-11 place-items-center rounded-full border border-border">
             <LinkedinIcon className="h-5 w-5" />
           </a>
-          <ThemeSwitcher align="left" />
         </div>
       </div>
     </>
