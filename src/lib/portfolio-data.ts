@@ -643,6 +643,7 @@ export type Certificate = {
   dateLabel: string
   credentialId: string
   skills: string[]
+  featured?: boolean
 }
 
 export const certificates: Certificate[] = [
@@ -654,6 +655,7 @@ export const certificates: Certificate[] = [
     dateLabel: 'Jun 2024',
     credentialId: 'AWS-CCP-2024-MR',
     skills: ['Cloud', 'AWS', 'Infrastructure'],
+    featured: true,
   },
   {
     id: 'meta-frontend',
@@ -663,6 +665,7 @@ export const certificates: Certificate[] = [
     dateLabel: 'Feb 2024',
     credentialId: 'META-FE-9X42',
     skills: ['React', 'JavaScript', 'UI'],
+    featured: true,
   },
   {
     id: 'nvidia-dl',
@@ -672,6 +675,7 @@ export const certificates: Certificate[] = [
     dateLabel: 'Jan 2024',
     credentialId: 'DLI-FDL-7731',
     skills: ['Deep Learning', 'Python', 'CUDA'],
+    featured: true,
   },
   {
     id: 'ros2-dev',

@@ -303,6 +303,7 @@ export async function getCertificates(): Promise<Certificate[]> {
         dateLabel: str(d.dateLabel),
         credentialId: str(d.credentialId),
         skills: arr<string>(d.skills),
+        featured: Boolean(d.featured),
       }
     })
   }, staticCertificates)

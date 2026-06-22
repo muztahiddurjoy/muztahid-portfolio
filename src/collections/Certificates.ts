@@ -36,6 +36,12 @@ export const Certificates: CollectionConfig = {
     },
     { name: 'skills', type: 'text', hasMany: true },
     {
+      name: 'featured',
+      type: 'checkbox',
+      defaultValue: false,
+      admin: { position: 'sidebar', description: 'Surface this credential on the homepage.' },
+    },
+    {
       name: 'key',
       type: 'text',
       index: true,

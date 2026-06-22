@@ -400,6 +400,10 @@ export interface Certificate {
   credentialId: string;
   skills?: string[] | null;
   /**
+   * Surface this credential on the homepage.
+   */
+  featured?: boolean | null;
+  /**
    * Stable identifier used for discipline grouping on the frontend (e.g. "aws-ccp").
    */
   key?: string | null;
@@ -691,6 +695,7 @@ export interface CertificatesSelect<T extends boolean = true> {
   dateLabel?: T;
   credentialId?: T;
   skills?: T;
+  featured?: T;
   key?: T;
   order?: T;
   updatedAt?: T;

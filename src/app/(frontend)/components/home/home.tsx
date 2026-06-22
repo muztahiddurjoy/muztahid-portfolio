@@ -16,6 +16,7 @@ import {
   type Project,
   type Article,
   type Achievement,
+  type Certificate,
 } from '@/lib/portfolio-data'
 
 import { Reveal } from '../ui/reveal'
@@ -40,6 +41,7 @@ export function Home({
   projects,
   articles,
   achievements,
+  certificates,
 }: {
   siteConfig: SiteConfig
   home: HomeData
@@ -47,10 +49,19 @@ export function Home({
   projects: Project[]
   articles: Article[]
   achievements: Achievement[]
+  certificates: Certificate[]
 }) {
-  const featuredProjects = projects.filter((v) => v.featured)
+  // Featured projects pinned to the top; fall back to the most recent few so the
+  // section never renders empty if nothing is flagged.
+  const featuredProjects = (
+    projects.some((v) => v.featured) ? projects.filter((v) => v.featured) : projects
+  ).slice(0, 4)
   const latestPosts = articles.slice(0, 3)
   const featuredWins = achievements.filter((a) => a.featured).slice(0, 3)
+  // Featured certificates → homepage; fall back to most-recent (already date-sorted).
+  const featuredCerts = (
+    certificates.some((c) => c.featured) ? certificates.filter((c) => c.featured) : certificates
+  ).slice(0, 3)
 
   const accent = home.headlineAccent.toLowerCase()
 
@@ -419,14 +430,71 @@ export function Home({
       </section>
 
       {/* ============================================================
-          06 · ACHIEVEMENTS teaser
+          06 · FEATURED CERTIFICATES
+          ============================================================ */}
+      {featuredCerts.length > 0 && (
+        <section className="border-t border-border">
+          <div className="container-page py-24 md:py-32">
+            <div className="flex flex-wrap items-end justify-between gap-x-10 gap-y-6">
+              <div>
+                <Reveal>
+                  <Eyebrow index="06">Credentials</Eyebrow>
+                </Reveal>
+                <h2 className="mt-7 font-display text-[clamp(1.9rem,4.2vw,3.3rem)] leading-[1.04] tracking-tight">
+                  <AnimatedHeading as="span" className="block" text="Always sharpening" />
+                  <AnimatedHeading
+                    as="span"
+                    className="block"
+                    wordClassName="display-italic"
+                    text="the craft."
+                    delay={0.08}
+                  />
+                </h2>
+              </div>
+              <Reveal delay={0.12}>
+                <CtaButton href="/certificates" variant="text" icon="arrow-up">
+                  All certificates
+                </CtaButton>
+              </Reveal>
+            </div>
+
+            <ul className="mt-14 grid list-none gap-5 sm:grid-cols-2 md:gap-6 lg:grid-cols-3">
+              {featuredCerts.map((cert, i) => (
+                <Reveal as="li" key={cert.id} delay={i * 0.08} className="h-full">
+                  <article className="group flex h-full flex-col rounded-[var(--radius-xl)] border border-border bg-card p-7 transition-all duration-500 hover:-translate-y-1 hover:border-border-strong hover:shadow-[0_24px_60px_-34px_rgba(0,0,0,0.4)]">
+                    <header className="flex items-start justify-between gap-4">
+                      <p className="eyebrow pt-1">{cert.issuer}</p>
+                      <span className="inline-flex shrink-0 items-center gap-1.5 rounded-full border border-border px-2.5 py-1 text-[0.6rem] uppercase tracking-[0.18em] text-muted-foreground transition-colors duration-500 group-hover:border-border-strong group-hover:text-foreground">
+                        <Icon name="Award" className="h-3 w-3" aria-hidden="true" />
+                        Verified
+                      </span>
+                    </header>
+                    <h3 className="mt-5 font-display text-xl leading-snug tracking-tight md:text-2xl">
+                      {cert.title}
+                    </h3>
+                    <p className="mt-3 text-sm text-muted-foreground">{cert.dateLabel}</p>
+                    <div className="mt-auto flex flex-wrap gap-2 pt-7">
+                      {cert.skills.slice(0, 3).map((skill) => (
+                        <Tag key={skill}>{skill}</Tag>
+                      ))}
+                    </div>
+                  </article>
+                </Reveal>
+              ))}
+            </ul>
+          </div>
+        </section>
+      )}
+
+      {/* ============================================================
+          07 · ACHIEVEMENTS teaser
           ============================================================ */}
       <section className="border-t border-border bg-elevated">
         <div className="container-page py-24 md:py-28">
           <div className="flex flex-wrap items-end justify-between gap-x-10 gap-y-6">
             <div>
               <Reveal>
-                <Eyebrow index="06">Recognition</Eyebrow>
+                <Eyebrow index="07">Recognition</Eyebrow>
               </Reveal>
               <h2 className="mt-7 font-display text-[clamp(1.9rem,4.2vw,3.3rem)] leading-[1.04] tracking-tight">
                 <AnimatedHeading as="span" className="block" text="Moments that" />

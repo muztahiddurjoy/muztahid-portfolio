@@ -1,4 +1,11 @@
-import { getSite, getHome, getProjects, getArticles, getAchievements } from '@/lib/content'
+import {
+  getSite,
+  getHome,
+  getProjects,
+  getArticles,
+  getAchievements,
+  getCertificates,
+} from '@/lib/content'
 import { Home } from './components/home/home'
 
 export default async function HomePage() {
@@ -7,6 +14,7 @@ export default async function HomePage() {
   const projects = await getProjects()
   const articles = await getArticles()
   const achievements = await getAchievements()
+  const certificates = await getCertificates()
 
   const personLd = {
     '@context': 'https://schema.org',
@@ -32,6 +40,7 @@ export default async function HomePage() {
         projects={projects}
         articles={articles}
         achievements={achievements}
+        certificates={certificates}
       />
     </>
   )

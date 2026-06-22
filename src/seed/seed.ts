@@ -185,6 +185,7 @@ const run = async () => {
         dateLabel: c.dateLabel,
         credentialId: c.credentialId,
         skills: c.skills,
+        featured: Boolean(c.featured),
         key: c.id,
       },
     })
