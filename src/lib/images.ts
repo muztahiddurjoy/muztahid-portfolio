@@ -67,6 +67,18 @@ export const articleCovers: Record<string, string> = {
   'the-cloud-pipeline-that-sleeps-well': u('1558494949-ef010cbdcc31'), // servers / cloud
 }
 
+/* ------------------------------- session imagery ------------------------------ */
+// Keyed by session slug. `cover` is the headline frame on the list row + detail
+// hero. A CMS `cover.image` upload overrides it per-session via the mappers.
+export const sessionImages: Record<string, { cover: string }> = {
+  'fullstack-mentorship': { cover: u('1517694712202-14dd9538aa97') }, // 1:1 over a laptop
+  'ship-your-first-saas': { cover: u('1522071820081-009f0129c71c') }, // a team shipping together
+  'robotics-bootcamp': { cover: u('1485827404703-89b55fcc595e') }, // autonomous robot
+  'code-review-office-hours': { cover: u('1461749280684-dccba630e2f6') }, // code on screen
+  'system-design-deep-dive': { cover: u('1551288049-bebda4e38f71') }, // architecture / dashboard
+  'campus-tech-talk': { cover: u('1531482615713-2afd69097998') }, // a room, mid-talk
+}
+
 /* --------------------------------- ambient art -------------------------------- */
 // Faint, masked photographic washes layered behind hero / footer chrome.
 // Every theme has a *light* background, so these are blended with `multiply` —

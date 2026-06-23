@@ -3,7 +3,7 @@
    Builder-first framing: a full-stack engineer & hustler who ships.
    ============================================================ */
 
-import { heroImage, aboutPortrait, projectImages, articleCovers } from './images'
+import { heroImage, aboutPortrait, projectImages, articleCovers, sessionImages } from './images'
 
 export const siteConfig = {
   name: 'Muztahid Rahman',
@@ -20,6 +20,7 @@ export const siteConfig = {
   nav: [
     { label: 'Story', href: '/about' },
     { label: 'Projects', href: '/projects' },
+    { label: 'Sessions', href: '/sessions' },
     { label: 'Writing', href: '/writing' },
     { label: 'Achievements', href: '/achievements' },
     { label: 'Certificates', href: '/certificates' },
@@ -467,6 +468,483 @@ for (const p of projects) {
   p.gallery.forEach((shot, i) => {
     if (imgs.gallery[i]) shot.image = imgs.gallery[i]
   })
+}
+
+/* ---------------- Sessions (mentoring / workshops / talks) ---------------- */
+// Things I teach, live — online and offline. Each session is an offering with
+// logistics (duration, price, capacity, where) + a small "case study" of who
+// it's for, what you'll get and how it runs, plus a booking request flow.
+export type SessionMode = 'online' | 'offline' | 'hybrid'
+export type SessionFormat =
+  | 'mentoring'
+  | 'workshop'
+  | 'talk'
+  | 'consultation'
+  | 'cohort'
+  | 'office-hours'
+export type SessionLevel = 'all' | 'beginner' | 'intermediate' | 'advanced'
+export type SessionAvailability = 'open' | 'waitlist' | 'closed'
+
+export const sessionModeMeta: Record<SessionMode, { label: string; icon: string }> = {
+  online: { label: 'Online', icon: 'Globe' },
+  offline: { label: 'In person', icon: 'Users' },
+  hybrid: { label: 'Hybrid', icon: 'Layers' },
+}
+
+export const sessionFormatMeta: Record<SessionFormat, { label: string }> = {
+  mentoring: { label: '1:1 Mentoring' },
+  workshop: { label: 'Workshop' },
+  talk: { label: 'Talk' },
+  consultation: { label: 'Consultation' },
+  cohort: { label: 'Cohort' },
+  'office-hours': { label: 'Office Hours' },
+}
+
+export const sessionLevelMeta: Record<SessionLevel, { label: string }> = {
+  all: { label: 'All levels' },
+  beginner: { label: 'Beginner' },
+  intermediate: { label: 'Intermediate' },
+  advanced: { label: 'Advanced' },
+}
+
+export const sessionAvailabilityMeta: Record<SessionAvailability, { label: string }> = {
+  open: { label: 'Booking open' },
+  waitlist: { label: 'Waitlist' },
+  closed: { label: 'Closed for now' },
+}
+
+export type Session = {
+  slug: string
+  title: string
+  tagline: string
+  mode: SessionMode
+  format: SessionFormat
+  level: SessionLevel
+  /** ISO date of the next run / last update — drives the "Recent" view. Optional. */
+  date?: string
+  featured: boolean
+  availability: SessionAvailability
+  summary: string
+  cover: { label: string; caption: string; image?: string }
+  logistics: {
+    duration: string
+    price: string
+    capacity: string
+    /** Offline venue OR online platform, e.g. "Dhaka · in person" / "Google Meet". */
+    location: string
+    languages: string[]
+    /** Optional extra note on how it's delivered. */
+    deliveryNote: string
+  }
+  topics: string[]
+  audience: string
+  /** "What you'll get" — the takeaways. */
+  highlights: string[]
+  /** Session outline / structure. */
+  agenda: { title: string; detail: string }[]
+  prerequisites: string[]
+  faqs: { question: string; answer: string }[]
+  testimonials: { quote: string; author: string; role: string }[]
+  booking: {
+    /** How the primary CTA behaves. The on-page request form is always available. */
+    type: 'form' | 'link' | 'email'
+    /** External scheduler URL (Calendly/Cal.com) when type === 'link'. */
+    url: string
+    /** Direct email when type === 'email'. Falls back to the site email. */
+    email: string
+    /** Small reassurance under the CTA, e.g. reply time. */
+    note: string
+  }
+  links: { label: string; url: string }[]
+}
+
+export const sessions: Session[] = [
+  {
+    slug: 'fullstack-mentorship',
+    title: 'Full-Stack Mentorship',
+    tagline: 'A standing 1:1 to get you unstuck and shipping.',
+    mode: 'online',
+    format: 'mentoring',
+    level: 'intermediate',
+    date: '2026-06-01',
+    featured: true,
+    availability: 'open',
+    summary:
+      'A recurring one-on-one for developers who want a senior engineer in their corner — reviewing real code, unblocking hard decisions, and holding the line on quality while you move fast.',
+    cover: { label: 'Mentorship', caption: '1:1 · online' },
+    logistics: {
+      duration: '60 min · weekly or biweekly',
+      price: 'From $40 / session',
+      capacity: '1:1',
+      location: 'Google Meet',
+      languages: ['English', 'Bangla'],
+      deliveryNote: 'Screen-share friendly. I read your codebase before we meet so the hour is all signal.',
+    },
+    topics: ['Next.js', 'NestJS', 'System design', 'Career', 'Code review', 'TypeScript'],
+    audience:
+      'Self-taught and early-career developers who can already build, but want to level up the parts nobody teaches — architecture, trade-offs, code review, and how to think like a senior engineer under real deadlines.',
+    highlights: [
+      'A real review of your code or architecture, not generic advice.',
+      'A clear, written set of next steps after every session.',
+      'Async follow-up between sessions when you hit a wall.',
+      'Honest feedback on the decisions that actually move your project.',
+    ],
+    agenda: [
+      { title: 'Pre-read', detail: 'You send your repo / problem ahead; I come in already familiar with it.' },
+      { title: 'Deep work', detail: 'We pair on the hardest thing — debugging, design, or a refactor — live.' },
+      { title: 'The map', detail: 'We end with a prioritised list of what to do before we next meet.' },
+    ],
+    prerequisites: [
+      'You can build a basic app on your own (any stack).',
+      'A specific project or problem to bring — this is hands-on, not lecture.',
+    ],
+    faqs: [
+      {
+        question: 'Do I have to commit to a fixed schedule?',
+        answer: 'No. Most people book weekly or biweekly, but you can pause anytime — it’s your cadence, not mine.',
+      },
+      {
+        question: 'What if my stack isn’t one you listed?',
+        answer: 'The principles travel. If it’s web, backend, or a system-design question, I can almost certainly help.',
+      },
+    ],
+    testimonials: [
+      {
+        quote: 'Three sessions in and I finally understand why my architecture kept breaking. Worth every taka.',
+        author: 'Rafi',
+        role: 'Junior → mid-level dev',
+      },
+    ],
+    booking: {
+      type: 'form',
+      url: '',
+      email: '',
+      note: 'I reply to every request within a day.',
+    },
+    links: [],
+  },
+  {
+    slug: 'ship-your-first-saas',
+    title: 'Ship Your First SaaS',
+    tagline: 'A hands-on cohort from blank repo to paying users.',
+    mode: 'hybrid',
+    format: 'cohort',
+    level: 'intermediate',
+    date: '2026-07-15',
+    featured: true,
+    availability: 'open',
+    summary:
+      'A small-group, build-along cohort where everyone ships a real, deployed SaaS — auth, payments, a database, and a landing page — over a few intense weekends. You leave with something live, not a certificate.',
+    cover: { label: 'Cohort', caption: 'Build-along · hybrid' },
+    logistics: {
+      duration: '4 weekends · 3 hrs each',
+      price: '$180 for the cohort',
+      capacity: 'Up to 8 builders',
+      location: 'Dhaka studio + livestream',
+      languages: ['English', 'Bangla'],
+      deliveryNote: 'Join in the room in Dhaka or live online — same cohort, same Discord, recordings included.',
+    },
+    topics: ['Next.js', 'Auth', 'Stripe', 'PostgreSQL', 'Deployment', 'Product'],
+    audience:
+      'Developers who keep starting side-projects and never shipping. If you’ve got the skills but not the finish line, this is the structure and accountability that gets you over it.',
+    highlights: [
+      'A real SaaS, deployed to production, with your name on it.',
+      'Auth, payments and a database wired up the way teams actually do it.',
+      'A private cohort Discord and accountability that outlasts the sessions.',
+      'Every weekend recorded, so a missed session never sinks you.',
+    ],
+    agenda: [
+      { title: 'Weekend 1 · Foundations', detail: 'Repo, stack, auth and the data model — the boring parts that decide everything.' },
+      { title: 'Weekend 2 · The product', detail: 'Build the core feature loop and make it feel real.' },
+      { title: 'Weekend 3 · Money', detail: 'Payments, plans and the unglamorous billing edge cases.' },
+      { title: 'Weekend 4 · Ship', detail: 'Polish, deploy, and a live demo to the cohort.' },
+    ],
+    prerequisites: [
+      'Comfortable with JavaScript/TypeScript and a component framework.',
+      'A laptop and a project idea — even a bad one is fine to start.',
+    ],
+    faqs: [
+      {
+        question: 'What if I can’t make it to Dhaka?',
+        answer: 'Join live online — it’s a true hybrid. You get the same cohort, the same Discord, and every recording.',
+      },
+      {
+        question: 'Is the seat refundable?',
+        answer: 'If you attend the first weekend and it isn’t for you, I’ll refund the rest, no questions asked.',
+      },
+    ],
+    testimonials: [
+      {
+        quote: 'I’d been “building a SaaS” for two years. I shipped it in four weekends here.',
+        author: 'Tanvir H.',
+        role: 'Indie hacker',
+      },
+    ],
+    booking: {
+      type: 'form',
+      url: '',
+      email: '',
+      note: 'Seats are limited to keep it hands-on.',
+    },
+    links: [],
+  },
+  {
+    slug: 'robotics-bootcamp',
+    title: 'Autonomous Robotics Bootcamp',
+    tagline: 'Teach a robot to see, think and hold its line.',
+    mode: 'offline',
+    format: 'workshop',
+    level: 'beginner',
+    date: '2026-08-10',
+    featured: false,
+    availability: 'open',
+    summary:
+      'A hands-on, in-person workshop where teams wire up a small rover and take it from “motors spin” to “navigates a course on its own” — the same autonomy stack I’ve built for competition robots, distilled to a day.',
+    cover: { label: 'Robotics', caption: 'Hands-on · in person' },
+    logistics: {
+      duration: 'Full day · 6 hrs',
+      price: '$60 · hardware provided',
+      capacity: 'Up to 12 (teams of 3)',
+      location: 'Dhaka · in person',
+      languages: ['English', 'Bangla'],
+      deliveryNote: 'All hardware is provided in the room — just bring a laptop and curiosity.',
+    },
+    topics: ['ROS', 'Computer vision', 'Sensors', 'Control', 'Python', 'Autonomy'],
+    audience:
+      'Students and hobbyists who are curious about robotics and want a real, hands-on first contact with autonomy — no prior robotics experience required, just some programming comfort.',
+    highlights: [
+      'Build and program a working autonomous rover, in a team, in a day.',
+      'Understand the sense → think → act loop that drives every robot.',
+      'Get your hands on real sensors, motors and a vision pipeline.',
+      'Leave knowing exactly what to learn next to go deeper.',
+    ],
+    agenda: [
+      { title: 'Morning · Wiring & control', detail: 'Assemble the rover and get it moving under your command.' },
+      { title: 'Midday · Sensing', detail: 'Add the sensors and a simple vision pipeline so it can perceive the course.' },
+      { title: 'Afternoon · Autonomy', detail: 'Close the loop — the rover navigates the course on its own, then we race.' },
+    ],
+    prerequisites: [
+      'Basic programming in any language (we use Python).',
+      'No robotics or hardware experience needed.',
+    ],
+    faqs: [
+      {
+        question: 'Do I need to bring hardware?',
+        answer: 'No. Every team gets a kit in the room. You just bring a laptop.',
+      },
+      {
+        question: 'Can I come without a team?',
+        answer: 'Absolutely — I’ll place solo sign-ups into a team on the day.',
+      },
+    ],
+    testimonials: [
+      {
+        quote: 'My robot drove itself across the room and I genuinely cheered. Best Saturday in ages.',
+        author: 'Nabila R.',
+        role: 'CS undergraduate',
+      },
+    ],
+    booking: {
+      type: 'form',
+      url: '',
+      email: '',
+      note: 'Kits are limited — book early to hold a seat.',
+    },
+    links: [],
+  },
+  {
+    slug: 'code-review-office-hours',
+    title: 'Code Review Office Hours',
+    tagline: 'Bring your pull request. Leave with a better one.',
+    mode: 'online',
+    format: 'office-hours',
+    level: 'all',
+    date: '2026-06-20',
+    featured: false,
+    availability: 'open',
+    summary:
+      'An open, drop-in hour where you bring a real PR, repo or gnarly bug and we work through it together, live. Low-pressure, high-signal — and free, because everyone deserves one good reviewer.',
+    cover: { label: 'Office hours', caption: 'Drop-in · online' },
+    logistics: {
+      duration: '45 min slots',
+      price: 'Free',
+      capacity: '1:1 or small group',
+      location: 'Google Meet',
+      languages: ['English', 'Bangla'],
+      deliveryNote: 'Share your screen and we dive straight in. No prep required.',
+    },
+    topics: ['Code review', 'Debugging', 'Refactoring', 'Best practices', 'Git'],
+    audience:
+      'Anyone who wants a second pair of senior eyes on their code — students, career-switchers, or working devs stuck on something they can’t un-stick alone.',
+    highlights: [
+      'A live, honest review of your actual code.',
+      'Concrete refactors you can apply the same day.',
+      'The “why” behind the feedback, so the lesson sticks.',
+      'Zero cost and zero judgement.',
+    ],
+    agenda: [
+      { title: 'You drive', detail: 'Share your screen and walk me through what’s bugging you.' },
+      { title: 'We dig', detail: 'We read it together and I think out loud so you see the reasoning.' },
+      { title: 'You leave with', detail: 'A short list of changes and the principle behind each one.' },
+    ],
+    prerequisites: ['Something real to look at — a PR, a repo, or a specific bug.'],
+    faqs: [
+      {
+        question: 'Is it really free?',
+        answer: 'Yes. Office hours are my way of paying forward the reviewers who helped me early on.',
+      },
+      {
+        question: 'Can a few of us join together?',
+        answer: 'Sure — small groups are welcome, and you’ll all learn from each other’s code.',
+      },
+    ],
+    testimonials: [
+      {
+        quote: 'Forty-five free minutes saved me a week of going in circles.',
+        author: 'Sami A.',
+        role: 'Bootcamp grad',
+      },
+    ],
+    booking: {
+      type: 'form',
+      url: '',
+      email: '',
+      note: 'Grab a slot — first come, first served.',
+    },
+    links: [],
+  },
+  {
+    slug: 'system-design-deep-dive',
+    title: 'System Design Deep Dive',
+    tagline: 'Architect the system before it architects you.',
+    mode: 'online',
+    format: 'consultation',
+    level: 'advanced',
+    date: '2026-05-05',
+    featured: false,
+    availability: 'waitlist',
+    summary:
+      'A focused consultation for teams and founders facing a real architecture decision — scaling, a rewrite, a migration, or a system that’s buckling. We whiteboard the trade-offs and leave with a defensible plan.',
+    cover: { label: 'System design', caption: 'Consultation · online' },
+    logistics: {
+      duration: '90 min',
+      price: 'On request',
+      capacity: 'Team or 1:1',
+      location: 'Google Meet + Miro',
+      languages: ['English'],
+      deliveryNote: 'I review your context up front and bring a written summary out the other side.',
+    },
+    topics: ['Architecture', 'Scaling', 'Databases', 'Cloud', 'Trade-offs', 'Migrations'],
+    audience:
+      'Founders and engineering teams at the moment a decision actually matters — when the wrong call costs months. Bring the messy real situation, not a toy problem.',
+    highlights: [
+      'A whiteboard session on your real architecture with someone who’s shipped these.',
+      'The trade-offs named explicitly — cost, complexity, and what you’re really buying.',
+      'A written summary and recommendation you can take to your team.',
+      'A clear, staged path forward instead of a big scary rewrite.',
+    ],
+    agenda: [
+      { title: 'Context', detail: 'You walk me through the system and the decision on the table.' },
+      { title: 'The board', detail: 'We map options live and pressure-test each one.' },
+      { title: 'The call', detail: 'I leave you with a recommendation and the reasoning, in writing.' },
+    ],
+    prerequisites: [
+      'A real system and a real decision — this is senior-level and specific.',
+      'Whoever owns the call should be in the room.',
+    ],
+    faqs: [
+      {
+        question: 'Why is this waitlisted?',
+        answer: 'I only take a couple of these at a time so each gets real depth. Join the waitlist and I’ll reach out as a slot opens.',
+      },
+      {
+        question: 'Can you sign an NDA?',
+        answer: 'Yes — say so in your request and I’ll send one over before we talk specifics.',
+      },
+    ],
+    testimonials: [
+      {
+        quote: 'We were about to rewrite everything. Ninety minutes here talked us into a staged migration that actually worked.',
+        author: 'Imran K.',
+        role: 'CTO, early-stage startup',
+      },
+    ],
+    booking: {
+      type: 'form',
+      url: '',
+      email: '',
+      note: 'Waitlist requests get a personal reply.',
+    },
+    links: [],
+  },
+  {
+    slug: 'campus-tech-talk',
+    title: 'From Idea to Production',
+    tagline: 'A campus talk on actually shipping the thing.',
+    mode: 'offline',
+    format: 'talk',
+    level: 'all',
+    date: '2026-04-12',
+    featured: false,
+    availability: 'open',
+    summary:
+      'A talk for universities, clubs and meetups on the unglamorous path from idea to a product real people use — told through the studios, robots and systems I’ve shipped, and the mistakes that taught me the most.',
+    cover: { label: 'Tech talk', caption: 'Talk · in person' },
+    logistics: {
+      duration: '45–60 min + Q&A',
+      price: 'Free for campuses',
+      capacity: 'Any audience size',
+      location: 'Your campus / venue',
+      languages: ['English', 'Bangla'],
+      deliveryNote: 'Invite me to your university, club or meetup — I’ll bring the slides and the stories.',
+    },
+    topics: ['Building', 'Startups', 'Engineering', 'Career', 'Robotics'],
+    audience:
+      'University CS clubs, hackathons and developer meetups that want an honest, energising talk about building real things — not a recruiting pitch.',
+    highlights: [
+      'A candid story of shipping products, a studio and autonomous robots.',
+      'The mindset that turns endless side-projects into finished ones.',
+      'A frank Q&A — careers, startups, and how to actually start.',
+      'No cost for student audiences.',
+    ],
+    agenda: [
+      { title: 'The talk', detail: 'A fast, story-driven 45–60 minutes from first idea to production.' },
+      { title: 'Q&A', detail: 'Open floor — the questions are usually the best part.' },
+      { title: 'Hang', detail: 'I stick around afterwards to talk to anyone building something.' },
+    ],
+    prerequisites: ['A room and an audience that wants to build.'],
+    faqs: [
+      {
+        question: 'Do you charge student groups?',
+        answer: 'No — campus and club talks are free. I just ask that you cover travel if it’s outside Dhaka.',
+      },
+      {
+        question: 'Can you tailor the talk?',
+        answer: 'Yes. Tell me your audience and I’ll lean the stories toward what’s useful for them.',
+      },
+    ],
+    testimonials: [
+      {
+        quote: 'Half the room started a project that week. Exactly the energy our club needed.',
+        author: 'CSE Club',
+        role: 'University organiser',
+      },
+    ],
+    booking: {
+      type: 'form',
+      url: '',
+      email: '',
+      note: 'Tell me your date and audience — I’ll do my best to be there.',
+    },
+    links: [],
+  },
+]
+
+// Attach curated default cover imagery by slug. A CMS `cover.image` upload
+// overrides these per-session via the mappers.
+for (const s of sessions) {
+  const imgs = sessionImages[s.slug]
+  if (imgs) s.cover.image = imgs.cover
 }
 
 /* ---------------- Writing (blog) ---------------- */
@@ -1009,6 +1487,98 @@ export const projectPage = {
   },
 }
 
+/* ---------------- Sessions list page ---------------- */
+export const sessionsPage = {
+  eyebrow: 'Sessions',
+  headlineLineOne: 'Let’s build,',
+  headlineLineTwo: 'together.',
+  intro:
+    'I take sessions — online and in person — for people who want to learn by building something real. Mentorship, hands-on workshops, code review and talks. Find one that fits and let’s get to work.',
+  countNoun: 'sessions',
+  viewLabel: 'View',
+  curatedLabel: 'Curated',
+  recentLabel: 'Soonest',
+  featuredLabel: 'Featured',
+  modeLabel: 'Mode',
+  allLabel: 'All',
+  ofLabel: 'of',
+  featuredBadge: 'most booked',
+  rowCtaLabel: 'See the session',
+  emptyScript: 'nothing on the calendar… yet',
+  emptyMessageFeatured: 'No featured sessions match this filter yet. Browse them all instead.',
+  emptyMessageDefault: 'No sessions match this filter right now. Try another mode, or reach out for something custom.',
+  emptyCtaLabel: 'View all sessions',
+  metaTitle: 'Sessions',
+  metaDescription: 'Mentorship, workshops, office hours and talks — online and in person, with Muztahid Rahman.',
+}
+
+/* ---------------- Session detail labels ---------------- */
+export const sessionPage = {
+  detail: {
+    logisticsLabel: 'The details',
+    durationLabel: 'Duration',
+    priceLabel: 'Investment',
+    capacityLabel: 'Format',
+    locationLabel: 'Where',
+    modeLabel: 'Mode',
+    languagesLabel: 'Languages',
+    availabilityLabel: 'Availability',
+    topicsLabel: 'what we cover',
+    audienceLabel: 'Who it’s for',
+    highlightsLabel: 'What you’ll get',
+    agendaLabel: 'How it runs',
+    prerequisitesLabel: 'Before we start',
+    faqLabel: 'Good to know',
+    testimonialsLabel: 'In their words',
+  },
+  booking: {
+    eyebrow: 'Book it',
+    heading: 'Ready when you are.',
+    headingAccent: 'Ready',
+    body: 'Tell me a little about what you’re after and I’ll get back to you to lock in a time. No bots, no auto-replies — it comes straight to me.',
+    openLabel: 'Request this session',
+    waitlistLabel: 'Join the waitlist',
+    closedLabel: 'Notify me when it reopens',
+    externalLabel: 'Book a time',
+    orFormLabel: 'or send a note first',
+    nameLabel: 'Your name',
+    emailLabel: 'Email',
+    goalLabel: 'What do you want out of it?',
+    namePlaceholder: 'Jane Doe',
+    emailPlaceholder: 'you@example.com',
+    goalPlaceholder: 'A line or two on where you are and what you’re hoping to get…',
+    preferredModeLabel: 'Preferred mode',
+    preferredDateLabel: 'Preferred date',
+    preferredDateHint: 'Optional',
+    submitLabel: 'Send request',
+    sendingLabel: 'Sending…',
+    footnote: 'straight to my inbox',
+    success: {
+      script: 'got it',
+      heading: 'Your request is in.',
+      headingAccent: 'in',
+      body: 'Thanks{name} — I’ll get back to you personally within a day to sort out the details.',
+      ctaLabel: 'Send another',
+    },
+    errors: {
+      nameRequired: 'A name helps me say hello.',
+      emailRequired: 'I’ll need an email to reply to.',
+      emailInvalid: 'That email doesn’t look quite right.',
+      goalRequired: 'A line on what you’re after, so I can prepare.',
+      submitFailed: 'Something went wrong sending that. Try again, or email me directly.',
+    },
+  },
+  pager: {
+    prevLabel: 'Previous session',
+    nextLabel: 'Next session',
+    latestLabel: 'That’s the latest',
+    startLabel: 'Back to the start',
+    allLabel: 'All sessions',
+    allScript: 'the whole offering',
+    backLinkLabel: 'All sessions',
+  },
+}
+
 /* ---------------- Derived content types (props for CMS-driven pages) ---------------- */
 export type SiteConfig = typeof siteConfig
 export type HomeData = typeof home
@@ -1020,3 +1590,5 @@ export type WritingPageData = typeof writingPage
 export type AchievementsPageData = typeof achievementsPage
 export type CertificatesPageData = typeof certificatesPage
 export type ProjectPageData = typeof projectPage
+export type SessionsPageData = typeof sessionsPage
+export type SessionPageData = typeof sessionPage
