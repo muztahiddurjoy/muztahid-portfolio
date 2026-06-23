@@ -309,18 +309,27 @@ export function mapProject(raw: Rec | null | undefined): Project {
   // upload, so covers/gallery render whether we read Payload or static content.
   const fb = staticProjects.find((p) => p.slug === slug)
   const coverImage = mediaUrl(cover.image) ?? fb?.cover.image
+  // External cover URL (e.g. a GitHub OG card) — used when there's no upload.
+  const coverUrl = str(cover.url) || fb?.cover.url
+  const organization = str(d.organization) || fb?.organization
   return {
     slug,
     name: str(d.name),
     tagline: str(d.tagline),
     role: str(d.role),
     type: str(d.type, 'product') as Project['type'],
+    ...(organization ? { organization } : {}),
     year: str(d.year),
     ...(str(d.date) ? { date: str(d.date) } : {}),
     status: str(d.status),
     featured: Boolean(d.featured),
     summary: str(d.summary),
-    cover: { label: str(cover.label), caption: str(cover.caption), ...(coverImage ? { image: coverImage } : {}) },
+    cover: {
+      label: str(cover.label),
+      caption: str(cover.caption),
+      ...(coverImage ? { image: coverImage } : {}),
+      ...(coverUrl ? { url: coverUrl } : {}),
+    },
     metrics: arr<{ label?: unknown; value?: unknown; proof?: unknown }>(d.metrics).map((m) => ({
       label: str(m.label),
       value: str(m.value),
@@ -332,9 +341,15 @@ export function mapProject(raw: Rec | null | undefined): Project {
     build: arr<{ point?: unknown }>(d.build).map((b) => str(b.point)),
     outcome: str(d.outcome),
     links: arr<{ label?: unknown; url?: unknown }>(d.links).map((l) => ({ label: str(l.label), url: str(l.url) })),
-    gallery: arr<{ label?: unknown; caption?: unknown; image?: unknown }>(d.gallery).map((gx, i) => {
+    gallery: arr<{ label?: unknown; caption?: unknown; image?: unknown; url?: unknown }>(d.gallery).map((gx, i) => {
       const img = mediaUrl(gx.image) ?? fb?.gallery[i]?.image
-      return { label: str(gx.label), caption: str(gx.caption), ...(img ? { image: img } : {}) }
+      const gurl = str(gx.url) || fb?.gallery[i]?.url
+      return {
+        label: str(gx.label),
+        caption: str(gx.caption),
+        ...(img ? { image: img } : {}),
+        ...(gurl ? { url: gurl } : {}),
+      }
     }),
   }
 }

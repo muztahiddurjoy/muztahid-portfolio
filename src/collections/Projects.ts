@@ -52,6 +52,13 @@ export const Projects: CollectionConfig = {
         { name: 'status', type: 'text', required: true, admin: { description: 'e.g. Active, Shipped, Ongoing' } },
       ],
     },
+    {
+      name: 'organization',
+      type: 'text',
+      admin: {
+        description: 'Org / client the project was built for (e.g. "Appbaksho", "BRACU Mongol-Tori"). Shown as attribution on the card & case study. Leave blank for personal work.',
+      },
+    },
     { name: 'summary', type: 'textarea', required: true, admin: { description: 'Card-level + intro paragraph.' } },
     {
       name: 'cover',
@@ -61,6 +68,11 @@ export const Projects: CollectionConfig = {
         { name: 'label', type: 'text' },
         { name: 'caption', type: 'text' },
         { name: 'image', type: 'upload', relationTo: 'media' },
+        {
+          name: 'url',
+          type: 'text',
+          admin: { description: 'External cover image URL (e.g. a GitHub Open Graph card). Used when no image is uploaded above.' },
+        },
       ],
     },
     { name: 'stack', type: 'text', hasMany: true, admin: { description: 'Tech stack chips.' } },
@@ -116,6 +128,11 @@ export const Projects: CollectionConfig = {
         { name: 'label', type: 'text' },
         { name: 'caption', type: 'text' },
         { name: 'image', type: 'upload', relationTo: 'media' },
+        {
+          name: 'url',
+          type: 'text',
+          admin: { description: 'External image URL. Used when no image is uploaded above.' },
+        },
       ],
     },
     // ---- sidebar ----

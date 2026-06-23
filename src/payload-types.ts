@@ -167,6 +167,10 @@ export interface Project {
   tagline: string;
   role: string;
   type: 'product' | 'company' | 'robotics' | 'research';
+  /**
+   * Org / client the project was built for (e.g. "Appbaksho", "BRACU Mongol-Tori"). Shown as attribution on the card & case study. Leave blank for personal work.
+   */
+  organization?: string | null;
   year: string;
   /**
    * e.g. Active, Shipped, Ongoing
@@ -183,6 +187,10 @@ export interface Project {
     label?: string | null;
     caption?: string | null;
     image?: (string | null) | Media;
+    /**
+     * External cover image URL (e.g. a GitHub Open Graph card). Used when no image is uploaded above.
+     */
+    url?: string | null;
   };
   /**
    * Tech stack chips.
@@ -235,6 +243,10 @@ export interface Project {
         label?: string | null;
         caption?: string | null;
         image?: (string | null) | Media;
+        /**
+         * External image URL. Used when no image is uploaded above.
+         */
+        url?: string | null;
         id?: string | null;
       }[]
     | null;
@@ -850,6 +862,7 @@ export interface ProjectsSelect<T extends boolean = true> {
   tagline?: T;
   role?: T;
   type?: T;
+  organization?: T;
   year?: T;
   status?: T;
   summary?: T;
@@ -859,6 +872,7 @@ export interface ProjectsSelect<T extends boolean = true> {
         label?: T;
         caption?: T;
         image?: T;
+        url?: T;
       };
   stack?: T;
   metrics?:
@@ -891,6 +905,7 @@ export interface ProjectsSelect<T extends boolean = true> {
         label?: T;
         caption?: T;
         image?: T;
+        url?: T;
         id?: T;
       };
   featured?: T;
