@@ -22,7 +22,10 @@ import {
   achievementsPage as AP,
   certificatesPage as CP,
   projectPage as PD,
+  sessionsPage as SSP,
+  sessionPage as SDP,
   projects as staticProjects,
+  sessions as staticSessions,
   articles as staticArticles,
   achievements as staticAchievements,
   certificates as staticCertificates,
@@ -32,6 +35,11 @@ import {
   type Story,
   type ContactData,
   type Project,
+  type Session,
+  type SessionMode,
+  type SessionFormat,
+  type SessionLevel,
+  type SessionAvailability,
   type Article,
   type Achievement,
   type Certificate,
@@ -41,6 +49,8 @@ import {
   type AchievementsPageData,
   type CertificatesPageData,
   type ProjectPageData,
+  type SessionsPageData,
+  type SessionPageData,
 } from './portfolio-data'
 
 type Rec = Record<string, unknown>
@@ -329,6 +339,62 @@ export function mapProject(raw: Rec | null | undefined): Project {
   }
 }
 
+/* ------------------------------- sessions ------------------------------- */
+export function mapSession(raw: Rec | null | undefined): Session {
+  const d = rec(raw)
+  const cover = rec(d.cover)
+  const log = rec(d.logistics)
+  const book = rec(d.booking)
+  const slug = str(d.slug)
+  // Fall back to the curated static cover for this slug when the CMS doc has no
+  // upload, so the imagery renders whether we read Payload or static content.
+  const fb = staticSessions.find((s) => s.slug === slug)
+  const coverImage = mediaUrl(cover.image) ?? fb?.cover.image
+  return {
+    slug,
+    title: str(d.title),
+    tagline: str(d.tagline),
+    mode: str(d.mode, 'online') as SessionMode,
+    format: str(d.format, 'mentoring') as SessionFormat,
+    level: str(d.level, 'all') as SessionLevel,
+    ...(str(d.date) ? { date: str(d.date) } : {}),
+    featured: Boolean(d.featured),
+    availability: str(d.availability, 'open') as SessionAvailability,
+    summary: str(d.summary),
+    cover: { label: str(cover.label), caption: str(cover.caption), ...(coverImage ? { image: coverImage } : {}) },
+    logistics: {
+      duration: str(log.duration),
+      price: str(log.price),
+      capacity: str(log.capacity),
+      location: str(log.location),
+      languages: arr<string>(log.languages).filter((l) => typeof l === 'string'),
+      deliveryNote: str(log.deliveryNote),
+    },
+    topics: arr<string>(d.topics).filter((t) => typeof t === 'string'),
+    audience: str(d.audience),
+    highlights: arr<{ point?: unknown }>(d.highlights).map((h) => str(h.point)).filter(Boolean),
+    agenda: arr<{ title?: unknown; detail?: unknown }>(d.agenda)
+      .map((a) => ({ title: str(a.title), detail: str(a.detail) }))
+      .filter((a) => a.title || a.detail),
+    prerequisites: arr<{ item?: unknown }>(d.prerequisites).map((p) => str(p.item)).filter(Boolean),
+    faqs: arr<{ question?: unknown; answer?: unknown }>(d.faqs)
+      .map((f) => ({ question: str(f.question), answer: str(f.answer) }))
+      .filter((f) => f.question || f.answer),
+    testimonials: arr<{ quote?: unknown; author?: unknown; role?: unknown }>(d.testimonials)
+      .map((t) => ({ quote: str(t.quote), author: str(t.author), role: str(t.role) }))
+      .filter((t) => t.quote),
+    booking: {
+      type: (str(book.type, 'form') as Session['booking']['type']),
+      url: str(book.url),
+      email: str(book.email),
+      note: str(book.note),
+    },
+    links: arr<{ label?: unknown; url?: unknown }>(d.links)
+      .map((l) => ({ label: str(l.label), url: str(l.url) }))
+      .filter((l) => l.label && l.url),
+  }
+}
+
 /* ------------------------------- articles ------------------------------- */
 export function mapArticle(raw: Rec | null | undefined): Article {
   const d = rec(raw)
@@ -526,6 +592,109 @@ export function mapProjectPage(raw: Rec | null | undefined): ProjectPageData {
       allProjectsLabel: str(pager.allProjectsLabel, PD.pager.allProjectsLabel),
       allProjectsScript: str(pager.allProjectsScript, PD.pager.allProjectsScript),
       backLinkLabel: str(pager.backLinkLabel, PD.pager.backLinkLabel),
+    },
+  }
+}
+
+export function mapSessionsPage(raw: Rec | null | undefined): SessionsPageData {
+  const g = rec(raw)
+  return {
+    eyebrow: str(g.eyebrow, SSP.eyebrow),
+    headlineLineOne: str(g.headlineLineOne, SSP.headlineLineOne),
+    headlineLineTwo: str(g.headlineLineTwo, SSP.headlineLineTwo),
+    intro: str(g.intro, SSP.intro),
+    countNoun: str(g.countNoun, SSP.countNoun),
+    viewLabel: str(g.viewLabel, SSP.viewLabel),
+    curatedLabel: str(g.curatedLabel, SSP.curatedLabel),
+    recentLabel: str(g.recentLabel, SSP.recentLabel),
+    featuredLabel: str(g.featuredLabel, SSP.featuredLabel),
+    modeLabel: str(g.modeLabel, SSP.modeLabel),
+    allLabel: str(g.allLabel, SSP.allLabel),
+    ofLabel: str(g.ofLabel, SSP.ofLabel),
+    featuredBadge: str(g.featuredBadge, SSP.featuredBadge),
+    rowCtaLabel: str(g.rowCtaLabel, SSP.rowCtaLabel),
+    emptyScript: str(g.emptyScript, SSP.emptyScript),
+    emptyMessageFeatured: str(g.emptyMessageFeatured, SSP.emptyMessageFeatured),
+    emptyMessageDefault: str(g.emptyMessageDefault, SSP.emptyMessageDefault),
+    emptyCtaLabel: str(g.emptyCtaLabel, SSP.emptyCtaLabel),
+    metaTitle: str(g.metaTitle, SSP.metaTitle),
+    metaDescription: str(g.metaDescription, SSP.metaDescription),
+  }
+}
+
+export function mapSessionPage(raw: Rec | null | undefined): SessionPageData {
+  const g = rec(raw)
+  const det = rec(g.detail)
+  const bk = rec(g.booking)
+  const suc = rec(bk.success)
+  const err = rec(bk.errors)
+  const pager = rec(g.pager)
+  const D = SDP.detail
+  const B = SDP.booking
+  const P = SDP.pager
+  return {
+    detail: {
+      logisticsLabel: str(det.logisticsLabel, D.logisticsLabel),
+      durationLabel: str(det.durationLabel, D.durationLabel),
+      priceLabel: str(det.priceLabel, D.priceLabel),
+      capacityLabel: str(det.capacityLabel, D.capacityLabel),
+      locationLabel: str(det.locationLabel, D.locationLabel),
+      modeLabel: str(det.modeLabel, D.modeLabel),
+      languagesLabel: str(det.languagesLabel, D.languagesLabel),
+      availabilityLabel: str(det.availabilityLabel, D.availabilityLabel),
+      topicsLabel: str(det.topicsLabel, D.topicsLabel),
+      audienceLabel: str(det.audienceLabel, D.audienceLabel),
+      highlightsLabel: str(det.highlightsLabel, D.highlightsLabel),
+      agendaLabel: str(det.agendaLabel, D.agendaLabel),
+      prerequisitesLabel: str(det.prerequisitesLabel, D.prerequisitesLabel),
+      faqLabel: str(det.faqLabel, D.faqLabel),
+      testimonialsLabel: str(det.testimonialsLabel, D.testimonialsLabel),
+    },
+    booking: {
+      eyebrow: str(bk.eyebrow, B.eyebrow),
+      heading: str(bk.heading, B.heading),
+      headingAccent: str(bk.headingAccent, B.headingAccent),
+      body: str(bk.body, B.body),
+      openLabel: str(bk.openLabel, B.openLabel),
+      waitlistLabel: str(bk.waitlistLabel, B.waitlistLabel),
+      closedLabel: str(bk.closedLabel, B.closedLabel),
+      externalLabel: str(bk.externalLabel, B.externalLabel),
+      orFormLabel: str(bk.orFormLabel, B.orFormLabel),
+      nameLabel: str(bk.nameLabel, B.nameLabel),
+      emailLabel: str(bk.emailLabel, B.emailLabel),
+      goalLabel: str(bk.goalLabel, B.goalLabel),
+      namePlaceholder: str(bk.namePlaceholder, B.namePlaceholder),
+      emailPlaceholder: str(bk.emailPlaceholder, B.emailPlaceholder),
+      goalPlaceholder: str(bk.goalPlaceholder, B.goalPlaceholder),
+      preferredModeLabel: str(bk.preferredModeLabel, B.preferredModeLabel),
+      preferredDateLabel: str(bk.preferredDateLabel, B.preferredDateLabel),
+      preferredDateHint: str(bk.preferredDateHint, B.preferredDateHint),
+      submitLabel: str(bk.submitLabel, B.submitLabel),
+      sendingLabel: str(bk.sendingLabel, B.sendingLabel),
+      footnote: str(bk.footnote, B.footnote),
+      success: {
+        script: str(suc.script, B.success.script),
+        heading: str(suc.heading, B.success.heading),
+        headingAccent: str(suc.headingAccent, B.success.headingAccent),
+        body: str(suc.body, B.success.body),
+        ctaLabel: str(suc.ctaLabel, B.success.ctaLabel),
+      },
+      errors: {
+        nameRequired: str(err.nameRequired, B.errors.nameRequired),
+        emailRequired: str(err.emailRequired, B.errors.emailRequired),
+        emailInvalid: str(err.emailInvalid, B.errors.emailInvalid),
+        goalRequired: str(err.goalRequired, B.errors.goalRequired),
+        submitFailed: str(err.submitFailed, B.errors.submitFailed),
+      },
+    },
+    pager: {
+      prevLabel: str(pager.prevLabel, P.prevLabel),
+      nextLabel: str(pager.nextLabel, P.nextLabel),
+      latestLabel: str(pager.latestLabel, P.latestLabel),
+      startLabel: str(pager.startLabel, P.startLabel),
+      allLabel: str(pager.allLabel, P.allLabel),
+      allScript: str(pager.allScript, P.allScript),
+      backLinkLabel: str(pager.backLinkLabel, P.backLinkLabel),
     },
   }
 }
