@@ -21,6 +21,9 @@ export function frontendPath(target: PreviewTarget): string {
       case 'projects-page':
       case 'project-page':
         return '/projects'
+      case 'sessions-page':
+      case 'session-page':
+        return '/sessions'
       case 'writing-page':
         return '/writing'
       case 'achievements-page':
@@ -35,6 +38,8 @@ export function frontendPath(target: PreviewTarget): string {
   switch (target.slug) {
     case 'projects':
       return docSlug ? `/projects/${docSlug}` : '/projects'
+    case 'sessions':
+      return docSlug ? `/sessions/${docSlug}` : '/sessions'
     case 'articles':
       return docSlug ? `/writing/${docSlug}` : '/writing'
     case 'achievements':

@@ -9,10 +9,12 @@ import sharp from 'sharp'
 import { Users } from './collections/Users'
 import { Media } from './collections/Media'
 import { Projects } from './collections/Projects'
+import { Sessions } from './collections/Sessions'
 import { Articles } from './collections/Articles'
 import { Achievements } from './collections/Achievements'
 import { Certificates } from './collections/Certificates'
 import { ContactSubmissions } from './collections/ContactSubmissions'
+import { SessionRequests } from './collections/SessionRequests'
 import { SiteSettings } from './globals/SiteSettings'
 import { Home } from './globals/Home'
 import { About } from './globals/About'
@@ -22,6 +24,8 @@ import { WritingPage } from './globals/WritingPage'
 import { AchievementsPage } from './globals/AchievementsPage'
 import { CertificatesPage } from './globals/CertificatesPage'
 import { ProjectPage } from './globals/ProjectPage'
+import { SessionsPage } from './globals/SessionsPage'
+import { SessionPage } from './globals/SessionPage'
 import { frontendPath, buildPreviewURL } from './lib/preview'
 
 const filename = fileURLToPath(import.meta.url)
@@ -82,11 +86,13 @@ export default buildConfig({
   },
   collections: [
     Projects,
+    Sessions,
     Articles,
     Achievements,
     Certificates,
     Media,
     ContactSubmissions,
+    SessionRequests,
     Users,
   ],
   globals: [
@@ -99,6 +105,8 @@ export default buildConfig({
     AchievementsPage,
     CertificatesPage,
     ProjectPage,
+    SessionsPage,
+    SessionPage,
   ],
   editor: lexicalEditor(),
   secret: process.env.PAYLOAD_SECRET || '',

@@ -68,11 +68,13 @@ export interface Config {
   blocks: {};
   collections: {
     projects: Project;
+    sessions: Session;
     articles: Article;
     achievements: Achievement;
     certificates: Certificate;
     media: Media;
     'contact-submissions': ContactSubmission;
+    'session-requests': SessionRequest;
     users: User;
     'payload-kv': PayloadKv;
     'payload-locked-documents': PayloadLockedDocument;
@@ -82,11 +84,13 @@ export interface Config {
   collectionsJoins: {};
   collectionsSelect: {
     projects: ProjectsSelect<false> | ProjectsSelect<true>;
+    sessions: SessionsSelect<false> | SessionsSelect<true>;
     articles: ArticlesSelect<false> | ArticlesSelect<true>;
     achievements: AchievementsSelect<false> | AchievementsSelect<true>;
     certificates: CertificatesSelect<false> | CertificatesSelect<true>;
     media: MediaSelect<false> | MediaSelect<true>;
     'contact-submissions': ContactSubmissionsSelect<false> | ContactSubmissionsSelect<true>;
+    'session-requests': SessionRequestsSelect<false> | SessionRequestsSelect<true>;
     users: UsersSelect<false> | UsersSelect<true>;
     'payload-kv': PayloadKvSelect<false> | PayloadKvSelect<true>;
     'payload-locked-documents': PayloadLockedDocumentsSelect<false> | PayloadLockedDocumentsSelect<true>;
@@ -107,6 +111,8 @@ export interface Config {
     'achievements-page': AchievementsPage;
     'certificates-page': CertificatesPage;
     'project-page': ProjectPage;
+    'sessions-page': SessionsPage;
+    'session-page': SessionPage;
   };
   globalsSelect: {
     'site-settings': SiteSettingsSelect<false> | SiteSettingsSelect<true>;
@@ -118,6 +124,8 @@ export interface Config {
     'achievements-page': AchievementsPageSelect<false> | AchievementsPageSelect<true>;
     'certificates-page': CertificatesPageSelect<false> | CertificatesPageSelect<true>;
     'project-page': ProjectPageSelect<false> | ProjectPageSelect<true>;
+    'sessions-page': SessionsPageSelect<false> | SessionsPageSelect<true>;
+    'session-page': SessionPageSelect<false> | SessionPageSelect<true>;
   };
   locale: null;
   widgets: {
@@ -264,6 +272,67 @@ export interface Media {
    * Optional caption.
    */
   caption?: string | null;
+  /**
+   * Cloudinary Media Information
+   */
+  cloudinary?: {
+    /**
+     * Cloudinary Public ID (used for transformations)
+     */
+    public_id?: string | null;
+    /**
+     * Type of the resource (image, video, raw)
+     */
+    resource_type?: string | null;
+    /**
+     * File format
+     */
+    format?: string | null;
+    /**
+     * Secure delivery URL
+     */
+    secure_url?: string | null;
+    /**
+     * File size in bytes
+     */
+    bytes?: number | null;
+    /**
+     * Creation timestamp
+     */
+    created_at?: string | null;
+    /**
+     * Current version number
+     */
+    version?: string | null;
+    /**
+     * Unique version identifier
+     */
+    version_id?: string | null;
+    /**
+     * Width in pixels
+     */
+    width?: number | null;
+    /**
+     * Height in pixels
+     */
+    height?: number | null;
+    /**
+     * Duration in seconds (for videos)
+     */
+    duration?: number | null;
+    /**
+     * Number of pages (for PDFs)
+     */
+    pages?: number | null;
+    /**
+     * Which page of the PDF to use for thumbnails (changes will apply after saving)
+     */
+    selected_page?: number | null;
+    /**
+     * URL for the thumbnail image (automatically generated for PDFs)
+     */
+    thumbnail_url?: string | null;
+  };
   updatedAt: string;
   createdAt: string;
   url?: string | null;
@@ -301,6 +370,172 @@ export interface Media {
       filename?: string | null;
     };
   };
+}
+/**
+ * Mentorship, workshops, office hours & talks — taught online and in person.
+ *
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "sessions".
+ */
+export interface Session {
+  id: string;
+  title: string;
+  /**
+   * One-line hook.
+   */
+  tagline: string;
+  /**
+   * The headline filter on the list page.
+   */
+  mode: 'online' | 'offline' | 'hybrid';
+  format: 'mentoring' | 'workshop' | 'talk' | 'consultation' | 'cohort' | 'office-hours';
+  level: 'all' | 'beginner' | 'intermediate' | 'advanced';
+  /**
+   * Card-level + intro paragraph.
+   */
+  summary: string;
+  /**
+   * List row + detail hero. Image optional; label+caption are the placeholder shown until an image is added.
+   */
+  cover?: {
+    label?: string | null;
+    caption?: string | null;
+    image?: (string | null) | Media;
+  };
+  /**
+   * The practical details shown on the card & in the booking panel.
+   */
+  logistics?: {
+    /**
+     * e.g. "60 min · weekly".
+     */
+    duration?: string | null;
+    /**
+     * e.g. "Free", "$40 / session", "On request".
+     */
+    price?: string | null;
+    /**
+     * e.g. "1:1", "Up to 8".
+     */
+    capacity?: string | null;
+    /**
+     * Offline venue OR online platform.
+     */
+    location?: string | null;
+    languages?: string[] | null;
+    /**
+     * Optional note on how it’s delivered.
+     */
+    deliveryNote?: string | null;
+  };
+  /**
+   * Topic chips.
+   */
+  topics?: string[] | null;
+  /**
+   * Who it’s for.
+   */
+  audience: string;
+  /**
+   * What you’ll get (bullet list).
+   */
+  highlights?:
+    | {
+        point: string;
+        id?: string | null;
+      }[]
+    | null;
+  /**
+   * How it runs (ordered outline).
+   */
+  agenda?:
+    | {
+        title: string;
+        detail: string;
+        id?: string | null;
+      }[]
+    | null;
+  /**
+   * What attendees need beforehand. Leave empty to hide the section.
+   */
+  prerequisites?:
+    | {
+        item: string;
+        id?: string | null;
+      }[]
+    | null;
+  /**
+   * Common questions. Leave empty to hide the section.
+   */
+  faqs?:
+    | {
+        question: string;
+        answer: string;
+        id?: string | null;
+      }[]
+    | null;
+  /**
+   * Social proof. Leave empty to hide the section.
+   */
+  testimonials?:
+    | {
+        quote: string;
+        author: string;
+        role?: string | null;
+        id?: string | null;
+      }[]
+    | null;
+  /**
+   * How the primary CTA behaves. The on-page request form is always available as a fallback.
+   */
+  booking: {
+    type: 'form' | 'link' | 'email';
+    /**
+     * Scheduler URL (Calendly/Cal.com) — used when type is "link".
+     */
+    url?: string | null;
+    /**
+     * Used when type is "email". Falls back to the site email.
+     */
+    email?: string | null;
+    /**
+     * Small reassurance under the CTA, e.g. reply time.
+     */
+    note?: string | null;
+  };
+  /**
+   * Optional external links (syllabus, recording, etc.).
+   */
+  links?:
+    | {
+        label: string;
+        url: string;
+        id?: string | null;
+      }[]
+    | null;
+  /**
+   * Surface in the Featured view & pin to the top of the list.
+   */
+  featured?: boolean | null;
+  /**
+   * Drives the booking CTA: open → request, waitlist → join, closed → notify.
+   */
+  availability: 'open' | 'waitlist' | 'closed';
+  /**
+   * Next run / last update. Drives the "Soonest" view.
+   */
+  date?: string | null;
+  /**
+   * Manual / curated sort. Lower shows first.
+   */
+  order?: number | null;
+  /**
+   * URL segment. Leave blank to auto-generate from the title/name.
+   */
+  slug?: string | null;
+  updatedAt: string;
+  createdAt: string;
+  _status?: ('draft' | 'published') | null;
 }
 /**
  * Essays & notes on building, engineering and robotics.
@@ -450,6 +685,33 @@ export interface ContactSubmission {
   createdAt: string;
 }
 /**
+ * Booking requests sent from session pages.
+ *
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "session-requests".
+ */
+export interface SessionRequest {
+  id: string;
+  name: string;
+  email: string;
+  /**
+   * What the requester wants out of the session.
+   */
+  goal: string;
+  preferredMode?: ('online' | 'offline' | 'either') | null;
+  /**
+   * Free-text preferred date/time.
+   */
+  preferredDate?: string | null;
+  sessionTitle?: string | null;
+  sessionSlug?: string | null;
+  meta?: {
+    submittedFrom?: string | null;
+  };
+  updatedAt: string;
+  createdAt: string;
+}
+/**
  * This interface was referenced by `Config`'s JSON-Schema
  * via the `definition` "users".
  */
@@ -503,6 +765,10 @@ export interface PayloadLockedDocument {
         value: string | Project;
       } | null)
     | ({
+        relationTo: 'sessions';
+        value: string | Session;
+      } | null)
+    | ({
         relationTo: 'articles';
         value: string | Article;
       } | null)
@@ -521,6 +787,10 @@ export interface PayloadLockedDocument {
     | ({
         relationTo: 'contact-submissions';
         value: string | ContactSubmission;
+      } | null)
+    | ({
+        relationTo: 'session-requests';
+        value: string | SessionRequest;
       } | null)
     | ({
         relationTo: 'users';
@@ -630,6 +900,94 @@ export interface ProjectsSelect<T extends boolean = true> {
 }
 /**
  * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "sessions_select".
+ */
+export interface SessionsSelect<T extends boolean = true> {
+  title?: T;
+  tagline?: T;
+  mode?: T;
+  format?: T;
+  level?: T;
+  summary?: T;
+  cover?:
+    | T
+    | {
+        label?: T;
+        caption?: T;
+        image?: T;
+      };
+  logistics?:
+    | T
+    | {
+        duration?: T;
+        price?: T;
+        capacity?: T;
+        location?: T;
+        languages?: T;
+        deliveryNote?: T;
+      };
+  topics?: T;
+  audience?: T;
+  highlights?:
+    | T
+    | {
+        point?: T;
+        id?: T;
+      };
+  agenda?:
+    | T
+    | {
+        title?: T;
+        detail?: T;
+        id?: T;
+      };
+  prerequisites?:
+    | T
+    | {
+        item?: T;
+        id?: T;
+      };
+  faqs?:
+    | T
+    | {
+        question?: T;
+        answer?: T;
+        id?: T;
+      };
+  testimonials?:
+    | T
+    | {
+        quote?: T;
+        author?: T;
+        role?: T;
+        id?: T;
+      };
+  booking?:
+    | T
+    | {
+        type?: T;
+        url?: T;
+        email?: T;
+        note?: T;
+      };
+  links?:
+    | T
+    | {
+        label?: T;
+        url?: T;
+        id?: T;
+      };
+  featured?: T;
+  availability?: T;
+  date?: T;
+  order?: T;
+  slug?: T;
+  updatedAt?: T;
+  createdAt?: T;
+  _status?: T;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
  * via the `definition` "articles_select".
  */
 export interface ArticlesSelect<T extends boolean = true> {
@@ -728,6 +1086,24 @@ export interface CertificatesSelect<T extends boolean = true> {
 export interface MediaSelect<T extends boolean = true> {
   alt?: T;
   caption?: T;
+  cloudinary?:
+    | T
+    | {
+        public_id?: T;
+        resource_type?: T;
+        format?: T;
+        secure_url?: T;
+        bytes?: T;
+        created_at?: T;
+        version?: T;
+        version_id?: T;
+        width?: T;
+        height?: T;
+        duration?: T;
+        pages?: T;
+        selected_page?: T;
+        thumbnail_url?: T;
+      };
   updatedAt?: T;
   createdAt?: T;
   url?: T;
@@ -782,6 +1158,26 @@ export interface ContactSubmissionsSelect<T extends boolean = true> {
   name?: T;
   email?: T;
   message?: T;
+  meta?:
+    | T
+    | {
+        submittedFrom?: T;
+      };
+  updatedAt?: T;
+  createdAt?: T;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "session-requests_select".
+ */
+export interface SessionRequestsSelect<T extends boolean = true> {
+  name?: T;
+  email?: T;
+  goal?: T;
+  preferredMode?: T;
+  preferredDate?: T;
+  sessionTitle?: T;
+  sessionSlug?: T;
   meta?:
     | T
     | {
@@ -1611,6 +2007,168 @@ export interface ProjectPage {
   createdAt?: string | null;
 }
 /**
+ * Hero copy, control labels and empty-state for the /sessions list page.
+ *
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "sessions-page".
+ */
+export interface SessionsPage {
+  id: string;
+  eyebrow?: string | null;
+  headlineLineOne?: string | null;
+  /**
+   * Italicised line.
+   */
+  headlineLineTwo?: string | null;
+  intro?: string | null;
+  /**
+   * Noun after the count, e.g. "sessions".
+   */
+  countNoun?: string | null;
+  /**
+   * e.g. "View".
+   */
+  viewLabel?: string | null;
+  curatedLabel?: string | null;
+  /**
+   * Sort by soonest date, e.g. "Soonest".
+   */
+  recentLabel?: string | null;
+  featuredLabel?: string | null;
+  /**
+   * Label for the mode chip group, e.g. "Mode".
+   */
+  modeLabel?: string | null;
+  /**
+   * Mode filter "All".
+   */
+  allLabel?: string | null;
+  /**
+   * Between counts, e.g. "of".
+   */
+  ofLabel?: string | null;
+  /**
+   * Handwritten badge on featured rows.
+   */
+  featuredBadge?: string | null;
+  /**
+   * Per-row CTA, e.g. "See the session".
+   */
+  rowCtaLabel?: string | null;
+  /**
+   * e.g. "nothing on the calendar… yet".
+   */
+  emptyScript?: string | null;
+  emptyMessageFeatured?: string | null;
+  emptyMessageDefault?: string | null;
+  emptyCtaLabel?: string | null;
+  metaTitle?: string | null;
+  metaDescription?: string | null;
+  updatedAt?: string | null;
+  createdAt?: string | null;
+}
+/**
+ * Section labels, booking-form copy and pager for individual session pages.
+ *
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "session-page".
+ */
+export interface SessionPage {
+  id: string;
+  detail?: {
+    /**
+     * Heading over the logistics grid.
+     */
+    logisticsLabel?: string | null;
+    durationLabel?: string | null;
+    priceLabel?: string | null;
+    capacityLabel?: string | null;
+    locationLabel?: string | null;
+    modeLabel?: string | null;
+    languagesLabel?: string | null;
+    availabilityLabel?: string | null;
+    /**
+     * Handwritten label over the topic chips.
+     */
+    topicsLabel?: string | null;
+    audienceLabel?: string | null;
+    highlightsLabel?: string | null;
+    agendaLabel?: string | null;
+    prerequisitesLabel?: string | null;
+    faqLabel?: string | null;
+    testimonialsLabel?: string | null;
+  };
+  booking?: {
+    eyebrow?: string | null;
+    heading?: string | null;
+    /**
+     * Word within the heading to italicise.
+     */
+    headingAccent?: string | null;
+    body?: string | null;
+    /**
+     * CTA when availability is open.
+     */
+    openLabel?: string | null;
+    /**
+     * CTA when availability is waitlist.
+     */
+    waitlistLabel?: string | null;
+    /**
+     * CTA when availability is closed.
+     */
+    closedLabel?: string | null;
+    /**
+     * CTA for an external scheduler link.
+     */
+    externalLabel?: string | null;
+    /**
+     * Bridge text to the fallback form.
+     */
+    orFormLabel?: string | null;
+    nameLabel?: string | null;
+    emailLabel?: string | null;
+    goalLabel?: string | null;
+    namePlaceholder?: string | null;
+    emailPlaceholder?: string | null;
+    goalPlaceholder?: string | null;
+    preferredModeLabel?: string | null;
+    preferredDateLabel?: string | null;
+    preferredDateHint?: string | null;
+    submitLabel?: string | null;
+    sendingLabel?: string | null;
+    footnote?: string | null;
+    /**
+     * Confirmation shown after a request is sent. Use {name} for the requester’s first name.
+     */
+    success?: {
+      script?: string | null;
+      heading?: string | null;
+      headingAccent?: string | null;
+      body?: string | null;
+      ctaLabel?: string | null;
+    };
+    errors?: {
+      nameRequired?: string | null;
+      emailRequired?: string | null;
+      emailInvalid?: string | null;
+      goalRequired?: string | null;
+      submitFailed?: string | null;
+    };
+  };
+  pager?: {
+    prevLabel?: string | null;
+    nextLabel?: string | null;
+    latestLabel?: string | null;
+    startLabel?: string | null;
+    allLabel?: string | null;
+    allScript?: string | null;
+    backLinkLabel?: string | null;
+  };
+  updatedAt?: string | null;
+  createdAt?: string | null;
+}
+/**
  * This interface was referenced by `Config`'s JSON-Schema
  * via the `definition` "site-settings_select".
  */
@@ -2060,6 +2618,117 @@ export interface ProjectPageSelect<T extends boolean = true> {
         startLabel?: T;
         allProjectsLabel?: T;
         allProjectsScript?: T;
+        backLinkLabel?: T;
+      };
+  updatedAt?: T;
+  createdAt?: T;
+  globalType?: T;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "sessions-page_select".
+ */
+export interface SessionsPageSelect<T extends boolean = true> {
+  eyebrow?: T;
+  headlineLineOne?: T;
+  headlineLineTwo?: T;
+  intro?: T;
+  countNoun?: T;
+  viewLabel?: T;
+  curatedLabel?: T;
+  recentLabel?: T;
+  featuredLabel?: T;
+  modeLabel?: T;
+  allLabel?: T;
+  ofLabel?: T;
+  featuredBadge?: T;
+  rowCtaLabel?: T;
+  emptyScript?: T;
+  emptyMessageFeatured?: T;
+  emptyMessageDefault?: T;
+  emptyCtaLabel?: T;
+  metaTitle?: T;
+  metaDescription?: T;
+  updatedAt?: T;
+  createdAt?: T;
+  globalType?: T;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "session-page_select".
+ */
+export interface SessionPageSelect<T extends boolean = true> {
+  detail?:
+    | T
+    | {
+        logisticsLabel?: T;
+        durationLabel?: T;
+        priceLabel?: T;
+        capacityLabel?: T;
+        locationLabel?: T;
+        modeLabel?: T;
+        languagesLabel?: T;
+        availabilityLabel?: T;
+        topicsLabel?: T;
+        audienceLabel?: T;
+        highlightsLabel?: T;
+        agendaLabel?: T;
+        prerequisitesLabel?: T;
+        faqLabel?: T;
+        testimonialsLabel?: T;
+      };
+  booking?:
+    | T
+    | {
+        eyebrow?: T;
+        heading?: T;
+        headingAccent?: T;
+        body?: T;
+        openLabel?: T;
+        waitlistLabel?: T;
+        closedLabel?: T;
+        externalLabel?: T;
+        orFormLabel?: T;
+        nameLabel?: T;
+        emailLabel?: T;
+        goalLabel?: T;
+        namePlaceholder?: T;
+        emailPlaceholder?: T;
+        goalPlaceholder?: T;
+        preferredModeLabel?: T;
+        preferredDateLabel?: T;
+        preferredDateHint?: T;
+        submitLabel?: T;
+        sendingLabel?: T;
+        footnote?: T;
+        success?:
+          | T
+          | {
+              script?: T;
+              heading?: T;
+              headingAccent?: T;
+              body?: T;
+              ctaLabel?: T;
+            };
+        errors?:
+          | T
+          | {
+              nameRequired?: T;
+              emailRequired?: T;
+              emailInvalid?: T;
+              goalRequired?: T;
+              submitFailed?: T;
+            };
+      };
+  pager?:
+    | T
+    | {
+        prevLabel?: T;
+        nextLabel?: T;
+        latestLabel?: T;
+        startLabel?: T;
+        allLabel?: T;
+        allScript?: T;
         backLinkLabel?: T;
       };
   updatedAt?: T;
