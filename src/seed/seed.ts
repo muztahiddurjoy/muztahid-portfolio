@@ -21,6 +21,7 @@ import {
   story,
   contact,
   projects,
+  sessions,
   articles,
   achievements,
   certificates,
@@ -30,9 +31,11 @@ import {
   certificatesPage,
   projectPage,
 } from '../lib/portfolio-data'
+import { sessionCreateData, sessionsPageData, sessionPageData } from './seed-sessions'
 
 type AnyCollection =
   | 'projects'
+  | 'sessions'
   | 'articles'
   | 'achievements'
   | 'certificates'
@@ -170,6 +173,9 @@ const run = async () => {
     },
   })
 
+  await payload.updateGlobal({ slug: 'sessions-page', data: sessionsPageData })
+  await payload.updateGlobal({ slug: 'session-page', data: sessionPageData })
+
   /* --------------------------- collections --------------------------- */
   const reset = async (collection: AnyCollection) => {
     const existing = await payload.find({ collection, limit: 1000, depth: 0 })
@@ -205,6 +211,11 @@ const run = async () => {
         _status: 'published',
       },
     })
+  }
+
+  await reset('sessions')
+  for (let i = 0; i < sessions.length; i++) {
+    await payload.create({ collection: 'sessions', data: sessionCreateData(sessions[i], i) })
   }
 
   await reset('articles')
@@ -267,7 +278,7 @@ const run = async () => {
   }
 
   payload.logger.info(
-    `✅ Seed complete — ${projects.length} projects, ${articles.length} articles, ${achievements.length} achievements, ${certificates.length} certificates.`,
+    `✅ Seed complete — ${projects.length} projects, ${sessions.length} sessions, ${articles.length} articles, ${achievements.length} achievements, ${certificates.length} certificates.`,
   )
   process.exit(0)
 }
