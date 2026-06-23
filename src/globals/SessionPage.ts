@@ -146,7 +146,9 @@ export const SessionPage: GlobalConfig = {
                   ],
                 },
                 {
-                  name: 'errors',
+                  // Named `errorMessages` (not `errors`) — `errors` is a reserved
+                  // Mongoose schema pathname. Mapped back to `errors` in the UI shape.
+                  name: 'errorMessages',
                   type: 'group',
                   fields: [
                     { name: 'nameRequired', type: 'text' },

@@ -627,7 +627,9 @@ export function mapSessionPage(raw: Rec | null | undefined): SessionPageData {
   const det = rec(g.detail)
   const bk = rec(g.booking)
   const suc = rec(bk.success)
-  const err = rec(bk.errors)
+  // CMS field is `errorMessages` (`errors` is a reserved Mongoose pathname);
+  // the UI shape keeps the `errors` key.
+  const err = rec(bk.errorMessages)
   const pager = rec(g.pager)
   const D = SDP.detail
   const B = SDP.booking

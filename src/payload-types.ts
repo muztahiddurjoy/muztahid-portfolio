@@ -703,6 +703,9 @@ export interface SessionRequest {
    * Free-text preferred date/time.
    */
   preferredDate?: string | null;
+  /**
+   * Which session this request came from.
+   */
   sessionTitle?: string | null;
   sessionSlug?: string | null;
   meta?: {
@@ -2148,7 +2151,7 @@ export interface SessionPage {
       body?: string | null;
       ctaLabel?: string | null;
     };
-    errors?: {
+    errorMessages?: {
       nameRequired?: string | null;
       emailRequired?: string | null;
       emailInvalid?: string | null;
@@ -2710,7 +2713,7 @@ export interface SessionPageSelect<T extends boolean = true> {
               body?: T;
               ctaLabel?: T;
             };
-        errors?:
+        errorMessages?:
           | T
           | {
               nameRequired?: T;
