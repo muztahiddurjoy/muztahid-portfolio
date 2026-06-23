@@ -77,6 +77,12 @@ export const Projects: CollectionConfig = {
             { name: 'value', type: 'text', required: true },
           ],
         },
+        {
+          name: 'proof',
+          type: 'checkbox',
+          defaultValue: false,
+          admin: { description: 'Feature this metric as the headline "proof" stat on the case study. First proof wins; falls back to the first metric.' },
+        },
       ],
     },
     // ---- case study (fixed structure) ----

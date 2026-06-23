@@ -11,6 +11,7 @@ import { AnimatedHeading } from '../ui/animated-heading'
 import { CtaButton } from '../ui/cta-button'
 import { ImageFrame } from '../ui/image-frame'
 import { Eyebrow, Signature } from '../ui/primitives'
+import { usePreview } from '../preview-context'
 
 export function AboutPage({ story }: { story: Story }) {
   // Split the closing line so the second sentence can carry the italic emphasis.
@@ -18,12 +19,16 @@ export function AboutPage({ story }: { story: Story }) {
   const nextLead = nextSplit > -1 ? story.next.slice(0, nextSplit).trim() : story.next
   const nextEmphasis = nextSplit > -1 ? story.next.slice(nextSplit).trim() : ''
 
+  const lead = story.headlineLines.slice(0, -1)
+  const tail = story.headlineLines[story.headlineLines.length - 1] ?? ''
+
+  const isPreview = usePreview()
   const scope = useRef<HTMLElement>(null)
 
   useIsoLayoutEffect(() => {
     const root = scope.current
     if (!root) return
-    const reduce = window.matchMedia('(prefers-reduced-motion: reduce)').matches
+    const reduce = isPreview || window.matchMedia('(prefers-reduced-motion: reduce)').matches
 
     const ctx = gsap.context(() => {
       // soft parallax on the portrait — slow, confident drift
@@ -76,19 +81,16 @@ export function AboutPage({ story }: { story: Story }) {
             </Reveal>
 
             <h1 className="mt-7 font-display text-[clamp(2.3rem,5vw,4.5rem)] leading-[1.04] tracking-tight">
+              {lead.length > 0 && (
+                <AnimatedHeading as="span" immediate className="block" text={lead} />
+              )}
               <AnimatedHeading
                 as="span"
                 immediate
-                className="block"
-                text={['I build companies —', 'and the technology that makes them']}
-              />
-              <AnimatedHeading
-                as="span"
-                immediate
-                delay={0.5}
+                delay={lead.length ? 0.5 : 0}
                 className="block"
                 wordClassName="display-italic"
-                text="inevitable."
+                text={tail}
               />
             </h1>
 
@@ -102,6 +104,8 @@ export function AboutPage({ story }: { story: Story }) {
             <Reveal y={40} delay={0.2}>
               <div data-hero-parallax className="will-change-transform">
                 <ImageFrame
+                  src={story.portrait.image || undefined}
+                  alt={story.portrait.label}
                   label={story.portrait.label}
                   caption={story.portrait.caption}
                   ratio="aspect-[4/5]"
@@ -111,7 +115,7 @@ export function AboutPage({ story }: { story: Story }) {
             <Reveal delay={0.45} y={14} className="mt-5 flex items-center justify-end gap-3">
               <span aria-hidden className="h-px w-10 bg-border-strong" />
               <Signature className="-rotate-2 text-3xl text-foreground/85 md:text-4xl">
-                Muztahid Rahman
+                {story.signature}
               </Signature>
             </Reveal>
           </div>
@@ -138,7 +142,7 @@ export function AboutPage({ story }: { story: Story }) {
               {i === 0 && (
                 <Reveal y={14} className="!mt-7 flex justify-end">
                   <Signature className="-rotate-1 text-right text-2xl text-muted-foreground md:text-3xl">
-                    take it apart &mdash; build it better.
+                    {story.narrativeSignature}
                   </Signature>
                 </Reveal>
               )}
@@ -160,7 +164,7 @@ export function AboutPage({ story }: { story: Story }) {
           </h2>
           <div className="max-w-4xl">
             <Reveal>
-              <Eyebrow index="02">Philosophy</Eyebrow>
+              <Eyebrow index="02">{story.philosophyEyebrow}</Eyebrow>
             </Reveal>
 
             <Reveal delay={0.08} className="relative mt-10">
@@ -193,10 +197,10 @@ export function AboutPage({ story }: { story: Story }) {
           Principles
         </h2>
         <Reveal>
-          <Eyebrow index="03">What I build by</Eyebrow>
+          <Eyebrow index="03">{story.valuesEyebrow}</Eyebrow>
         </Reveal>
         <Reveal as="p" delay={0.08} className="mt-7 max-w-xl text-lg text-muted-foreground">
-          Four convictions that shape every build, every team, and every line of code.
+          {story.valuesIntro}
         </Reveal>
 
         <div className="mt-14 grid md:mt-16 md:grid-cols-2">
@@ -229,10 +233,10 @@ export function AboutPage({ story }: { story: Story }) {
           </h2>
           <div className="flex flex-wrap items-end justify-between gap-x-10 gap-y-6">
             <Reveal>
-              <Eyebrow index="04">The path so far</Eyebrow>
+              <Eyebrow index="04">{story.journeyEyebrow}</Eyebrow>
             </Reveal>
             <Reveal as="p" delay={0.1} className="max-w-xs text-muted-foreground">
-              From taking things apart to building companies &mdash; the milestones that compounded.
+              {story.journeyIntro}
             </Reveal>
           </div>
 
@@ -272,7 +276,7 @@ export function AboutPage({ story }: { story: Story }) {
           ============================================================ */}
       <section className="container-page py-24 md:py-32" aria-labelledby="next-heading">
         <Reveal>
-          <Eyebrow index="05">What&rsquo;s next</Eyebrow>
+          <Eyebrow index="05">{story.nextEyebrow}</Eyebrow>
         </Reveal>
 
         <Reveal as="h2" delay={0.08} className="mt-8 max-w-4xl font-display text-[clamp(1.9rem,3.6vw,3.1rem)] leading-[1.14] tracking-tight">
@@ -283,11 +287,11 @@ export function AboutPage({ story }: { story: Story }) {
         </Reveal>
 
         <Reveal delay={0.16} className="mt-10 flex flex-wrap items-center gap-x-5 gap-y-4">
-          <CtaButton href="/projects" variant="solid" icon="arrow-right">
-            See what I’ve built
+          <CtaButton href={story.primaryCta.href} variant="solid" icon="arrow-right">
+            {story.primaryCta.label}
           </CtaButton>
-          <CtaButton href="/contact" variant="text" icon="arrow-up">
-            Get in touch
+          <CtaButton href={story.secondaryCta.href} variant="text" icon="arrow-up">
+            {story.secondaryCta.label}
           </CtaButton>
         </Reveal>
       </section>

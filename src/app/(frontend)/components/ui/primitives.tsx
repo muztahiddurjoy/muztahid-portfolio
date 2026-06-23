@@ -4,6 +4,7 @@ import { useRef, type ReactNode } from 'react'
 import { gsap } from '@/lib/gsap'
 import { useIsoLayoutEffect } from '@/lib/use-iso-layout-effect'
 import { cn } from '@/lib/utils'
+import { usePreview } from '../preview-context'
 
 /* ---------- Eyebrow (section label) ---------- */
 export function Eyebrow({
@@ -21,6 +22,28 @@ export function Eyebrow({
       <span className="h-px w-8 bg-border-strong" />
       <span className="eyebrow">{children}</span>
     </div>
+  )
+}
+
+/* ---------- AccentText (italicise a word/phrase within a string) ---------- */
+export function AccentText({
+  text,
+  accent,
+  className = 'display-italic',
+}: {
+  text: string
+  accent?: string
+  className?: string
+}) {
+  if (!accent) return <>{text}</>
+  const i = text.toLowerCase().indexOf(accent.toLowerCase())
+  if (i === -1) return <>{text}</>
+  return (
+    <>
+      {text.slice(0, i)}
+      <span className={className}>{text.slice(i, i + accent.length)}</span>
+      {text.slice(i + accent.length)}
+    </>
   )
 }
 
@@ -102,10 +125,11 @@ export function CountUp({
   className?: string
 }) {
   const ref = useRef<HTMLSpanElement>(null)
+  const isPreview = usePreview()
   useIsoLayoutEffect(() => {
     const el = ref.current
     if (!el) return
-    if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) {
+    if (isPreview || window.matchMedia('(prefers-reduced-motion: reduce)').matches) {
       el.textContent = `${prefix}${value}${suffix}`
       return
     }

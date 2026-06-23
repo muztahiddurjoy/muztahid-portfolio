@@ -4,38 +4,31 @@ import { useMemo, useRef, useState } from 'react'
 import { gsap } from '@/lib/gsap'
 import { useIsoLayoutEffect } from '@/lib/use-iso-layout-effect'
 import { cn } from '@/lib/utils'
-import { type Certificate } from '@/lib/portfolio-data'
+import { type Certificate, type CertificatesPageData } from '@/lib/portfolio-data'
 import { Reveal } from '../ui/reveal'
-import { Eyebrow, Tag, Signature, CountUp } from '../ui/primitives'
+import { Eyebrow, Tag, Signature, CountUp, AccentText } from '../ui/primitives'
 import { CtaButton } from '../ui/cta-button'
 import { Icon } from '../ui/lucide-icon'
+import { usePreview } from '../preview-context'
 
-/* Coarse disciplines mirror the hero line: cloud, AI, robotics, and the web. */
-const DISCIPLINES = ['All', 'Cloud', 'AI', 'Robotics', 'Web'] as const
-type Discipline = (typeof DISCIPLINES)[number]
-
-const certDiscipline: Record<string, Exclude<Discipline, 'All'>> = {
-  'aws-ccp': 'Cloud',
-  'gcp-leader': 'Cloud',
-  'nvidia-dl': 'AI',
-  'ros2-dev': 'Robotics',
-  'meta-frontend': 'Web',
-  'mongodb-node': 'Web',
-  'postman-api': 'Web',
-  'fcc-responsive': 'Web',
-  'udemy-fullstack': 'Web',
-}
-
-export default function CertificatesPage({ certificates }: { certificates: Certificate[] }) {
+export default function CertificatesPage({
+  certificates,
+  chrome,
+}: {
+  certificates: Certificate[]
+  chrome: CertificatesPageData
+}) {
+  const isPreview = usePreview()
   const gridRef = useRef<HTMLUListElement>(null)
-  const [active, setActive] = useState<Discipline>('All')
+  const disciplines = [chrome.allLabel, ...chrome.disciplines]
+  const [active, setActive] = useState<string>(chrome.allLabel)
 
   const filtered = useMemo(
     () =>
-      active === 'All'
+      active === chrome.allLabel
         ? certificates
-        : certificates.filter((c) => certDiscipline[c.id] === active),
-    [active],
+        : certificates.filter((c) => c.discipline === active),
+    [active, certificates, chrome.allLabel],
   )
 
   // Soft staggered reveal for the card wrappers. Re-runs on filter change so the
@@ -45,7 +38,8 @@ export default function CertificatesPage({ certificates }: { certificates: Certi
     if (!grid) return
     const cards = grid.querySelectorAll<HTMLElement>('[data-card]')
     if (!cards.length) return
-    if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) {
+    const reduce = isPreview || window.matchMedia('(prefers-reduced-motion: reduce)').matches
+    if (reduce) {
       gsap.set(cards, { opacity: 1, y: 0 })
       return
     }
@@ -69,7 +63,7 @@ export default function CertificatesPage({ certificates }: { certificates: Certi
       <section className="container-page pb-16 md:pb-24">
         <div className="max-w-4xl">
           <Reveal>
-            <Eyebrow>Certificates</Eyebrow>
+            <Eyebrow>{chrome.eyebrow}</Eyebrow>
           </Reveal>
 
           <Reveal
@@ -77,7 +71,9 @@ export default function CertificatesPage({ certificates }: { certificates: Certi
             delay={0.05}
             className="mt-6 font-display text-[clamp(2.4rem,6vw,5rem)] leading-[1.02] tracking-tight"
           >
-            Always <span className="display-italic">sharpening</span> the craft.
+            {chrome.headlinePrefix}
+            <span className="display-italic">{chrome.headlineAccent}</span>
+            {chrome.headlineSuffix}
           </Reveal>
 
           <Reveal
@@ -85,14 +81,15 @@ export default function CertificatesPage({ certificates }: { certificates: Certi
             delay={0.12}
             className="mt-7 max-w-2xl text-lg leading-relaxed text-muted-foreground"
           >
-            An engineer is only as sharp as their last lesson. These are the credentials I have
-            collected keeping pace across{' '}
-            <span className="text-foreground">cloud, AI, robotics, and the web</span> — proof that
-            the curiosity that started everything never quietly switched off.
+            <AccentText
+              text={chrome.lede}
+              accent={chrome.ledeHighlight}
+              className="text-foreground"
+            />
           </Reveal>
 
           <Reveal delay={0.18} className="mt-6">
-            <Signature className="text-2xl text-muted-foreground">still a student</Signature>
+            <Signature className="text-2xl text-muted-foreground">{chrome.signature}</Signature>
           </Reveal>
 
           <Reveal
@@ -108,7 +105,7 @@ export default function CertificatesPage({ certificates }: { certificates: Certi
             </span>
             <span className="hidden h-4 w-px bg-border-strong sm:inline-block" aria-hidden="true" />
             <span>
-              across <span className="text-foreground">four</span> disciplines
+              across <span className="text-foreground">{chrome.disciplines.length}</span> disciplines
             </span>
             <span className="hidden h-4 w-px bg-border-strong sm:inline-block" aria-hidden="true" />
             <span>continuously updated</span>
@@ -122,9 +119,9 @@ export default function CertificatesPage({ certificates }: { certificates: Certi
           {/* Quiet discipline filter */}
           <Reveal className="mb-12 flex flex-col gap-5 md:flex-row md:items-end md:justify-between">
             <div>
-              <Eyebrow>Browse</Eyebrow>
+              <Eyebrow>{chrome.filterEyebrow}</Eyebrow>
               <p className="mt-3 max-w-md text-sm text-muted-foreground">
-                Filter the shelf by where each lesson lives.
+                {chrome.filterDescription}
               </p>
             </div>
             <div
@@ -132,7 +129,7 @@ export default function CertificatesPage({ certificates }: { certificates: Certi
               aria-label="Filter certificates by discipline"
               className="flex flex-wrap gap-2.5"
             >
-              {DISCIPLINES.map((d) => {
+              {disciplines.map((d) => {
                 const isActive = active === d
                 return (
                   <button
@@ -158,7 +155,7 @@ export default function CertificatesPage({ certificates }: { certificates: Certi
 
           <p className="sr-only" aria-live="polite">
             Showing {filtered.length} of {certificates.length} certificates
-            {active !== 'All' ? ` in ${active}` : ''}.
+            {active !== chrome.allLabel ? ` in ${active}` : ''}.
           </p>
 
           <ul
@@ -208,18 +205,18 @@ export default function CertificatesPage({ certificates }: { certificates: Certi
       {/* ---------------- Closing ---------------- */}
       <section className="container-page py-24 text-center md:py-32">
         <Reveal>
-          <Eyebrow className="justify-center">Keep going</Eyebrow>
+          <Eyebrow className="justify-center">{chrome.closingEyebrow}</Eyebrow>
           <h2 className="mx-auto mt-6 max-w-3xl font-display text-[clamp(1.9rem,4.5vw,3.4rem)] leading-[1.08] tracking-tight">
-            The learning never <span className="display-italic">stops</span> — and neither do the
-            ideas it unlocks.
+            {chrome.closingHeadingPrefix}
+            <span className="display-italic">{chrome.closingHeadingAccent}</span>
+            {chrome.closingHeadingSuffix}
           </h2>
           <p className="mx-auto mt-6 max-w-xl text-lg leading-relaxed text-muted-foreground">
-            Every credential is a tool I picked up to build something better. If you have a problem
-            worth that depth, let us put it to work.
+            {chrome.closingBody}
           </p>
           <div className="mt-10 flex justify-center">
-            <CtaButton href="/contact" variant="solid" icon="arrow-right">
-              Let us build something
+            <CtaButton href={chrome.closingCtaHref} variant="solid" icon="arrow-right">
+              {chrome.closingCtaLabel}
             </CtaButton>
           </div>
         </Reveal>

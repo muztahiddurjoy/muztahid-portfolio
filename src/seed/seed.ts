@@ -24,6 +24,11 @@ import {
   articles,
   achievements,
   certificates,
+  projectsPage,
+  writingPage,
+  achievementsPage,
+  certificatesPage,
+  projectPage,
 } from '../lib/portfolio-data'
 
 type AnyCollection =
@@ -51,7 +56,10 @@ const run = async () => {
       linkedin: siteConfig.linkedin,
       availability: siteConfig.availability,
       metaDescription: siteConfig.metaDescription,
+      siteUrl: siteConfig.siteUrl,
       nav: siteConfig.nav.map((n) => ({ label: n.label, href: n.href })),
+      footer: { ...siteConfig.footer },
+      notFound: { ...siteConfig.notFound },
     },
   })
 
@@ -63,10 +71,18 @@ const run = async () => {
       headlineAccent: home.headlineAccent,
       script: home.script,
       lede: home.lede,
+      heroCaption: home.heroCaption,
+      heroBadge: home.heroBadge,
       primaryCta: { label: home.primaryCta.label, href: home.primaryCta.href },
       secondaryCta: { label: home.secondaryCta.label, href: home.secondaryCta.href },
       marquee: home.marquee.map((text) => ({ text })),
       now: home.now.map((n) => ({ label: n.label, value: n.value })),
+      manifesto: { ...home.manifesto },
+      projectsSection: { ...home.projectsSection },
+      writingSection: { ...home.writingSection },
+      certificatesSection: { ...home.certificatesSection },
+      achievementsSection: { ...home.achievementsSection },
+      statsEyebrow: home.statsEyebrow,
       stats: stats.map((s) => ({ value: s.value, suffix: s.suffix, label: s.label })),
     },
   })
@@ -77,12 +93,26 @@ const run = async () => {
       eyebrow: story.eyebrow,
       title: story.title,
       intro: story.intro,
+      headlineLines: story.headlineLines.map((line) => ({ line })),
+      headlineAccent: story.headlineAccent,
+      signature: story.signature,
+      narrativeSignature: story.narrativeSignature,
       portrait: { label: story.portrait.label, caption: story.portrait.caption },
       narrative: story.narrative.map((text) => ({ text })),
+      philosophyEyebrow: story.philosophyEyebrow,
       philosophy: { quote: story.philosophy.quote, body: story.philosophy.body },
+      valuesEyebrow: story.valuesEyebrow,
+      valuesIntro: story.valuesIntro,
       values: story.values.map((v) => ({ title: v.title, body: v.body })),
+      journeyEyebrow: story.journeyEyebrow,
+      journeyIntro: story.journeyIntro,
       journey: story.journey.map((j) => ({ year: j.year, title: j.title, detail: j.detail })),
+      nextEyebrow: story.nextEyebrow,
       next: story.next,
+      primaryCta: { ...story.primaryCta },
+      secondaryCta: { ...story.secondaryCta },
+      metaTitle: story.metaTitle,
+      metaDescription: story.metaDescription,
     },
   })
 
@@ -91,8 +121,52 @@ const run = async () => {
     data: {
       eyebrow: contact.eyebrow,
       title: contact.title,
+      titleAccent: contact.titleAccent,
       blurb: contact.blurb,
-      channels: contact.channels.map((c) => ({ label: c.label, value: c.value, href: c.href })),
+      replyTime: contact.replyTime,
+      invitation: { ...contact.invitation },
+      form: { ...contact.form },
+      success: { ...contact.success },
+      errorMessages: { ...contact.errors },
+      metaTitle: contact.metaTitle,
+      metaDescription: contact.metaDescription,
+      channels: contact.channels.map((c) => ({ label: c.label, value: c.value, href: c.href, icon: c.icon })),
+    },
+  })
+
+  await payload.updateGlobal({
+    slug: 'projects-page',
+    data: { ...projectsPage },
+  })
+
+  await payload.updateGlobal({
+    slug: 'writing-page',
+    data: { ...writingPage },
+  })
+
+  await payload.updateGlobal({
+    slug: 'achievements-page',
+    data: {
+      ...achievementsPage,
+      statLabels: achievementsPage.statLabels.map((label) => ({ label })),
+      primaryCta: { ...achievementsPage.primaryCta },
+      secondaryCta: { ...achievementsPage.secondaryCta },
+    },
+  })
+
+  await payload.updateGlobal({
+    slug: 'certificates-page',
+    data: {
+      ...certificatesPage,
+      disciplines: certificatesPage.disciplines.map((label) => ({ label })),
+    },
+  })
+
+  await payload.updateGlobal({
+    slug: 'project-page',
+    data: {
+      caseStudy: { ...projectPage.caseStudy },
+      pager: { ...projectPage.pager },
     },
   })
 
@@ -185,6 +259,7 @@ const run = async () => {
         dateLabel: c.dateLabel,
         credentialId: c.credentialId,
         skills: c.skills,
+        discipline: c.discipline,
         featured: Boolean(c.featured),
         key: c.id,
       },

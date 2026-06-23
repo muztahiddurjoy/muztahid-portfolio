@@ -22,10 +22,11 @@ import {
 import { Reveal } from '../ui/reveal'
 import { AnimatedHeading } from '../ui/animated-heading'
 import { CtaButton } from '../ui/cta-button'
-import { Eyebrow, Tag, Signature, Marquee, CountUp } from '../ui/primitives'
+import { Eyebrow, Tag, Signature, Marquee, CountUp, AccentText } from '../ui/primitives'
 import { ImageFrame } from '../ui/image-frame'
 import { TransitionLink } from '../ui/transition-link'
 import { Icon, type IconName } from '../ui/lucide-icon'
+import { usePreview } from '../preview-context'
 
 const achievementIcon: Record<AchievementType, IconName> = {
   award: 'Trophy',
@@ -66,11 +67,12 @@ export function Home({
   const accent = home.headlineAccent.toLowerCase()
 
   const scope = useRef<HTMLElement>(null)
+  const isPreview = usePreview()
 
   useIsoLayoutEffect(() => {
     const root = scope.current
     if (!root) return
-    const reduce = window.matchMedia('(prefers-reduced-motion: reduce)').matches
+    const reduce = isPreview || window.matchMedia('(prefers-reduced-motion: reduce)').matches
 
     const ctx = gsap.context(() => {
       const words = gsap.utils.toArray<HTMLElement>('[data-hero-word]')
@@ -177,12 +179,14 @@ export function Home({
             <div data-hero-parallax className="will-change-transform">
               <ImageFrame
                 label={siteConfig.shortName}
-                caption="Engineer · Dhaka"
+                caption={home.heroCaption}
+                src={home.heroImage || undefined}
+                alt={siteConfig.name}
                 ratio="aspect-[4/5]"
               />
             </div>
             <div className="mt-5 flex items-center justify-between">
-              <Signature className="-rotate-2 text-xl text-muted-foreground">est. 2021</Signature>
+              <Signature className="-rotate-2 text-xl text-muted-foreground">{home.heroBadge}</Signature>
               <span className="eyebrow">{siteConfig.location}</span>
             </div>
           </Reveal>
@@ -226,22 +230,19 @@ export function Home({
         <div className="grid gap-14 md:grid-cols-12 md:gap-16">
           <div className="md:col-span-7">
             <Reveal>
-              <Eyebrow index="02">The premise</Eyebrow>
+              <Eyebrow index="02">{home.manifesto.eyebrow}</Eyebrow>
             </Reveal>
             <Reveal as="h2" delay={0.08} className="mt-8 max-w-2xl font-display text-[clamp(1.7rem,3.4vw,2.95rem)] leading-[1.14] tracking-tight">
-              I&rsquo;d rather <span className="display-italic">build</span> the future than predict
-              it &mdash; so I write the code, lead the engineers, and ship the systems that turn a
-              bold idea into something the world can actually hold.
+              <AccentText text={home.manifesto.heading} accent={home.manifesto.headingAccent} />
             </Reveal>
             <Reveal as="p" delay={0.16} className="mt-7 max-w-md text-muted-foreground">
-              Technical depth is the proof, never the pitch. My work lives in the narrow gap between a
-              vision and the machine that makes it real.
+              {home.manifesto.body}
             </Reveal>
           </div>
 
           <div className="md:col-span-5">
             <div className="flex items-baseline gap-4">
-              <Signature className="text-2xl text-muted-foreground">currently</Signature>
+              <Signature className="text-2xl text-muted-foreground">{home.manifesto.nowLabel}</Signature>
               <span className="h-px flex-1 bg-border" />
             </div>
             <dl className="mt-2">
@@ -266,22 +267,21 @@ export function Home({
           <div className="flex flex-wrap items-end justify-between gap-x-10 gap-y-6">
             <div>
               <Reveal>
-                <Eyebrow index="03">Selected projects</Eyebrow>
+                <Eyebrow index="03">{home.projectsSection.eyebrow}</Eyebrow>
               </Reveal>
               <h2 className="mt-7 font-display text-[clamp(2rem,4.6vw,3.6rem)] leading-[1.04] tracking-tight">
-                <AnimatedHeading as="span" className="block" text="Things I&rsquo;ve" />
+                <AnimatedHeading as="span" className="block" text={home.projectsSection.headingLineOne} />
                 <AnimatedHeading
                   as="span"
                   className="block"
                   wordClassName="display-italic"
-                  text="actually shipped."
+                  text={home.projectsSection.headingLineTwo}
                   delay={0.08}
                 />
               </h2>
             </div>
             <Reveal as="p" delay={0.15} className="max-w-xs text-muted-foreground">
-              The projects I&rsquo;ve built, shipped, and engineered &mdash; from software studios to
-              autonomous machines.
+              {home.projectsSection.description}
             </Reveal>
           </div>
 
@@ -335,8 +335,8 @@ export function Home({
           </div>
 
           <Reveal className="mt-16 flex justify-center md:mt-20">
-            <CtaButton href="/projects" variant="outline" icon="arrow-right">
-              All projects
+            <CtaButton href={home.projectsSection.ctaHref} variant="outline" icon="arrow-right">
+              {home.projectsSection.ctaLabel}
             </CtaButton>
           </Reveal>
         </div>
@@ -348,7 +348,7 @@ export function Home({
       <section className="border-y border-border bg-elevated">
         <div className="container-page py-20 md:py-24">
           <Reveal>
-            <Eyebrow index="04">By the numbers</Eyebrow>
+            <Eyebrow index="04">{home.statsEyebrow}</Eyebrow>
           </Reveal>
 
           <dl className="mt-12 grid grid-cols-2 md:mt-14 md:grid-cols-4">
@@ -382,15 +382,15 @@ export function Home({
         <div className="flex flex-wrap items-end justify-between gap-x-10 gap-y-6">
           <div>
             <Reveal>
-              <Eyebrow index="05">From the notebook</Eyebrow>
+              <Eyebrow index="05">{home.writingSection.eyebrow}</Eyebrow>
             </Reveal>
             <h2 className="mt-7 font-display text-[clamp(1.9rem,4.2vw,3.3rem)] leading-[1.04] tracking-tight">
-              <AnimatedHeading as="span" className="block" text="Selected writing" />
+              <AnimatedHeading as="span" className="block" text={home.writingSection.heading} />
             </h2>
           </div>
           <Reveal delay={0.12}>
-            <CtaButton href="/writing" variant="text" icon="arrow-up">
-              All writing
+            <CtaButton href={home.writingSection.ctaHref} variant="text" icon="arrow-up">
+              {home.writingSection.ctaLabel}
             </CtaButton>
           </Reveal>
         </div>
@@ -418,7 +418,7 @@ export function Home({
                     </h3>
                     <p className="mt-3 max-w-2xl text-muted-foreground">{a.excerpt}</p>
                     <span className="mt-5 inline-flex items-center gap-1.5 text-sm font-medium text-muted-foreground transition-colors duration-300 group-hover:text-foreground">
-                      Read
+                      {home.writingSection.itemCtaLabel}
                       <ArrowUpRight className="h-4 w-4 transition-transform duration-300 group-hover:translate-x-0.5 group-hover:-translate-y-0.5" />
                     </span>
                   </div>
@@ -438,22 +438,22 @@ export function Home({
             <div className="flex flex-wrap items-end justify-between gap-x-10 gap-y-6">
               <div>
                 <Reveal>
-                  <Eyebrow index="06">Credentials</Eyebrow>
+                  <Eyebrow index="06">{home.certificatesSection.eyebrow}</Eyebrow>
                 </Reveal>
                 <h2 className="mt-7 font-display text-[clamp(1.9rem,4.2vw,3.3rem)] leading-[1.04] tracking-tight">
-                  <AnimatedHeading as="span" className="block" text="Always sharpening" />
+                  <AnimatedHeading as="span" className="block" text={home.certificatesSection.headingLineOne} />
                   <AnimatedHeading
                     as="span"
                     className="block"
                     wordClassName="display-italic"
-                    text="the craft."
+                    text={home.certificatesSection.headingLineTwo}
                     delay={0.08}
                   />
                 </h2>
               </div>
               <Reveal delay={0.12}>
-                <CtaButton href="/certificates" variant="text" icon="arrow-up">
-                  All certificates
+                <CtaButton href={home.certificatesSection.ctaHref} variant="text" icon="arrow-up">
+                  {home.certificatesSection.ctaLabel}
                 </CtaButton>
               </Reveal>
             </div>
@@ -494,22 +494,22 @@ export function Home({
           <div className="flex flex-wrap items-end justify-between gap-x-10 gap-y-6">
             <div>
               <Reveal>
-                <Eyebrow index="07">Recognition</Eyebrow>
+                <Eyebrow index="07">{home.achievementsSection.eyebrow}</Eyebrow>
               </Reveal>
               <h2 className="mt-7 font-display text-[clamp(1.9rem,4.2vw,3.3rem)] leading-[1.04] tracking-tight">
-                <AnimatedHeading as="span" className="block" text="Moments that" />
+                <AnimatedHeading as="span" className="block" text={home.achievementsSection.headingLineOne} />
                 <AnimatedHeading
                   as="span"
                   className="block"
                   wordClassName="display-italic"
-                  text="kept the score."
+                  text={home.achievementsSection.headingLineTwo}
                   delay={0.08}
                 />
               </h2>
             </div>
             <Reveal delay={0.12}>
-              <CtaButton href="/achievements" variant="text" icon="arrow-up">
-                All achievements
+              <CtaButton href={home.achievementsSection.ctaHref} variant="text" icon="arrow-up">
+                {home.achievementsSection.ctaLabel}
               </CtaButton>
             </Reveal>
           </div>

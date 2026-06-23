@@ -36,6 +36,17 @@ export const Certificates: CollectionConfig = {
     },
     { name: 'skills', type: 'text', hasMany: true },
     {
+      name: 'discipline',
+      type: 'select',
+      options: [
+        { label: 'Cloud', value: 'Cloud' },
+        { label: 'AI', value: 'AI' },
+        { label: 'Robotics', value: 'Robotics' },
+        { label: 'Web', value: 'Web' },
+      ],
+      admin: { position: 'sidebar', description: 'Drives the discipline filter on the certificates page.' },
+    },
+    {
       name: 'featured',
       type: 'checkbox',
       defaultValue: false,

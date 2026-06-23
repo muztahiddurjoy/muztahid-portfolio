@@ -2,18 +2,29 @@
 
 import { useMemo, useState } from 'react'
 import { ArrowUpRight } from 'lucide-react'
-import { writingCategoryMeta, type WritingCategory, type Article } from '@/lib/portfolio-data'
+import {
+  writingCategoryMeta,
+  type WritingCategory,
+  type Article,
+  type WritingPageData,
+} from '@/lib/portfolio-data'
 import { cn } from '@/lib/utils'
 import { Reveal } from '../ui/reveal'
 import { AnimatedHeading } from '../ui/animated-heading'
 import { ImageFrame } from '../ui/image-frame'
 import { CtaButton } from '../ui/cta-button'
 import { TransitionLink } from '../ui/transition-link'
-import { Eyebrow, Tag, Signature } from '../ui/primitives'
+import { Eyebrow, Tag, Signature, AccentText } from '../ui/primitives'
 
 type Filter = 'all' | WritingCategory
 
-export default function WritingPage({ articles }: { articles: Article[] }) {
+export default function WritingPage({
+  articles,
+  chrome,
+}: {
+  articles: Article[]
+  chrome: WritingPageData
+}) {
   const [filter, setFilter] = useState<Filter>('all')
 
   const featured = useMemo(() => articles.find((a) => a.featured), [])
@@ -30,16 +41,16 @@ export default function WritingPage({ articles }: { articles: Article[] }) {
       {/* ============================== HERO ============================== */}
       <section className="container-page pb-20 md:pb-28">
         <Reveal>
-          <Eyebrow index="01">Writing</Eyebrow>
+          <Eyebrow index="01">{chrome.eyebrow}</Eyebrow>
         </Reveal>
 
         <h1 className="mt-8 max-w-[16ch] font-display text-[var(--text-display)] leading-[0.98] tracking-tight">
-          <AnimatedHeading as="span" immediate text="Notes on" className="block" />
+          <AnimatedHeading as="span" immediate text={chrome.headlineLineOne} className="block" />
           <AnimatedHeading
             as="span"
             immediate
             delay={0.12}
-            text="building"
+            text={chrome.headlineLineTwo}
             wordClassName="display-italic"
             className="block"
           />
@@ -48,20 +59,21 @@ export default function WritingPage({ articles }: { articles: Article[] }) {
         <div className="mt-9 max-w-2xl">
           <Reveal delay={0.15}>
             <p className="text-lg leading-relaxed text-muted-foreground md:text-xl">
-              Field notes from the workshop — essays on building, engineering the systems
-              beneath the products, teaching robots to hold their line on unforgiving terrain, and the
-              occasional argument about why things should be{' '}
-              <span className="display-italic text-foreground">built to last</span>.
+              <AccentText
+                text={chrome.lede}
+                accent={chrome.ledeHighlight}
+                className="display-italic text-foreground"
+              />
             </p>
           </Reveal>
         </div>
 
         <Reveal delay={0.25}>
           <p className="mt-8 flex flex-wrap items-center gap-x-3 gap-y-1 text-sm text-muted-foreground">
-            <Signature className="text-xl text-foreground">from the desk</Signature>
+            <Signature className="text-xl text-foreground">{chrome.signature}</Signature>
             <span className="hidden h-px w-8 bg-border-strong sm:block" />
             <span>
-              {articles.length} essays · building, engineering, robotics &amp; the long view
+              {articles.length} {chrome.descriptor}
             </span>
           </p>
         </Reveal>
@@ -75,7 +87,7 @@ export default function WritingPage({ articles }: { articles: Article[] }) {
         >
           <div className="container-page py-20 md:py-28">
             <Reveal>
-              <Eyebrow index="02">Featured</Eyebrow>
+              <Eyebrow index="02">{chrome.featuredEyebrow}</Eyebrow>
             </Reveal>
 
             <div className="mt-10 grid items-center gap-10 md:mt-12 md:grid-cols-[1.15fr_1fr] md:gap-16">
@@ -87,6 +99,7 @@ export default function WritingPage({ articles }: { articles: Article[] }) {
                   className="group block"
                 >
                   <ImageFrame
+                    src={featured.cover.image || undefined}
                     label={featured.cover.label}
                     caption={featured.cover.caption}
                     ratio="aspect-[16/10]"
@@ -127,7 +140,7 @@ export default function WritingPage({ articles }: { articles: Article[] }) {
                       variant="text"
                       icon="arrow-right"
                     >
-                      Read the essay
+                      {chrome.featuredCtaLabel}
                     </CtaButton>
                     <div className="flex flex-wrap gap-2">
                       {featured.tags.slice(0, 3).map((tag) => (
@@ -146,12 +159,12 @@ export default function WritingPage({ articles }: { articles: Article[] }) {
       <section aria-labelledby="archive-heading" className="container-page py-24 md:py-32">
         <div className="flex flex-col gap-8 md:flex-row md:items-end md:justify-between">
           <Reveal>
-            <Eyebrow index="03">The archive</Eyebrow>
+            <Eyebrow index="03">{chrome.archiveEyebrow}</Eyebrow>
             <h2
               id="archive-heading"
               className="mt-6 max-w-xl font-display text-[var(--text-head)] leading-[1.05] tracking-tight"
             >
-              Everything else, in <span className="display-italic">order of thought</span>.
+              <AccentText text={chrome.archiveHeading} accent={chrome.archiveHeadingAccent} />
             </h2>
           </Reveal>
 
@@ -162,7 +175,7 @@ export default function WritingPage({ articles }: { articles: Article[] }) {
               className="flex flex-wrap items-center gap-x-6 gap-y-3"
             >
               <FilterButton active={filter === 'all'} onClick={() => setFilter('all')}>
-                All
+                {chrome.allLabel}
               </FilterButton>
               {categories.map((key) => (
                 <FilterButton

@@ -1,7 +1,9 @@
 import type { Metadata } from 'next'
+import { draftMode } from 'next/headers'
 import { notFound } from 'next/navigation'
-import { getProject, getProjects, getSite } from '@/lib/content'
+import { getProject, getProjects, getSite, getProjectPage, getProjectRaw } from '@/lib/content'
 import ProjectDetail from '../../components/projects/project-detail'
+import { ProjectLive } from '../../components/live/project-live'
 
 export async function generateStaticParams() {
   const projects = await getProjects()
@@ -25,6 +27,14 @@ export async function generateMetadata({
 
 export default async function Page({ params }: { params: Promise<{ slug: string }> }) {
   const { slug } = await params
+  const { isEnabled } = await draftMode()
+  const projectPage = await getProjectPage()
+
+  if (isEnabled) {
+    const initialProject = (await getProjectRaw(slug)) ?? {}
+    return <ProjectLive initialProject={initialProject} labels={projectPage} />
+  }
+
   const [projects, site] = await Promise.all([getProjects(), getSite()])
   const i = projects.findIndex((x) => x.slug === slug)
   if (i === -1) notFound()
@@ -51,6 +61,7 @@ export default async function Page({ params }: { params: Promise<{ slug: string 
         project={project}
         prev={i > 0 ? projects[i - 1] : null}
         next={i < projects.length - 1 ? projects[i + 1] : null}
+        labels={projectPage}
       />
     </>
   )

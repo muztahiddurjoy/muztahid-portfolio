@@ -14,12 +14,11 @@ import { cn } from '@/lib/utils'
 import type { ContactData, SiteConfig } from '@/lib/portfolio-data'
 import { Reveal } from '../ui/reveal'
 import { AnimatedHeading } from '../ui/animated-heading'
-import { Eyebrow } from '../ui/primitives'
+import { Eyebrow, AccentText } from '../ui/primitives'
 import { Magnetic } from '../ui/magnetic'
 import { GithubIcon, LinkedinIcon } from '../ui/brand-icons'
+import { usePreview } from '../preview-context'
 
-/* word to lift into italic serif inside the hero title */
-const TITLE_ACCENT = 'audacious'
 const EMAIL_RE = /^[^\s@]+@[^\s@]+\.[^\s@]+$/
 
 type FormState = { name: string; email: string; message: string; company: string }
@@ -146,6 +145,7 @@ export default function ContactPage({
   contact: ContactData
   siteConfig: SiteConfig
 }) {
+  const isPreview = usePreview()
   const [values, setValues] = useState<FormState>({
     name: '',
     email: '',
@@ -163,7 +163,8 @@ export default function ContactPage({
     if (status !== 'sent') return
     const el = successRef.current
     if (!el) return
-    if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) return
+    const reduce = isPreview || window.matchMedia('(prefers-reduced-motion: reduce)').matches
+    if (reduce) return
     const ctx = gsap.context(() => {
       gsap.from('[data-rise]', {
         y: 26,
@@ -192,10 +193,10 @@ export default function ContactPage({
 
   const validate = (s: FormState): FieldErrors => {
     const next: FieldErrors = {}
-    if (!s.name.trim()) next.name = 'Please add your name so I know who I’m talking to.'
-    if (!s.email.trim()) next.email = 'An email keeps the conversation going.'
-    else if (!EMAIL_RE.test(s.email.trim())) next.email = 'That email looks off — mind checking it?'
-    if (!s.message.trim()) next.message = 'Tell me a little about what you’re building.'
+    if (!s.name.trim()) next.name = contact.errors.nameRequired
+    if (!s.email.trim()) next.email = contact.errors.emailRequired
+    else if (!EMAIL_RE.test(s.email.trim())) next.email = contact.errors.emailInvalid
+    if (!s.message.trim()) next.message = contact.errors.messageRequired
     return next
   }
 
@@ -229,7 +230,7 @@ export default function ContactPage({
       setStatus('sent')
     } catch {
       setStatus('idle')
-      setErrors({ message: 'Something went wrong sending your message. Please email me directly.' })
+      setErrors({ message: contact.errors.submitFailed })
     }
   }
 
@@ -240,6 +241,10 @@ export default function ContactPage({
   }
 
   const firstName = values.name.trim().split(/\s+/)[0]
+
+  const titleParts = contact.title.split(contact.titleAccent)
+  const titleLead = titleParts[0]?.trim() ?? contact.title
+  const titleTail = titleParts[1]?.trim() ?? ''
 
   return (
     <main className="pt-28 md:pt-32">
@@ -253,24 +258,28 @@ export default function ContactPage({
           <AnimatedHeading
             as="span"
             className="block"
-            text={contact.title.split(TITLE_ACCENT)[0].trim()}
+            text={titleLead}
             immediate
           />
-          <AnimatedHeading
-            as="span"
-            className="block"
-            wordClassName="display-italic"
-            text={TITLE_ACCENT}
-            delay={0.16}
-            immediate
-          />
-          <AnimatedHeading
-            as="span"
-            className="block"
-            text={contact.title.split(TITLE_ACCENT)[1].trim()}
-            delay={0.32}
-            immediate
-          />
+          {contact.titleAccent && (
+            <AnimatedHeading
+              as="span"
+              className="block"
+              wordClassName="display-italic"
+              text={contact.titleAccent}
+              delay={0.16}
+              immediate
+            />
+          )}
+          {titleTail && (
+            <AnimatedHeading
+              as="span"
+              className="block"
+              text={titleTail}
+              delay={0.32}
+              immediate
+            />
+          )}
         </h1>
 
         <Reveal delay={0.15}>
@@ -289,7 +298,7 @@ export default function ContactPage({
               {siteConfig.availability}
             </span>
             <span className="hidden h-4 w-px bg-border sm:block" />
-            <span>Replies within 48 hours</span>
+            <span>{contact.replyTime}</span>
           </div>
         </Reveal>
       </section>
@@ -300,19 +309,18 @@ export default function ContactPage({
           {/* LEFT — warm invitation */}
           <div>
             <Reveal>
-              <Eyebrow>Say hello</Eyebrow>
+              <Eyebrow>{contact.invitation.eyebrow}</Eyebrow>
             </Reveal>
 
             <Reveal delay={0.1}>
               <p className="mt-7 font-script text-[clamp(2.1rem,4.6vw,3.4rem)] leading-[1.08] text-foreground">
-                let’s build something that lasts
+                {contact.invitation.script}
               </p>
             </Reveal>
 
             <Reveal delay={0.18}>
               <p className="mt-6 max-w-md text-base leading-relaxed text-muted-foreground">
-                Tell me what you’re trying to make real. I read every note myself, and I answer
-                the ones that want to build something worth standing on years from now.
+                {contact.invitation.body}
               </p>
             </Reveal>
 
@@ -324,9 +332,9 @@ export default function ContactPage({
                     value={channel.value}
                     href={channel.href}
                     icon={
-                      channel.label === 'GitHub' ? (
+                      channel.icon === 'github' ? (
                         <GithubIcon className="h-4 w-4 text-muted-foreground" />
-                      ) : channel.label === 'LinkedIn' ? (
+                      ) : channel.icon === 'linkedin' ? (
                         <LinkedinIcon className="h-4 w-4 text-muted-foreground" />
                       ) : undefined
                     }
@@ -346,19 +354,19 @@ export default function ContactPage({
                       data-rise
                       className="font-script text-[clamp(1.9rem,4vw,2.8rem)] leading-none text-muted-foreground"
                     >
-                      message sent
+                      {contact.success.script}
                     </span>
                     <h2
                       data-rise
                       className="mt-4 font-display text-2xl leading-[1.1] tracking-tight md:text-[2rem]"
                     >
-                      Message received — I’ll reply{' '}
-                      <span className="display-italic">within 48 hours</span>.
+                      <AccentText
+                        text={contact.success.heading}
+                        accent={contact.success.headingAccent}
+                      />
                     </h2>
                     <p data-rise className="mt-5 max-w-sm text-muted-foreground">
-                      Thank you for reaching out{firstName ? `, ${firstName}` : ''}. Your note
-                      landed safely. In the meantime, the work speaks for itself — feel free to
-                      wander the projects.
+                      {contact.success.body.replace('{name}', firstName ? `, ${firstName}` : '')}
                     </p>
                     <button
                       data-rise
@@ -367,45 +375,45 @@ export default function ContactPage({
                       onClick={reset}
                       className="group/cta mt-8 inline-flex items-center gap-1.5 text-sm font-medium"
                     >
-                      <span className="link-underline">Send another</span>
+                      <span className="link-underline">{contact.success.ctaLabel}</span>
                       <ArrowRight className="h-4 w-4 transition-transform duration-300 group-hover/cta:translate-x-1" />
                     </button>
                   </div>
                 ) : (
                   <form noValidate onSubmit={handleSubmit} className="relative">
-                    <p className="eyebrow mb-8">Send a note</p>
+                    <p className="eyebrow mb-8">{contact.form.eyebrow}</p>
 
                     <div className="flex flex-col gap-6">
                       <Field
                         id="name"
-                        label="Name"
+                        label={contact.form.nameLabel}
                         value={values.name}
                         onChange={update('name')}
                         error={errors.name}
                         disabled={status === 'sending'}
                         autoComplete="name"
-                        placeholder="Your name"
+                        placeholder={contact.form.namePlaceholder}
                       />
                       <Field
                         id="email"
-                        label="Email"
+                        label={contact.form.emailLabel}
                         type="email"
                         value={values.email}
                         onChange={update('email')}
                         error={errors.email}
                         disabled={status === 'sending'}
                         autoComplete="email"
-                        placeholder="you@studio.com"
+                        placeholder={contact.form.emailPlaceholder}
                       />
                       <Field
                         id="message"
-                        label="Message"
+                        label={contact.form.messageLabel}
                         textarea
                         value={values.message}
                         onChange={update('message')}
                         error={errors.message}
                         disabled={status === 'sending'}
-                        placeholder="What are you trying to make real?"
+                        placeholder={contact.form.messagePlaceholder}
                       />
                     </div>
 
@@ -434,7 +442,7 @@ export default function ContactPage({
                           disabled={status === 'sending'}
                           className="group/cta inline-flex items-center gap-2.5 rounded-full bg-foreground px-7 py-3.5 text-sm font-medium tracking-tight text-background transition-all duration-400 hover:opacity-90 disabled:cursor-wait disabled:opacity-60"
                         >
-                          <span>{status === 'sending' ? 'Sending' : 'Send message'}</span>
+                          <span>{status === 'sending' ? contact.form.sendingLabel : contact.form.submitLabel}</span>
                           {status === 'sending' ? (
                             <span
                               aria-hidden
@@ -447,7 +455,7 @@ export default function ContactPage({
                       </Magnetic>
 
                       <span className="font-script text-lg text-muted-foreground">
-                        no bots, just builders
+                        {contact.form.footnote}
                       </span>
                     </div>
 

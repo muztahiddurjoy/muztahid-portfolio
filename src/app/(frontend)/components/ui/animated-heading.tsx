@@ -4,6 +4,7 @@ import { useRef, type ElementType } from 'react'
 import { gsap } from '@/lib/gsap'
 import { useIsoLayoutEffect } from '@/lib/use-iso-layout-effect'
 import { cn } from '@/lib/utils'
+import { usePreview } from '../preview-context'
 
 type Props = {
   text: string | string[]
@@ -30,12 +31,13 @@ export function AnimatedHeading({
 }: Props) {
   const ref = useRef<HTMLElement>(null)
   const lines = Array.isArray(text) ? text : [text]
+  const isPreview = usePreview()
 
   useIsoLayoutEffect(() => {
     const el = ref.current
     if (!el) return
     const words = el.querySelectorAll<HTMLElement>('[data-word]')
-    if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) {
+    if (isPreview || window.matchMedia('(prefers-reduced-motion: reduce)').matches) {
       gsap.set(words, { yPercent: 0, opacity: 1 })
       return
     }

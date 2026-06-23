@@ -5,7 +5,7 @@ import { ArrowLeft, ArrowRight, ArrowUpRight } from 'lucide-react'
 import { gsap } from '@/lib/gsap'
 import { useIsoLayoutEffect } from '@/lib/use-iso-layout-effect'
 import { cn } from '@/lib/utils'
-import { projectTypeMeta, type Project } from '@/lib/portfolio-data'
+import { projectTypeMeta, type Project, type ProjectPageData } from '@/lib/portfolio-data'
 import { AnimatedHeading } from '../ui/animated-heading'
 import { Reveal } from '../ui/reveal'
 import { Magnetic } from '../ui/magnetic'
@@ -13,6 +13,7 @@ import { Eyebrow, Tag, CountUp, Signature } from '../ui/primitives'
 import { ImageFrame } from '../ui/image-frame'
 import { TransitionLink } from '../ui/transition-link'
 import { GithubIcon } from '../ui/brand-icons'
+import { usePreview } from '../preview-context'
 
 /* small dot separator for meta rows */
 function Dot() {
@@ -29,7 +30,15 @@ function MetricValue({ value, className }: { value: string; className?: string }
 }
 
 /* prev/next pager cell */
-function PagerCell({ project, dir }: { project: Project; dir: 'prev' | 'next' }) {
+function PagerCell({
+  project,
+  dir,
+  labels,
+}: {
+  project: Project
+  dir: 'prev' | 'next'
+  labels: ProjectPageData
+}) {
   const isNext = dir === 'next'
   return (
     <TransitionLink
@@ -46,7 +55,7 @@ function PagerCell({ project, dir }: { project: Project; dir: 'prev' | 'next' })
         ) : (
           <ArrowLeft className="h-3.5 w-3.5 transition-transform duration-300 group-hover:-translate-x-1" />
         )}
-        {isNext ? 'Next project' : 'Previous project'}
+        {isNext ? labels.pager.nextLabel : labels.pager.prevLabel}
       </span>
       <span className="font-display text-[clamp(1.6rem,3.2vw,2.6rem)] leading-[1.05] tracking-tight">
         {project.name}
@@ -57,7 +66,7 @@ function PagerCell({ project, dir }: { project: Project; dir: 'prev' | 'next' })
 }
 
 /* graceful fallback when there is no prev/next */
-function PagerEnd({ dir }: { dir: 'prev' | 'next' }) {
+function PagerEnd({ dir, labels }: { dir: 'prev' | 'next'; labels: ProjectPageData }) {
   const isNext = dir === 'next'
   return (
     <TransitionLink
@@ -68,11 +77,11 @@ function PagerEnd({ dir }: { dir: 'prev' | 'next' }) {
         isNext ? 'sm:items-end sm:text-right' : 'sm:items-start',
       )}
     >
-      <span className="eyebrow">{isNext ? 'That’s the latest' : 'Back to the start'}</span>
+      <span className="eyebrow">{isNext ? labels.pager.latestLabel : labels.pager.startLabel}</span>
       <span className="font-display text-[clamp(1.6rem,3.2vw,2.6rem)] leading-[1.05] tracking-tight text-foreground">
-        All projects
+        {labels.pager.allProjectsLabel}
       </span>
-      <span className="font-script text-lg">the full body of work</span>
+      <span className="font-script text-lg">{labels.pager.allProjectsScript}</span>
     </TransitionLink>
   )
 }
@@ -81,25 +90,29 @@ export default function ProjectDetail({
   project,
   prev,
   next,
+  labels,
 }: {
   project: Project
   prev: Project | null
   next: Project | null
+  labels: ProjectPageData
 }) {
   const scopeRef = useRef<HTMLDivElement>(null)
   const coverRef = useRef<HTMLDivElement>(null)
+  const isPreview = usePreview()
 
   // split the name so the final word carries an italic serif accent
   const words = project.name.trim().split(/\s+/)
   const lead = words.slice(0, -1).join(' ')
   const tail = words[words.length - 1]
 
-  const headlineMetric = project.metrics[0]
+  const headlineMetric = project.metrics.find((m) => m.proof) ?? project.metrics[0]
   const valueClass = 'font-display leading-none tracking-tight'
 
   // soft parallax drift on the cover — pure polish, final state shown without motion
   useIsoLayoutEffect(() => {
-    if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) return
+    const reduce = isPreview || window.matchMedia('(prefers-reduced-motion: reduce)').matches
+    if (reduce) return
     const ctx = gsap.context(() => {
       const cover = coverRef.current
       if (!cover) return
@@ -131,7 +144,7 @@ export default function ProjectDetail({
           className="group inline-flex items-center gap-2 text-sm text-muted-foreground transition-colors hover:text-foreground"
         >
           <ArrowLeft className="h-4 w-4 transition-transform duration-300 group-hover:-translate-x-0.5" />
-          <span className="link-underline">All projects</span>
+          <span className="link-underline">{labels.pager.backLinkLabel}</span>
         </TransitionLink>
         <p className="eyebrow">
           projects <span className="mx-1 opacity-50">/</span> {projectTypeMeta[project.type].label}
@@ -180,7 +193,7 @@ export default function ProjectDetail({
         <Reveal delay={0.28} y={16}>
           <div className="mt-10 flex flex-col gap-8 border-t border-border pt-8 md:flex-row md:items-end md:justify-between">
             <div>
-              <Signature className="text-lg text-muted-foreground">built with</Signature>
+              <Signature className="text-lg text-muted-foreground">{labels.caseStudy.builtWithLabel}</Signature>
               <div className="mt-3 flex flex-wrap gap-2">
                 {project.stack.map((tech) => (
                   <Tag key={tech}>{tech}</Tag>
@@ -252,7 +265,7 @@ export default function ProjectDetail({
       <article className="container-prose py-24 md:py-32">
         {/* 01 — vision */}
         <Reveal as="section">
-          <Eyebrow index="01">The Vision</Eyebrow>
+          <Eyebrow index="01">{labels.caseStudy.visionLabel}</Eyebrow>
           <p className="mt-6 font-display text-[clamp(1.5rem,2.8vw,2.1rem)] leading-[1.35] tracking-tight">
             {project.vision}
           </p>
@@ -260,7 +273,7 @@ export default function ProjectDetail({
 
         {/* 02 — problem */}
         <Reveal as="section" className="mt-20 md:mt-28">
-          <Eyebrow index="02">The Problem</Eyebrow>
+          <Eyebrow index="02">{labels.caseStudy.problemLabel}</Eyebrow>
           <p className="mt-6 text-lg leading-relaxed text-foreground/90 md:text-xl">
             {project.problem}
           </p>
@@ -268,7 +281,7 @@ export default function ProjectDetail({
 
         {/* 03 — what I built */}
         <Reveal as="section" className="mt-20 md:mt-28">
-          <Eyebrow index="03">What I Built</Eyebrow>
+          <Eyebrow index="03">{labels.caseStudy.buildLabel}</Eyebrow>
           <ol className="mt-8 border-t border-border">
             {project.build.map((step, i) => (
               <li
@@ -286,14 +299,14 @@ export default function ProjectDetail({
 
         {/* 04 — outcome */}
         <Reveal as="section" className="mt-20 md:mt-28">
-          <Eyebrow index="04">The Outcome</Eyebrow>
+          <Eyebrow index="04">{labels.caseStudy.outcomeLabel}</Eyebrow>
           <p className="mt-6 text-lg leading-relaxed text-foreground/90 md:text-xl">
             {project.outcome}
           </p>
 
           {headlineMetric && (
             <div className="mt-10 overflow-hidden rounded-[var(--radius-xl)] bg-foreground p-8 text-background md:p-12">
-              <Signature className="text-lg text-background/60">the proof</Signature>
+              <Signature className="text-lg text-background/60">{labels.caseStudy.proofLabel}</Signature>
               <div className="mt-3 font-display text-[clamp(3rem,8vw,5.5rem)] leading-none tracking-tight">
                 {headlineMetric.value}
               </div>
@@ -310,7 +323,7 @@ export default function ProjectDetail({
         <section aria-label="Gallery" className="border-t border-border bg-card">
           <div className="container-page py-24 md:py-32">
             <Reveal>
-              <Eyebrow index="05">In the Build</Eyebrow>
+              <Eyebrow index="05">{labels.caseStudy.galleryLabel}</Eyebrow>
             </Reveal>
             <div className="mt-10 grid gap-6 sm:grid-cols-3">
               {project.gallery.map((shot, i) => (
@@ -318,6 +331,7 @@ export default function ProjectDetail({
                   <ImageFrame
                     label={shot.label}
                     caption={shot.caption}
+                    src={shot.image || undefined}
                     ratio="aspect-[4/3]"
                     index={String(i + 1).padStart(2, '0')}
                   />
@@ -333,8 +347,8 @@ export default function ProjectDetail({
         aria-label="More projects"
         className="grid divide-y divide-border border-t border-border sm:grid-cols-2 sm:divide-x sm:divide-y-0"
       >
-        {prev ? <PagerCell project={prev} dir="prev" /> : <PagerEnd dir="prev" />}
-        {next ? <PagerCell project={next} dir="next" /> : <PagerEnd dir="next" />}
+        {prev ? <PagerCell project={prev} dir="prev" labels={labels} /> : <PagerEnd dir="prev" labels={labels} />}
+        {next ? <PagerCell project={next} dir="next" labels={labels} /> : <PagerEnd dir="next" labels={labels} />}
       </nav>
     </div>
   )

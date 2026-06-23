@@ -3,6 +3,7 @@
 import { useRef, type ElementType, type ReactNode } from 'react'
 import { gsap } from '@/lib/gsap'
 import { useIsoLayoutEffect } from '@/lib/use-iso-layout-effect'
+import { usePreview } from '../preview-context'
 
 type RevealProps = {
   children: ReactNode
@@ -28,10 +29,14 @@ export function Reveal({
   className,
 }: RevealProps) {
   const ref = useRef<HTMLElement>(null)
+  const isPreview = usePreview()
 
   useIsoLayoutEffect(() => {
     const el = ref.current
     if (!el) return
+    // In live preview, leave content at its final (visible) state — no hide,
+    // no scroll-trigger that would otherwise never fire inside the iframe.
+    if (isPreview) return
     if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) return
     const ctx = gsap.context(() => {
       gsap.set(el, { opacity: 0, y })

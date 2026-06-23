@@ -40,6 +40,19 @@ function ArticleBlock({
     )
   }
 
+  if (block.type === 'img') {
+    return (
+      <Reveal as="figure" className="my-10">
+        <ImageFrame
+          label={block.caption || ''}
+          caption={block.caption}
+          src={block.src || undefined}
+          ratio="aspect-[16/9]"
+        />
+      </Reveal>
+    )
+  }
+
   return (
     <Reveal
       as="p"
@@ -58,12 +71,20 @@ export default function ArticleDetail({
   article,
   prev,
   next,
+  authorName = 'Muztahid Rahman',
 }: {
   article: Article
   prev: Article | null
   next: Article | null
+  authorName?: string
 }) {
   const firstParagraphIndex = article.body.findIndex((b) => b.type === 'p')
+  const authorInitials = authorName
+    .split(/\s+/)
+    .map((w) => w[0])
+    .join('')
+    .slice(0, 2)
+    .toUpperCase()
 
   return (
     <div className="pt-28 md:pt-32">
@@ -111,6 +132,7 @@ export default function ArticleDetail({
           <ImageFrame
             label={article.cover.label}
             caption={article.cover.caption}
+            src={article.cover.image || undefined}
             ratio="aspect-[16/9]"
           />
         </figure>
@@ -136,12 +158,12 @@ export default function ArticleDetail({
             className="flex h-12 w-12 shrink-0 items-center justify-center rounded-full border border-border-strong font-display text-lg"
             aria-hidden
           >
-            MR
+            {authorInitials}
           </span>
           <span className="flex flex-col">
             <span className="eyebrow">Written by</span>
             <Signature className="text-3xl leading-none text-foreground">
-              Muztahid Rahman
+              {authorName}
             </Signature>
           </span>
         </Reveal>

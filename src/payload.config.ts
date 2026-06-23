@@ -17,6 +17,12 @@ import { SiteSettings } from './globals/SiteSettings'
 import { Home } from './globals/Home'
 import { About } from './globals/About'
 import { Contact } from './globals/Contact'
+import { ProjectsPage } from './globals/ProjectsPage'
+import { WritingPage } from './globals/WritingPage'
+import { AchievementsPage } from './globals/AchievementsPage'
+import { CertificatesPage } from './globals/CertificatesPage'
+import { ProjectPage } from './globals/ProjectPage'
+import { frontendPath, buildPreviewURL } from './lib/preview'
 
 const filename = fileURLToPath(import.meta.url)
 const dirname = path.dirname(filename)
@@ -45,6 +51,23 @@ export default buildConfig({
     meta: {
       titleSuffix: '— Muztahid Rahman',
     },
+    livePreview: {
+      breakpoints: [
+        { label: 'Mobile', name: 'mobile', width: 375, height: 667 },
+        { label: 'Tablet', name: 'tablet', width: 768, height: 1024 },
+        { label: 'Desktop', name: 'desktop', width: 1440, height: 900 },
+      ],
+      url: ({ data, collectionConfig, globalConfig }) =>
+        buildPreviewURL(
+          globalConfig
+            ? frontendPath({ kind: 'global', slug: globalConfig.slug })
+            : frontendPath({
+                kind: 'collection',
+                slug: collectionConfig?.slug ?? '',
+                docSlug: typeof data?.slug === 'string' ? data.slug : undefined,
+              }),
+        ),
+    },
   },
   collections: [
     Projects,
@@ -55,7 +78,17 @@ export default buildConfig({
     ContactSubmissions,
     Users,
   ],
-  globals: [SiteSettings, Home, About, Contact],
+  globals: [
+    SiteSettings,
+    Home,
+    About,
+    Contact,
+    ProjectsPage,
+    WritingPage,
+    AchievementsPage,
+    CertificatesPage,
+    ProjectPage,
+  ],
   editor: lexicalEditor(),
   secret: process.env.PAYLOAD_SECRET || '',
   typescript: {

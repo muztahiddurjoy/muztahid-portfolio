@@ -1,4 +1,5 @@
 import type { Metadata } from 'next'
+import { draftMode } from 'next/headers'
 import { Fraunces, Inter, Caveat, Great_Vibes } from 'next/font/google'
 import './styles.css'
 
@@ -10,6 +11,8 @@ import { TransitionProvider } from './providers/transition-provider'
 import { PaperTexture } from './components/ui/paper-texture'
 import { SiteNav } from './components/site-nav'
 import { SiteFooter } from './components/site-footer'
+import { PreviewProvider } from './components/preview-context'
+import { RefreshRouteOnSave } from './components/live/refresh-on-save'
 
 const display = Fraunces({
   subsets: ['latin'],
@@ -23,10 +26,9 @@ const script = Caveat({ subsets: ['latin'], variable: '--font-caveat', display: 
 // formal signature face for the name (navbar · footer · transition overlay)
 const signature = Great_Vibes({ subsets: ['latin'], variable: '--font-great-vibes', display: 'swap', weight: '400' })
 
-const SITE_URL = process.env.NEXT_PUBLIC_SITE_URL || 'https://muztahid.dev'
-
 export async function generateMetadata(): Promise<Metadata> {
   const site = await getSite()
+  const SITE_URL = site.siteUrl || process.env.NEXT_PUBLIC_SITE_URL || 'https://muztahid.dev'
   return {
     title: {
       default: `${site.name} — ${site.role}`,
@@ -39,17 +41,20 @@ export async function generateMetadata(): Promise<Metadata> {
       description: site.metaDescription,
       type: 'website',
       url: SITE_URL,
+      images: site.ogImage ? [site.ogImage] : undefined,
     },
     twitter: {
       card: 'summary_large_image',
       title: `${site.name} — ${site.role}`,
       description: site.metaDescription,
+      images: site.ogImage ? [site.ogImage] : undefined,
     },
   }
 }
 
 export default async function RootLayout({ children }: { children: React.ReactNode }) {
   const site = await getSite()
+  const { isEnabled: isPreview } = await draftMode()
   return (
     <html
       lang="en"
@@ -63,10 +68,15 @@ export default async function RootLayout({ children }: { children: React.ReactNo
         <ThemeProvider>
           <SmoothScrollProvider>
             <TransitionProvider site={site}>
-              <PaperTexture />
-              <SiteNav site={site} />
-              {children}
-              <SiteFooter site={site} />
+              {/* In live preview, force final-state (no scroll-hidden) across the
+                  whole tree and refresh the route when the previewed doc saves. */}
+              <PreviewProvider value={isPreview}>
+                <PaperTexture />
+                <SiteNav site={site} />
+                {children}
+                <SiteFooter site={site} />
+                {isPreview && <RefreshRouteOnSave />}
+              </PreviewProvider>
             </TransitionProvider>
           </SmoothScrollProvider>
         </ThemeProvider>

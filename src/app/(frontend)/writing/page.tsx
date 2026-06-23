@@ -1,13 +1,16 @@
 import type { Metadata } from 'next'
-import { getArticles } from '@/lib/content'
+import { getArticles, getWritingPage } from '@/lib/content'
 import WritingPage from '../components/pages/writing-page'
 
-export const metadata: Metadata = {
-  title: 'Writing',
-  description: 'Notes on building, engineering culture, robotics, and the philosophy of making things that last.',
+export async function generateMetadata(): Promise<Metadata> {
+  const chrome = await getWritingPage()
+  return {
+    title: chrome.metaTitle,
+    description: chrome.metaDescription,
+  }
 }
 
 export default async function Page() {
-  const articles = await getArticles()
-  return <WritingPage articles={articles} />
+  const [articles, chrome] = await Promise.all([getArticles(), getWritingPage()])
+  return <WritingPage articles={articles} chrome={chrome} />
 }

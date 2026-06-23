@@ -23,6 +23,27 @@ export const siteConfig = {
     { label: 'Certificates', href: '/certificates' },
     { label: 'Contact', href: '/contact' },
   ],
+  ogImage: '',
+  siteUrl: 'https://muztahid.dev',
+  footer: {
+    eyebrow: 'Let’s build',
+    heading: 'Have something audacious in mind?',
+    headingAccent: 'audacious',
+    ctaLabel: 'Start a conversation',
+    ctaHref: '/contact',
+    exploreLabel: 'Explore',
+    connectLabel: 'Connect',
+    copyrightSuffix: 'Built to last.',
+    bottomNote: 'Next.js · GSAP · Lenis · 12 palettes',
+    backToTopLabel: 'Back to top',
+  },
+  notFound: {
+    eyebrow: 'lost the thread',
+    title: '404',
+    body: 'This page slipped off the workbench. Let’s get you back to something I’ve built.',
+    homeLabel: 'Back home',
+    projectsLabel: 'See the projects',
+  },
 }
 
 /* ---------------- Home ---------------- */
@@ -51,6 +72,49 @@ export const home = {
     { label: 'Shipping', value: 'Autonomous navigation with BRACU Mongol-Tori' },
     { label: 'Studying', value: 'Computer Science at BRAC University' },
   ],
+  // hero portrait — empty string renders the text placeholder; set via CMS upload
+  heroImage: '',
+  heroCaption: 'Engineer · Dhaka',
+  heroBadge: 'est. 2021',
+  statsEyebrow: 'By the numbers',
+  manifesto: {
+    eyebrow: 'The premise',
+    heading:
+      'I’d rather build the future than predict it — so I write the code, lead the engineers, and ship the systems that turn a bold idea into something the world can actually hold.',
+    headingAccent: 'build',
+    body: 'Technical depth is the proof, never the pitch. My work lives in the narrow gap between a vision and the machine that makes it real.',
+    nowLabel: 'currently',
+  },
+  projectsSection: {
+    eyebrow: 'Selected projects',
+    headingLineOne: 'Things I’ve',
+    headingLineTwo: 'actually shipped.',
+    description:
+      'The projects I’ve built, shipped, and engineered — from software studios to autonomous machines.',
+    ctaLabel: 'All projects',
+    ctaHref: '/projects',
+  },
+  writingSection: {
+    eyebrow: 'From the notebook',
+    heading: 'Selected writing',
+    ctaLabel: 'All writing',
+    ctaHref: '/writing',
+    itemCtaLabel: 'Read',
+  },
+  certificatesSection: {
+    eyebrow: 'Credentials',
+    headingLineOne: 'Always sharpening',
+    headingLineTwo: 'the craft.',
+    ctaLabel: 'All certificates',
+    ctaHref: '/certificates',
+  },
+  achievementsSection: {
+    eyebrow: 'Recognition',
+    headingLineOne: 'Moments that',
+    headingLineTwo: 'kept the score.',
+    ctaLabel: 'All achievements',
+    ctaHref: '/achievements',
+  },
 }
 
 export const stats = [
@@ -66,7 +130,22 @@ export const story = {
   title: 'I’m an engineer who loves to build — end to end, and built to last.',
   intro:
     'My work lives where vision meets the soldering iron. I don’t just imagine products; I architect the systems, write the code, lead the teams, and ship the things that turn an idea into a working product.',
-  portrait: { label: 'Muztahid Rahman', caption: 'Engineer · Dhaka' },
+  portrait: { label: 'Muztahid Rahman', caption: 'Engineer · Dhaka', image: '' },
+  headlineLines: ['I build companies —', 'and the technology that makes them', 'inevitable.'],
+  headlineAccent: 'inevitable.',
+  signature: 'Muztahid Rahman',
+  narrativeSignature: 'take it apart — build it better.',
+  philosophyEyebrow: 'Philosophy',
+  valuesEyebrow: 'What I build by',
+  valuesIntro: 'Four convictions that shape every build, every team, and every line of code.',
+  journeyEyebrow: 'The path so far',
+  journeyIntro: 'From taking things apart to building companies — the milestones that compounded.',
+  nextEyebrow: 'What’s next',
+  primaryCta: { label: 'See what I’ve built', href: '/projects' },
+  secondaryCta: { label: 'Get in touch', href: '/contact' },
+  metaTitle: 'Story',
+  metaDescription:
+    'The story of a full-stack engineer and relentless builder who ships products, systems, and autonomous robots.',
   narrative: [
     'I grew up taking things apart to understand how they worked — then putting them back together better. That instinct never left. Today it shows up as the same loop at a bigger scale: see a gap, build the system that closes it, and rally people around the result.',
     'I built Appbaksho to give ambitious teams a studio that ships like a startup and engineers like a veteran. As Chief Software Engineer at BOT Engineers, I lead a cross-functional team building production platforms, set the engineering culture, and turn roadmaps into shipped software. With BRACU Mongol-Tori, I push autonomy onto terrain that punishes shortcuts.',
@@ -129,7 +208,7 @@ export type Project = {
   featured: boolean
   summary: string
   cover: { label: string; caption: string; image?: string }
-  metrics: { label: string; value: string }[]
+  metrics: { label: string; value: string; proof?: boolean }[]
   stack: string[]
   // case study
   vision: string
@@ -137,7 +216,7 @@ export type Project = {
   build: string[]
   outcome: string
   links: { label: string; url: string }[]
-  gallery: { label: string; caption: string }[]
+  gallery: { label: string; caption: string; image?: string }[]
 }
 
 export const projects: Project[] = [
@@ -391,6 +470,7 @@ export type Block =
   | { type: 'p'; text: string }
   | { type: 'h'; text: string }
   | { type: 'quote'; text: string }
+  | { type: 'img'; src: string; caption?: string }
 
 export type Article = {
   slug: string
@@ -402,7 +482,7 @@ export type Article = {
   category: WritingCategory
   tags: string[]
   featured: boolean
-  cover: { label: string; caption: string }
+  cover: { label: string; caption: string; image?: string }
   body: Block[]
 }
 
@@ -643,6 +723,7 @@ export type Certificate = {
   dateLabel: string
   credentialId: string
   skills: string[]
+  discipline?: string
   featured?: boolean
 }
 
@@ -655,6 +736,7 @@ export const certificates: Certificate[] = [
     dateLabel: 'Jun 2024',
     credentialId: 'AWS-CCP-2024-MR',
     skills: ['Cloud', 'AWS', 'Infrastructure'],
+    discipline: 'Cloud',
     featured: true,
   },
   {
@@ -665,6 +747,7 @@ export const certificates: Certificate[] = [
     dateLabel: 'Feb 2024',
     credentialId: 'META-FE-9X42',
     skills: ['React', 'JavaScript', 'UI'],
+    discipline: 'Web',
     featured: true,
   },
   {
@@ -675,6 +758,7 @@ export const certificates: Certificate[] = [
     dateLabel: 'Jan 2024',
     credentialId: 'DLI-FDL-7731',
     skills: ['Deep Learning', 'Python', 'CUDA'],
+    discipline: 'AI',
     featured: true,
   },
   {
@@ -685,6 +769,7 @@ export const certificates: Certificate[] = [
     dateLabel: 'Nov 2023',
     credentialId: 'ROS2-DEV-2231',
     skills: ['ROS2', 'C++', 'Robotics'],
+    discipline: 'Robotics',
   },
   {
     id: 'mongodb-node',
@@ -694,6 +779,7 @@ export const certificates: Certificate[] = [
     dateLabel: 'Sep 2023',
     credentialId: 'M220JS-44A1',
     skills: ['MongoDB', 'Node.js', 'Databases'],
+    discipline: 'Web',
   },
   {
     id: 'gcp-leader',
@@ -703,6 +789,7 @@ export const certificates: Certificate[] = [
     dateLabel: 'Jul 2023',
     credentialId: 'GCP-CDL-5567',
     skills: ['Cloud', 'GCP', 'Strategy'],
+    discipline: 'Cloud',
   },
   {
     id: 'postman-api',
@@ -712,6 +799,7 @@ export const certificates: Certificate[] = [
     dateLabel: 'May 2023',
     credentialId: 'PM-API-8890',
     skills: ['APIs', 'REST', 'Testing'],
+    discipline: 'Web',
   },
   {
     id: 'fcc-responsive',
@@ -721,6 +809,7 @@ export const certificates: Certificate[] = [
     dateLabel: 'Dec 2022',
     credentialId: 'FCC-RWD-1042',
     skills: ['HTML', 'CSS', 'Accessibility'],
+    discipline: 'Web',
   },
   {
     id: 'udemy-fullstack',
@@ -730,6 +819,7 @@ export const certificates: Certificate[] = [
     dateLabel: 'Aug 2022',
     credentialId: 'UC-FS-3398',
     skills: ['Full-Stack', 'Node.js', 'React'],
+    discipline: 'Web',
   },
 ]
 
@@ -737,14 +827,167 @@ export const certificates: Certificate[] = [
 export const contact = {
   eyebrow: 'Let’s build',
   title: 'Have something audacious in mind?',
+  titleAccent: 'audacious',
   blurb:
     'Whether it’s a product worth shipping, a system worth architecting, or a robot worth teaching to think — I read every message. Let’s build something that lasts.',
+  replyTime: 'Replies within 48 hours',
+  invitation: {
+    eyebrow: 'Say hello',
+    script: 'let’s build something that lasts',
+    body: 'Tell me what you’re trying to make real. I read every note myself, and I answer the ones that want to build something worth standing on years from now.',
+  },
+  form: {
+    eyebrow: 'Send a note',
+    nameLabel: 'Name',
+    emailLabel: 'Email',
+    messageLabel: 'Message',
+    namePlaceholder: 'Your name',
+    emailPlaceholder: 'you@studio.com',
+    messagePlaceholder: 'What are you trying to make real?',
+    submitLabel: 'Send message',
+    sendingLabel: 'Sending',
+    footnote: 'no bots, just builders',
+  },
+  success: {
+    script: 'message sent',
+    heading: 'Message received — I’ll reply within 48 hours.',
+    headingAccent: 'within 48 hours',
+    body: 'Thank you for reaching out{name}. Your note landed safely. In the meantime, the work speaks for itself — feel free to wander the projects.',
+    ctaLabel: 'Send another',
+  },
+  errors: {
+    nameRequired: 'Please add your name so I know who I’m talking to.',
+    emailRequired: 'An email keeps the conversation going.',
+    emailInvalid: 'That email looks off — mind checking it?',
+    messageRequired: 'Tell me a little about what you’re building.',
+    submitFailed: 'Something went wrong sending your message. Please email me directly.',
+  },
+  metaTitle: 'Contact',
+  metaDescription: 'Have something audacious in mind? Let’s build something that lasts.',
   channels: [
-    { label: 'Email', value: 'muztahid.appbaksho@gmail.com', href: 'mailto:muztahid.appbaksho@gmail.com' },
-    { label: 'GitHub', value: 'github.com/muztahiddurjoy', href: 'https://github.com/muztahiddurjoy' },
-    { label: 'LinkedIn', value: 'in/muztahiddurjoy', href: 'https://www.linkedin.com/in/muztahiddurjoy' },
-    { label: 'Location', value: 'Dhaka, Bangladesh' },
+    { label: 'Email', value: 'muztahid.appbaksho@gmail.com', href: 'mailto:muztahid.appbaksho@gmail.com', icon: 'none' },
+    { label: 'GitHub', value: 'github.com/muztahiddurjoy', href: 'https://github.com/muztahiddurjoy', icon: 'github' },
+    { label: 'LinkedIn', value: 'in/muztahiddurjoy', href: 'https://www.linkedin.com/in/muztahiddurjoy', icon: 'linkedin' },
+    { label: 'Location', value: 'Dhaka, Bangladesh', href: '', icon: 'none' },
   ],
+}
+
+/* ---------------- Projects list page ---------------- */
+export const projectsPage = {
+  eyebrow: 'Projects',
+  headlineLineOne: 'Things I’ve',
+  headlineLineTwo: 'built.',
+  intro:
+    'Products I’ve shipped, systems I’ve architected, and robots I’ve taught to think. Every project is something I wanted to exist — so I built it, end to end.',
+  countNoun: 'projects',
+  viewLabel: 'View',
+  curatedLabel: 'Curated',
+  recentLabel: 'Recent',
+  featuredLabel: 'Featured',
+  allLabel: 'All',
+  ofLabel: 'of',
+  featuredBadge: 'featured',
+  rowCtaLabel: 'View project',
+  emptyScript: 'nothing here… yet',
+  emptyMessageFeatured: 'No featured projects match this filter yet. Browse the full set instead.',
+  emptyMessageDefault: 'No projects match this filter. The next one might still be on the workbench.',
+  emptyCtaLabel: 'View all projects',
+  metaTitle: 'Projects',
+  metaDescription: 'Products, systems, robots and experiments — the things I build.',
+}
+
+/* ---------------- Writing list page ---------------- */
+export const writingPage = {
+  eyebrow: 'Writing',
+  headlineLineOne: 'Notes on',
+  headlineLineTwo: 'building',
+  lede:
+    'Field notes from the workshop — essays on building, engineering the systems beneath the products, teaching robots to hold their line on unforgiving terrain, and the occasional argument about why things should be built to last.',
+  ledeHighlight: 'built to last',
+  signature: 'from the desk',
+  descriptor: 'essays · building, engineering, robotics & the long view',
+  featuredEyebrow: 'Featured',
+  featuredCtaLabel: 'Read the essay',
+  archiveEyebrow: 'The archive',
+  archiveHeading: 'Everything else, in order of thought.',
+  archiveHeadingAccent: 'order of thought',
+  allLabel: 'All',
+  metaTitle: 'Writing',
+  metaDescription: 'Essays & notes on building, engineering and robotics.',
+}
+
+/* ---------------- Achievements page ---------------- */
+export const achievementsPage = {
+  eyebrow: 'Achievements',
+  headingLineOne: 'Milestones &',
+  headingLineTwo: 'recognition.',
+  lede:
+    'These aren’t trophies on a shelf. They’re receipts — for the late nights, the rooms I walked into unsure, and the bets that paid off. Awards, competitions, leadership, and the milestones that marked a company quietly coming alive.',
+  signature: 'a builder’s proof of showing up',
+  statLabels: ['Milestones on the record', 'Awards & competitions', 'Leadership roles held'],
+  highlightsEyebrow: 'Highlights',
+  highlightsHeading: 'The ones that mattered.',
+  highlightsHeadingAccent: 'mattered',
+  highlightsBlurb: 'A handful of moments where the work met the world — and the world answered back.',
+  leadScript: 'the gold standard',
+  recordEyebrow: 'The full record',
+  recordHeading: 'Every milestone, in order.',
+  recordHeadingAccent: 'in order',
+  linkLabel: 'Read more',
+  closingText: 'Every line here is proof of the next one.',
+  closingTextAccent: 'proof of the next',
+  primaryCta: { label: 'See the projects', href: '/projects' },
+  secondaryCta: { label: 'Read the story', href: '/about' },
+  metaTitle: 'Achievements',
+  metaDescription: 'Awards, competitions, leadership & milestones — the timeline.',
+}
+
+/* ---------------- Certificates page ---------------- */
+export const certificatesPage = {
+  eyebrow: 'Certificates',
+  headlinePrefix: 'Always ',
+  headlineAccent: 'sharpening',
+  headlineSuffix: ' the craft.',
+  lede:
+    'An engineer is only as sharp as their last lesson. These are the credentials I have collected keeping pace across cloud, AI, robotics, and the web — proof that the curiosity that started everything never quietly switched off.',
+  ledeHighlight: 'cloud, AI, robotics, and the web',
+  signature: 'still a student',
+  filterEyebrow: 'Browse',
+  filterDescription: 'Filter the shelf by where each lesson lives.',
+  allLabel: 'All',
+  disciplines: ['Cloud', 'AI', 'Robotics', 'Web'],
+  closingEyebrow: 'Keep going',
+  closingHeadingPrefix: 'The learning never ',
+  closingHeadingAccent: 'stops',
+  closingHeadingSuffix: ' — and neither do the ideas it unlocks.',
+  closingBody:
+    'Every credential is a tool I picked up to build something better. If you have a problem worth that depth, let us put it to work.',
+  closingCtaLabel: 'Let us build something',
+  closingCtaHref: '/contact',
+  metaTitle: 'Certificates',
+  metaDescription: 'Professional credentials & courses.',
+}
+
+/* ---------------- Project detail labels ---------------- */
+export const projectPage = {
+  caseStudy: {
+    visionLabel: 'The Vision',
+    problemLabel: 'The Problem',
+    buildLabel: 'What I Built',
+    outcomeLabel: 'The Outcome',
+    galleryLabel: 'In the Build',
+    builtWithLabel: 'built with',
+    proofLabel: 'the proof',
+  },
+  pager: {
+    prevLabel: 'Previous project',
+    nextLabel: 'Next project',
+    latestLabel: 'That’s the latest',
+    startLabel: 'Back to the start',
+    allProjectsLabel: 'All projects',
+    allProjectsScript: 'the full body of work',
+    backLinkLabel: 'All projects',
+  },
 }
 
 /* ---------------- Derived content types (props for CMS-driven pages) ---------------- */
@@ -753,3 +996,8 @@ export type HomeData = typeof home
 export type Stat = (typeof stats)[number]
 export type Story = typeof story
 export type ContactData = typeof contact
+export type ProjectsPageData = typeof projectsPage
+export type WritingPageData = typeof writingPage
+export type AchievementsPageData = typeof achievementsPage
+export type CertificatesPageData = typeof certificatesPage
+export type ProjectPageData = typeof projectPage

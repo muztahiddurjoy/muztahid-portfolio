@@ -9,28 +9,17 @@ import {
   projectTypeMeta,
   type Project,
   type ProjectType,
+  type ProjectsPageData,
 } from '@/lib/portfolio-data'
 import { Reveal } from '../ui/reveal'
 import { AnimatedHeading } from '../ui/animated-heading'
 import { ImageFrame } from '../ui/image-frame'
 import { Eyebrow, Tag } from '../ui/primitives'
 import { TransitionLink } from '../ui/transition-link'
+import { usePreview } from '../preview-context'
 
 type TypeFilter = 'all' | ProjectType
 type View = 'curated' | 'recent' | 'featured'
-
-const typeFilters: { key: TypeFilter; label: string }[] = [
-  { key: 'all', label: 'All' },
-  ...(Object.entries(projectTypeMeta) as [ProjectType, { label: string }][]).map(
-    ([key, meta]) => ({ key, label: meta.label }),
-  ),
-]
-
-const views: { key: View; label: string }[] = [
-  { key: 'curated', label: 'Curated' },
-  { key: 'recent', label: 'Recent' },
-  { key: 'featured', label: 'Featured' },
-]
 
 // A sortable timestamp for the "Recent" view: prefer the explicit ISO date,
 // fall back to the first 4-digit year in the (possibly ranged) year string,
@@ -53,12 +42,32 @@ const recencyOf = (p: Project): number => {
 const underlineGrow =
   'bg-[linear-gradient(currentColor,currentColor)] bg-no-repeat bg-[length:0%_1.5px] [background-position:0_100%] transition-[background-size] duration-500 ease-[cubic-bezier(0.22,1,0.36,1)] group-hover:bg-[length:100%_1.5px] group-focus-visible:bg-[length:100%_1.5px]'
 
-export default function ProjectsPage({ projects }: { projects: Project[] }) {
+export default function ProjectsPage({
+  projects,
+  chrome,
+}: {
+  projects: Project[]
+  chrome: ProjectsPageData
+}) {
+  const isPreview = usePreview()
   const [view, setView] = useState<View>('curated')
   const [type, setType] = useState<TypeFilter>('all')
   const listRef = useRef<HTMLUListElement | null>(null)
 
   const total = String(projects.length).padStart(2, '0')
+
+  const views: { key: View; label: string }[] = [
+    { key: 'curated', label: chrome.curatedLabel },
+    { key: 'recent', label: chrome.recentLabel },
+    { key: 'featured', label: chrome.featuredLabel },
+  ]
+
+  const typeFilters: { key: TypeFilter; label: string }[] = [
+    { key: 'all', label: chrome.allLabel },
+    ...(Object.entries(projectTypeMeta) as [ProjectType, { label: string }][]).map(
+      ([key, meta]) => ({ key, label: meta.label }),
+    ),
+  ]
 
   // Compose view + type. Featured narrows the set; Recent re-sorts by recency;
   // Curated keeps the editor's order (projects arrive pre-sorted by order/year).
@@ -77,7 +86,8 @@ export default function ProjectsPage({ projects }: { projects: Project[] }) {
     if (!root) return
     const rows = root.querySelectorAll<HTMLElement>('[data-row]')
     if (!rows.length) return
-    if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) {
+    const reduce = isPreview || window.matchMedia('(prefers-reduced-motion: reduce)').matches
+    if (reduce) {
       gsap.set(rows, { opacity: 1, y: 0 })
       return
     }
@@ -92,7 +102,7 @@ export default function ProjectsPage({ projects }: { projects: Project[] }) {
       })
     }, listRef)
     return () => ctx.revert()
-  }, [view, type])
+  }, [view, type, isPreview])
 
   const reset = () => {
     setView('curated')
@@ -104,16 +114,16 @@ export default function ProjectsPage({ projects }: { projects: Project[] }) {
       {/* ---------------- Hero ---------------- */}
       <section className="container-page pb-14 md:pb-20">
         <Reveal>
-          <Eyebrow index={total}>Projects</Eyebrow>
+          <Eyebrow index={total}>{chrome.eyebrow}</Eyebrow>
         </Reveal>
 
         <h1 className="mt-7 font-display text-[clamp(2.7rem,7.2vw,6rem)] leading-[0.95] tracking-tight">
-          <AnimatedHeading as="span" immediate text="Things I’ve" />
+          <AnimatedHeading as="span" immediate text={chrome.headlineLineOne} />
           <AnimatedHeading
             as="span"
             immediate
             delay={0.14}
-            text="built."
+            text={chrome.headlineLineTwo}
             wordClassName="display-italic"
           />
         </h1>
@@ -121,11 +131,10 @@ export default function ProjectsPage({ projects }: { projects: Project[] }) {
         <Reveal delay={0.1}>
           <div className="mt-9 flex flex-col gap-8 border-t border-border pt-9 md:flex-row md:items-end md:justify-between md:gap-16">
             <p className="max-w-xl text-lg leading-relaxed text-muted-foreground">
-              Products I’ve shipped, systems I’ve architected, and robots I’ve taught to think.
-              Every project is something I wanted to exist — so I built it, end to end.
+              {chrome.intro}
             </p>
             <p className="shrink-0 font-script text-3xl leading-none text-muted-foreground md:text-4xl">
-              {total} projects
+              {total} {chrome.countNoun}
             </p>
           </div>
         </Reveal>
@@ -138,7 +147,7 @@ export default function ProjectsPage({ projects }: { projects: Project[] }) {
             {/* view: curated / recent / featured */}
             <div className="flex flex-col gap-3 sm:flex-row sm:items-center sm:justify-between">
               <div className="flex items-center gap-3" role="group" aria-label="Project view">
-                <span className="eyebrow">View</span>
+                <span className="eyebrow">{chrome.viewLabel}</span>
                 <div className="flex rounded-full border border-border p-1">
                   {views.map((v) => (
                     <button
@@ -160,7 +169,7 @@ export default function ProjectsPage({ projects }: { projects: Project[] }) {
                 </div>
               </div>
               <p className="eyebrow shrink-0" aria-live="polite">
-                {String(filtered.length).padStart(2, '0')} of {total}
+                {String(filtered.length).padStart(2, '0')} {chrome.ofLabel} {total}
               </p>
             </div>
 
@@ -189,12 +198,12 @@ export default function ProjectsPage({ projects }: { projects: Project[] }) {
 
         {/* rows */}
         {filtered.length === 0 ? (
-          <EmptyState view={view} onReset={reset} />
+          <EmptyState view={view} onReset={reset} chrome={chrome} />
         ) : (
           <ul key={`${view}-${type}`} ref={listRef} className="list-none">
             {filtered.map((v, i) => (
               <li key={v.slug}>
-                <ProjectRow project={v} index={i} />
+                <ProjectRow project={v} index={i} chrome={chrome} />
               </li>
             ))}
           </ul>
@@ -205,7 +214,15 @@ export default function ProjectsPage({ projects }: { projects: Project[] }) {
 }
 
 /* ---------------- Project row ---------------- */
-function ProjectRow({ project: v, index }: { project: Project; index: number }) {
+function ProjectRow({
+  project: v,
+  index,
+  chrome,
+}: {
+  project: Project
+  index: number
+  chrome: ProjectsPageData
+}) {
   const flip = index % 2 === 1
   const num = String(index + 1).padStart(2, '0')
 
@@ -245,7 +262,7 @@ function ProjectRow({ project: v, index }: { project: Project; index: number }) 
             </span>
             {v.featured && (
               <span className="font-script text-lg leading-none text-muted-foreground">
-                featured
+                {chrome.featuredBadge}
               </span>
             )}
           </div>
@@ -282,7 +299,7 @@ function ProjectRow({ project: v, index }: { project: Project; index: number }) 
 
           {/* arrow / cta */}
           <span className="mt-7 inline-flex items-center gap-2 text-sm font-medium">
-            <span className={cn('inline', underlineGrow)}>View project</span>
+            <span className={cn('inline', underlineGrow)}>{chrome.rowCtaLabel}</span>
             <ArrowUpRight className="h-4 w-4 transition-transform duration-300 group-hover:translate-x-1 group-hover:-translate-y-1 group-focus-visible:translate-x-1 group-focus-visible:-translate-y-1" />
           </span>
         </div>
@@ -292,14 +309,20 @@ function ProjectRow({ project: v, index }: { project: Project; index: number }) 
 }
 
 /* ---------------- Empty state ---------------- */
-function EmptyState({ view, onReset }: { view: View; onReset: () => void }) {
+function EmptyState({
+  view,
+  onReset,
+  chrome,
+}: {
+  view: View
+  onReset: () => void
+  chrome: ProjectsPageData
+}) {
   const message =
-    view === 'featured'
-      ? 'No featured projects match this filter yet. Browse the full set instead.'
-      : 'No projects match this filter. The next one might still be on the workbench.'
+    view === 'featured' ? chrome.emptyMessageFeatured : chrome.emptyMessageDefault
   return (
     <div className="border-t border-border py-24 text-center md:py-32">
-      <p className="font-script text-4xl text-muted-foreground md:text-5xl">nothing here… yet</p>
+      <p className="font-script text-4xl text-muted-foreground md:text-5xl">{chrome.emptyScript}</p>
       <p className="mx-auto mt-5 max-w-sm text-muted-foreground">{message}</p>
       <button
         type="button"
@@ -307,7 +330,7 @@ function EmptyState({ view, onReset }: { view: View; onReset: () => void }) {
         data-cursor
         className="btn-inverse mt-8 inline-flex items-center rounded-full px-6 py-3 text-sm font-medium tracking-tight"
       >
-        View all projects
+        {chrome.emptyCtaLabel}
       </button>
     </div>
   )

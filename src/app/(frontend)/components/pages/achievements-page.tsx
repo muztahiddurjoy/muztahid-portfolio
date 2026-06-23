@@ -6,14 +6,16 @@ import {
   achievementTypeMeta,
   type Achievement,
   type AchievementType,
+  type AchievementsPageData,
 } from '@/lib/portfolio-data'
 import { gsap } from '@/lib/gsap'
 import { useIsoLayoutEffect } from '@/lib/use-iso-layout-effect'
 import { Reveal } from '../ui/reveal'
 import { AnimatedHeading } from '../ui/animated-heading'
-import { Eyebrow, Tag, CountUp, Signature } from '../ui/primitives'
+import { Eyebrow, Tag, CountUp, Signature, AccentText } from '../ui/primitives'
 import { CtaButton } from '../ui/cta-button'
 import { Icon, type IconName } from '../ui/lucide-icon'
+import { usePreview } from '../preview-context'
 
 /* ---- derived, static (data is hardcoded) ---- */
 
@@ -47,7 +49,14 @@ function FeaturedHighlight({ a }: { a: Achievement }) {
   )
 }
 
-export default function AchievementsPage({ achievements }: { achievements: Achievement[] }) {
+export default function AchievementsPage({
+  achievements,
+  chrome,
+}: {
+  achievements: Achievement[]
+  chrome: AchievementsPageData
+}) {
+  const isPreview = usePreview()
   const listRef = useRef<HTMLOListElement>(null)
 
   const featured = achievements.filter((a) => a.featured)
@@ -65,9 +74,9 @@ export default function AchievementsPage({ achievements }: { achievements: Achie
   )
 
   const statItems = [
-    { value: achievements.length, label: 'Milestones on the record' },
-    { value: totals.award + totals.competition, label: 'Awards & competitions' },
-    { value: totals.leadership, label: 'Leadership roles held' },
+    { value: achievements.length, label: chrome.statLabels[0] ?? 'Milestones on the record' },
+    { value: totals.award + totals.competition, label: chrome.statLabels[1] ?? 'Awards & competitions' },
+    { value: totals.leadership, label: chrome.statLabels[2] ?? 'Leadership roles held' },
   ]
 
   // Soft reveal-from-side for the timeline rows. Initial hidden state is applied
@@ -75,7 +84,8 @@ export default function AchievementsPage({ achievements }: { achievements: Achie
   useIsoLayoutEffect(() => {
     const el = listRef.current
     if (!el) return
-    if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) return
+    const reduce = isPreview || window.matchMedia('(prefers-reduced-motion: reduce)').matches
+    if (reduce) return
     const rows = el.querySelectorAll<HTMLElement>('[data-tl-row]')
     const ctx = gsap.context(() => {
       rows.forEach((row) => {
@@ -99,14 +109,14 @@ export default function AchievementsPage({ achievements }: { achievements: Achie
       {/* ============ HERO ============ */}
       <section className="container-page pb-16 md:pb-20">
         <Reveal>
-          <Eyebrow index="01">Achievements</Eyebrow>
+          <Eyebrow index="01">{chrome.eyebrow}</Eyebrow>
         </Reveal>
 
         <h1 className="mt-7 max-w-4xl text-[clamp(2.6rem,7vw,5.5rem)] leading-[0.98] tracking-tight">
-          <AnimatedHeading as="span" text={['Milestones &']} immediate className="block" />
+          <AnimatedHeading as="span" text={[chrome.headingLineOne]} immediate className="block" />
           <AnimatedHeading
             as="span"
-            text={['recognition.']}
+            text={[chrome.headingLineTwo]}
             immediate
             delay={0.12}
             wordClassName="display-italic"
@@ -119,12 +129,10 @@ export default function AchievementsPage({ achievements }: { achievements: Achie
           className="mt-9 flex flex-col gap-6 md:flex-row md:items-end md:justify-between"
         >
           <p className="max-w-xl text-lg leading-relaxed text-muted-foreground">
-            These aren&rsquo;t trophies on a shelf. They&rsquo;re receipts — for the late nights, the
-            rooms I walked into unsure, and the bets that paid off. Awards, competitions, leadership,
-            and the milestones that marked a company quietly coming alive.
+            {chrome.lede}
           </p>
           <Signature className="shrink-0 text-2xl text-muted-foreground md:text-3xl">
-            a builder&rsquo;s proof of showing up
+            {chrome.signature}
           </Signature>
         </Reveal>
       </section>
@@ -147,12 +155,12 @@ export default function AchievementsPage({ achievements }: { achievements: Achie
       <section className="mt-24 border-y border-border bg-elevated py-24 md:mt-32 md:py-32">
         <div className="container-page">
           <Reveal>
-            <Eyebrow index="02">Highlights</Eyebrow>
+            <Eyebrow index="02">{chrome.highlightsEyebrow}</Eyebrow>
             <h2 className="mt-5 max-w-2xl text-[clamp(2rem,4.5vw,3.5rem)] leading-[1.04] tracking-tight">
-              The ones that <span className="display-italic">mattered</span>.
+              <AccentText text={chrome.highlightsHeading} accent={chrome.highlightsHeadingAccent} />
             </h2>
             <p className="mt-4 max-w-md text-muted-foreground">
-              A handful of moments where the work met the world — and the world answered back.
+              {chrome.highlightsBlurb}
             </p>
           </Reveal>
 
@@ -168,7 +176,7 @@ export default function AchievementsPage({ achievements }: { achievements: Achie
                     </span>
                     <div>
                       <Signature className="text-3xl text-background/55 md:text-4xl">
-                        the gold standard
+                        {chrome.leadScript}
                       </Signature>
                       <p className="mt-2 text-sm text-background/60">{lead.dateLabel}</p>
                     </div>
@@ -205,9 +213,9 @@ export default function AchievementsPage({ achievements }: { achievements: Achie
       {/* ============ FULL RECORD / TIMELINE ============ */}
       <section className="container-page py-24 md:py-32">
         <Reveal>
-          <Eyebrow index="03">The full record</Eyebrow>
+          <Eyebrow index="03">{chrome.recordEyebrow}</Eyebrow>
           <h2 className="mt-5 max-w-2xl text-[clamp(2rem,4.5vw,3.5rem)] leading-[1.04] tracking-tight">
-            Every milestone, <span className="display-italic">in order</span>.
+            <AccentText text={chrome.recordHeading} accent={chrome.recordHeadingAccent} />
           </h2>
         </Reveal>
 
@@ -250,7 +258,7 @@ export default function AchievementsPage({ achievements }: { achievements: Achie
                     data-cursor
                     className="group/link mt-5 inline-flex items-center gap-1.5 text-sm font-medium"
                   >
-                    <span className="link-underline">Read more</span>
+                    <span className="link-underline">{chrome.linkLabel}</span>
                     <ArrowUpRight className="h-4 w-4 transition-transform duration-300 group-hover/link:-translate-y-0.5 group-hover/link:translate-x-0.5" />
                   </a>
                 )}
@@ -262,14 +270,14 @@ export default function AchievementsPage({ achievements }: { achievements: Achie
         {/* closing — cross-link, builder framing */}
         <Reveal className="mt-12 flex flex-col gap-6 border-t border-border pt-10 md:flex-row md:items-center md:justify-between">
           <p className="max-w-md font-display text-xl leading-snug md:text-2xl">
-            Every line here is <span className="display-italic">proof of the next</span> one.
+            <AccentText text={chrome.closingText} accent={chrome.closingTextAccent} />
           </p>
           <div className="flex flex-wrap items-center gap-4">
-            <CtaButton href="/projects" variant="outline" icon="arrow-right">
-              See the projects
+            <CtaButton href={chrome.primaryCta.href} variant="outline" icon="arrow-right">
+              {chrome.primaryCta.label}
             </CtaButton>
-            <CtaButton href="/about" variant="text" icon="arrow-up">
-              Read the story
+            <CtaButton href={chrome.secondaryCta.href} variant="text" icon="arrow-up">
+              {chrome.secondaryCta.label}
             </CtaButton>
           </div>
         </Reveal>

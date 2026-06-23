@@ -1,20 +1,39 @@
+import { draftMode } from 'next/headers'
 import {
   getSite,
   getHome,
+  getHomeRaw,
   getProjects,
   getArticles,
   getAchievements,
   getCertificates,
 } from '@/lib/content'
 import { Home } from './components/home/home'
+import { HomeLive } from './components/live/home-live'
 
 export default async function HomePage() {
+  const { isEnabled } = await draftMode()
   const site = await getSite()
-  const { home, stats } = await getHome()
   const projects = await getProjects()
   const articles = await getArticles()
   const achievements = await getAchievements()
   const certificates = await getCertificates()
+
+  if (isEnabled) {
+    const initialHome = await getHomeRaw()
+    return (
+      <HomeLive
+        initialHome={initialHome}
+        site={site}
+        projects={projects}
+        articles={articles}
+        achievements={achievements}
+        certificates={certificates}
+      />
+    )
+  }
+
+  const { home, stats } = await getHome()
 
   const personLd = {
     '@context': 'https://schema.org',

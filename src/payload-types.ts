@@ -102,12 +102,22 @@ export interface Config {
     home: Home;
     about: About;
     contact: Contact;
+    'projects-page': ProjectsPage;
+    'writing-page': WritingPage;
+    'achievements-page': AchievementsPage;
+    'certificates-page': CertificatesPage;
+    'project-page': ProjectPage;
   };
   globalsSelect: {
     'site-settings': SiteSettingsSelect<false> | SiteSettingsSelect<true>;
     home: HomeSelect<false> | HomeSelect<true>;
     about: AboutSelect<false> | AboutSelect<true>;
     contact: ContactSelect<false> | ContactSelect<true>;
+    'projects-page': ProjectsPageSelect<false> | ProjectsPageSelect<true>;
+    'writing-page': WritingPageSelect<false> | WritingPageSelect<true>;
+    'achievements-page': AchievementsPageSelect<false> | AchievementsPageSelect<true>;
+    'certificates-page': CertificatesPageSelect<false> | CertificatesPageSelect<true>;
+    'project-page': ProjectPageSelect<false> | ProjectPageSelect<true>;
   };
   locale: null;
   widgets: {
@@ -177,6 +187,10 @@ export interface Project {
     | {
         label: string;
         value: string;
+        /**
+         * Feature this metric as the headline "proof" stat on the case study. First proof wins; falls back to the first metric.
+         */
+        proof?: boolean | null;
         id?: string | null;
       }[]
     | null;
@@ -400,6 +414,10 @@ export interface Certificate {
   credentialId: string;
   skills?: string[] | null;
   /**
+   * Drives the discipline filter on the certificates page.
+   */
+  discipline?: ('Cloud' | 'AI' | 'Robotics' | 'Web') | null;
+  /**
    * Surface this credential on the homepage.
    */
   featured?: boolean | null;
@@ -575,6 +593,7 @@ export interface ProjectsSelect<T extends boolean = true> {
     | {
         label?: T;
         value?: T;
+        proof?: T;
         id?: T;
       };
   vision?: T;
@@ -695,6 +714,7 @@ export interface CertificatesSelect<T extends boolean = true> {
   dateLabel?: T;
   credentialId?: T;
   skills?: T;
+  discipline?: T;
   featured?: T;
   key?: T;
   order?: T;
@@ -833,7 +853,7 @@ export interface PayloadMigrationsSelect<T extends boolean = true> {
   createdAt?: T;
 }
 /**
- * Name, links, navigation and SEO defaults used across the whole site.
+ * Name, links, navigation, footer, 404 and SEO defaults used across the whole site.
  *
  * This interface was referenced by `Config`'s JSON-Schema
  * via the `definition` "site-settings".
@@ -856,10 +876,6 @@ export interface SiteSetting {
   github: string;
   linkedin: string;
   /**
-   * Default SEO / social description.
-   */
-  metaDescription: string;
-  /**
    * Primary navigation links (nav + footer).
    */
   nav?:
@@ -869,6 +885,75 @@ export interface SiteSetting {
         id?: string | null;
       }[]
     | null;
+  footer?: {
+    /**
+     * e.g. "Let’s build".
+     */
+    eyebrow?: string | null;
+    /**
+     * Big CTA headline.
+     */
+    heading?: string | null;
+    /**
+     * Italicised word within the heading.
+     */
+    headingAccent?: string | null;
+    /**
+     * Primary CTA label, e.g. "Start a conversation".
+     */
+    ctaLabel?: string | null;
+    /**
+     * Primary CTA link, e.g. "/contact".
+     */
+    ctaHref?: string | null;
+    /**
+     * Sitemap column label, e.g. "Explore".
+     */
+    exploreLabel?: string | null;
+    /**
+     * Social column label, e.g. "Connect".
+     */
+    connectLabel?: string | null;
+    /**
+     * After "© {year} {name}.", e.g. "Built to last.".
+     */
+    copyrightSuffix?: string | null;
+    /**
+     * Small colophon line, e.g. "Next.js · GSAP · Lenis".
+     */
+    bottomNote?: string | null;
+    /**
+     * e.g. "Back to top".
+     */
+    backToTopLabel?: string | null;
+  };
+  notFound?: {
+    /**
+     * Handwritten line, e.g. "lost the thread".
+     */
+    eyebrow?: string | null;
+    /**
+     * Big number / title, e.g. "404".
+     */
+    title?: string | null;
+    body?: string | null;
+    /**
+     * e.g. "Back home".
+     */
+    homeLabel?: string | null;
+    /**
+     * e.g. "See the projects".
+     */
+    projectsLabel?: string | null;
+  };
+  /**
+   * Default SEO / social description.
+   */
+  metaDescription: string;
+  /**
+   * Canonical site URL (used for metadataBase / OG). e.g. "https://muztahid.dev".
+   */
+  siteUrl?: string | null;
   /**
    * Fallback Open Graph / social share image.
    */
@@ -881,7 +966,7 @@ export interface SiteSetting {
   createdAt?: string | null;
 }
 /**
- * The landing page — hero, marquee, what you are doing now, and stats.
+ * The landing page — hero, manifesto, section headers, marquee, now and stats.
  *
  * This interface was referenced by `Config`'s JSON-Schema
  * via the `definition` "home".
@@ -905,6 +990,18 @@ export interface Home {
    */
   script?: string | null;
   lede: string;
+  /**
+   * Hero portrait image. Falls back to a text placeholder when empty.
+   */
+  heroPortrait?: (string | null) | Media;
+  /**
+   * Caption shown over the portrait, e.g. "Engineer · Dhaka".
+   */
+  heroCaption?: string | null;
+  /**
+   * Small handwritten badge under the portrait, e.g. "est. 2021".
+   */
+  heroBadge?: string | null;
   primaryCta: {
     label: string;
     href: string;
@@ -912,6 +1009,66 @@ export interface Home {
   secondaryCta: {
     label: string;
     href: string;
+  };
+  /**
+   * The "premise" block below the marquee.
+   */
+  manifesto?: {
+    eyebrow?: string | null;
+    /**
+     * The large manifesto statement.
+     */
+    heading?: string | null;
+    /**
+     * A word within the heading to italicise (must match exactly).
+     */
+    headingAccent?: string | null;
+    body?: string | null;
+    /**
+     * Label above the "now" list, e.g. "currently".
+     */
+    nowLabel?: string | null;
+  };
+  projectsSection?: {
+    eyebrow?: string | null;
+    headingLineOne?: string | null;
+    /**
+     * Italicised second line.
+     */
+    headingLineTwo?: string | null;
+    description?: string | null;
+    ctaLabel?: string | null;
+    ctaHref?: string | null;
+  };
+  writingSection?: {
+    eyebrow?: string | null;
+    heading?: string | null;
+    ctaLabel?: string | null;
+    ctaHref?: string | null;
+    /**
+     * Per-row "Read" label.
+     */
+    itemCtaLabel?: string | null;
+  };
+  certificatesSection?: {
+    eyebrow?: string | null;
+    headingLineOne?: string | null;
+    /**
+     * Italicised second line.
+     */
+    headingLineTwo?: string | null;
+    ctaLabel?: string | null;
+    ctaHref?: string | null;
+  };
+  achievementsSection?: {
+    eyebrow?: string | null;
+    headingLineOne?: string | null;
+    /**
+     * Italicised second line.
+     */
+    headingLineTwo?: string | null;
+    ctaLabel?: string | null;
+    ctaHref?: string | null;
   };
   /**
    * Scrolling list of org / project names.
@@ -932,6 +1089,10 @@ export interface Home {
         id?: string | null;
       }[]
     | null;
+  /**
+   * Eyebrow above the stats grid, e.g. "By the numbers".
+   */
+  statsEyebrow?: string | null;
   stats?:
     | {
         value: number;
@@ -955,6 +1116,22 @@ export interface Home {
 export interface About {
   id: string;
   eyebrow: string;
+  /**
+   * The big hero headline — one row per line. The last line is italicised.
+   */
+  headlineLines?:
+    | {
+        line: string;
+        id?: string | null;
+      }[]
+    | null;
+  /**
+   * Word(s) in the last headline line to italicise.
+   */
+  headlineAccent?: string | null;
+  /**
+   * Plain-text title used for SEO / fallback.
+   */
   title: string;
   intro: string;
   portrait?: {
@@ -962,14 +1139,34 @@ export interface About {
     caption?: string | null;
     image?: (string | null) | Media;
   };
+  /**
+   * Handwritten signature beside the portrait.
+   */
+  signature?: string | null;
+  /**
+   * Handwritten pull-line after the first paragraph.
+   */
+  narrativeSignature?: string | null;
   narrative: {
     text: string;
     id?: string | null;
   }[];
+  /**
+   * Eyebrow above the pull-quote, e.g. "Philosophy".
+   */
+  philosophyEyebrow?: string | null;
   philosophy: {
     quote: string;
     body: string;
   };
+  /**
+   * Eyebrow above the values grid, e.g. "What I build by".
+   */
+  valuesEyebrow?: string | null;
+  /**
+   * Intro sentence above the values grid.
+   */
+  valuesIntro?: string | null;
   values?:
     | {
         title: string;
@@ -977,6 +1174,14 @@ export interface About {
         id?: string | null;
       }[]
     | null;
+  /**
+   * Eyebrow above the timeline, e.g. "The path so far".
+   */
+  journeyEyebrow?: string | null;
+  /**
+   * Intro sentence beside the timeline eyebrow.
+   */
+  journeyIntro?: string | null;
   journey?:
     | {
         year: string;
@@ -986,14 +1191,34 @@ export interface About {
       }[]
     | null;
   /**
+   * Eyebrow above the closing statement, e.g. "What’s next".
+   */
+  nextEyebrow?: string | null;
+  /**
    * Closing "what is next" paragraph.
    */
   next: string;
+  primaryCta?: {
+    label?: string | null;
+    href?: string | null;
+  };
+  secondaryCta?: {
+    label?: string | null;
+    href?: string | null;
+  };
+  /**
+   * Browser tab / search title. Defaults to "Story".
+   */
+  metaTitle?: string | null;
+  /**
+   * Search / social description. Falls back to the intro.
+   */
+  metaDescription?: string | null;
   updatedAt?: string | null;
   createdAt?: string | null;
 }
 /**
- * Contact page heading, blurb and the list of channels.
+ * Contact page heading, blurb, invitation, form copy and the list of channels.
  *
  * This interface was referenced by `Config`'s JSON-Schema
  * via the `definition` "contact".
@@ -1002,7 +1227,44 @@ export interface Contact {
   id: string;
   eyebrow: string;
   title: string;
+  /**
+   * A word within the title to italicise (must appear in the title exactly).
+   */
+  titleAccent?: string | null;
   blurb: string;
+  /**
+   * e.g. "Replies within 48 hours".
+   */
+  replyTime?: string | null;
+  invitation?: {
+    /**
+     * e.g. "Say hello".
+     */
+    eyebrow?: string | null;
+    /**
+     * Handwritten invitation line.
+     */
+    script?: string | null;
+    body?: string | null;
+  };
+  form?: {
+    /**
+     * e.g. "Send a note".
+     */
+    eyebrow?: string | null;
+    nameLabel?: string | null;
+    namePlaceholder?: string | null;
+    emailLabel?: string | null;
+    emailPlaceholder?: string | null;
+    messageLabel?: string | null;
+    messagePlaceholder?: string | null;
+    submitLabel?: string | null;
+    sendingLabel?: string | null;
+    /**
+     * Handwritten note beside the submit button.
+     */
+    footnote?: string | null;
+  };
   channels?:
     | {
         label: string;
@@ -1011,9 +1273,340 @@ export interface Contact {
          * Optional link (mailto:, https:, ...).
          */
         href?: string | null;
+        /**
+         * Optional brand icon shown beside the value.
+         */
+        icon?: ('none' | 'github' | 'linkedin') | null;
         id?: string | null;
       }[]
     | null;
+  /**
+   * Confirmation shown after a message is sent. Use {name} for the sender’s first name.
+   */
+  success?: {
+    script?: string | null;
+    heading?: string | null;
+    /**
+     * Italicised part of the heading.
+     */
+    headingAccent?: string | null;
+    /**
+     * Use {name} to insert the sender’s first name.
+     */
+    body?: string | null;
+    /**
+     * e.g. "Send another".
+     */
+    ctaLabel?: string | null;
+  };
+  /**
+   * Client-side validation messages.
+   */
+  errorMessages?: {
+    nameRequired?: string | null;
+    emailRequired?: string | null;
+    emailInvalid?: string | null;
+    messageRequired?: string | null;
+    submitFailed?: string | null;
+  };
+  /**
+   * Browser tab / search title. Defaults to "Contact".
+   */
+  metaTitle?: string | null;
+  metaDescription?: string | null;
+  updatedAt?: string | null;
+  createdAt?: string | null;
+}
+/**
+ * Hero copy, control labels and empty-state for the /projects list page.
+ *
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "projects-page".
+ */
+export interface ProjectsPage {
+  id: string;
+  eyebrow?: string | null;
+  headlineLineOne?: string | null;
+  /**
+   * Italicised line.
+   */
+  headlineLineTwo?: string | null;
+  intro?: string | null;
+  /**
+   * Noun after the count, e.g. "projects".
+   */
+  countNoun?: string | null;
+  /**
+   * e.g. "View".
+   */
+  viewLabel?: string | null;
+  curatedLabel?: string | null;
+  recentLabel?: string | null;
+  featuredLabel?: string | null;
+  /**
+   * Type filter "All".
+   */
+  allLabel?: string | null;
+  /**
+   * Between counts, e.g. "of".
+   */
+  ofLabel?: string | null;
+  /**
+   * Handwritten "featured" badge on rows.
+   */
+  featuredBadge?: string | null;
+  /**
+   * Per-row CTA, e.g. "View project".
+   */
+  rowCtaLabel?: string | null;
+  /**
+   * e.g. "nothing here… yet".
+   */
+  emptyScript?: string | null;
+  emptyMessageFeatured?: string | null;
+  emptyMessageDefault?: string | null;
+  emptyCtaLabel?: string | null;
+  metaTitle?: string | null;
+  metaDescription?: string | null;
+  updatedAt?: string | null;
+  createdAt?: string | null;
+}
+/**
+ * Hero, featured and archive copy for the /writing list page.
+ *
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "writing-page".
+ */
+export interface WritingPage {
+  id: string;
+  eyebrow?: string | null;
+  headlineLineOne?: string | null;
+  /**
+   * Italicised line.
+   */
+  headlineLineTwo?: string | null;
+  lede?: string | null;
+  /**
+   * Phrase within the lede to emphasise (must match exactly).
+   */
+  ledeHighlight?: string | null;
+  /**
+   * Handwritten line, e.g. "from the desk".
+   */
+  signature?: string | null;
+  /**
+   * Trailing descriptor after the count.
+   */
+  descriptor?: string | null;
+  /**
+   * e.g. "Featured".
+   */
+  featuredEyebrow?: string | null;
+  /**
+   * e.g. "Read the essay".
+   */
+  featuredCtaLabel?: string | null;
+  /**
+   * e.g. "The archive".
+   */
+  archiveEyebrow?: string | null;
+  archiveHeading?: string | null;
+  /**
+   * Italicised part of the archive heading.
+   */
+  archiveHeadingAccent?: string | null;
+  /**
+   * Category filter "All".
+   */
+  allLabel?: string | null;
+  metaTitle?: string | null;
+  metaDescription?: string | null;
+  updatedAt?: string | null;
+  createdAt?: string | null;
+}
+/**
+ * Hero, stats labels, highlights, full-record and closing copy for /achievements.
+ *
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "achievements-page".
+ */
+export interface AchievementsPage {
+  id: string;
+  eyebrow?: string | null;
+  headingLineOne?: string | null;
+  /**
+   * Italicised line.
+   */
+  headingLineTwo?: string | null;
+  lede?: string | null;
+  /**
+   * Handwritten line beside the lede.
+   */
+  signature?: string | null;
+  /**
+   * Labels for the three derived stat counts (order matters: total, awards+competitions, leadership).
+   */
+  statLabels?:
+    | {
+        label: string;
+        id?: string | null;
+      }[]
+    | null;
+  highlightsEyebrow?: string | null;
+  highlightsHeading?: string | null;
+  /**
+   * Italicised word.
+   */
+  highlightsHeadingAccent?: string | null;
+  highlightsBlurb?: string | null;
+  /**
+   * Handwritten label on the lead highlight, e.g. "the gold standard".
+   */
+  leadScript?: string | null;
+  recordEyebrow?: string | null;
+  recordHeading?: string | null;
+  /**
+   * Italicised word.
+   */
+  recordHeadingAccent?: string | null;
+  /**
+   * Per-entry external link label, e.g. "Read more".
+   */
+  linkLabel?: string | null;
+  closingText?: string | null;
+  /**
+   * Italicised part.
+   */
+  closingTextAccent?: string | null;
+  primaryCta?: {
+    label?: string | null;
+    href?: string | null;
+  };
+  secondaryCta?: {
+    label?: string | null;
+    href?: string | null;
+  };
+  metaTitle?: string | null;
+  metaDescription?: string | null;
+  updatedAt?: string | null;
+  createdAt?: string | null;
+}
+/**
+ * Hero, filter labels, disciplines and closing copy for /certificates.
+ *
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "certificates-page".
+ */
+export interface CertificatesPage {
+  id: string;
+  eyebrow?: string | null;
+  /**
+   * Before the italic word, e.g. "Always ".
+   */
+  headlinePrefix?: string | null;
+  /**
+   * Italic word, e.g. "sharpening".
+   */
+  headlineAccent?: string | null;
+  /**
+   * After the italic word, e.g. " the craft.".
+   */
+  headlineSuffix?: string | null;
+  lede?: string | null;
+  /**
+   * Phrase within the lede to emphasise (must match exactly).
+   */
+  ledeHighlight?: string | null;
+  /**
+   * Handwritten line, e.g. "still a student".
+   */
+  signature?: string | null;
+  /**
+   * e.g. "Browse".
+   */
+  filterEyebrow?: string | null;
+  filterDescription?: string | null;
+  /**
+   * First filter chip, e.g. "All".
+   */
+  allLabel?: string | null;
+  /**
+   * Discipline filter chips (must match the Discipline values on certificates). "All" is added automatically.
+   */
+  disciplines?:
+    | {
+        label: string;
+        id?: string | null;
+      }[]
+    | null;
+  closingEyebrow?: string | null;
+  closingHeadingPrefix?: string | null;
+  /**
+   * Italicised word.
+   */
+  closingHeadingAccent?: string | null;
+  closingHeadingSuffix?: string | null;
+  closingBody?: string | null;
+  closingCtaLabel?: string | null;
+  closingCtaHref?: string | null;
+  metaTitle?: string | null;
+  metaDescription?: string | null;
+  updatedAt?: string | null;
+  createdAt?: string | null;
+}
+/**
+ * Shared section labels & pager copy rendered on every project case study.
+ *
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "project-page".
+ */
+export interface ProjectPage {
+  id: string;
+  caseStudy?: {
+    visionLabel?: string | null;
+    problemLabel?: string | null;
+    buildLabel?: string | null;
+    outcomeLabel?: string | null;
+    galleryLabel?: string | null;
+    /**
+     * e.g. "built with".
+     */
+    builtWithLabel?: string | null;
+    /**
+     * e.g. "the proof".
+     */
+    proofLabel?: string | null;
+  };
+  pager?: {
+    /**
+     * e.g. "Previous project".
+     */
+    prevLabel?: string | null;
+    /**
+     * e.g. "Next project".
+     */
+    nextLabel?: string | null;
+    /**
+     * End-cap, e.g. "That’s the latest".
+     */
+    latestLabel?: string | null;
+    /**
+     * End-cap, e.g. "Back to the start".
+     */
+    startLabel?: string | null;
+    /**
+     * e.g. "All projects".
+     */
+    allProjectsLabel?: string | null;
+    /**
+     * e.g. "the full body of work".
+     */
+    allProjectsScript?: string | null;
+    /**
+     * Back link, e.g. "All projects".
+     */
+    backLinkLabel?: string | null;
+  };
   updatedAt?: string | null;
   createdAt?: string | null;
 }
@@ -1031,7 +1624,6 @@ export interface SiteSettingsSelect<T extends boolean = true> {
   email?: T;
   github?: T;
   linkedin?: T;
-  metaDescription?: T;
   nav?:
     | T
     | {
@@ -1039,6 +1631,31 @@ export interface SiteSettingsSelect<T extends boolean = true> {
         href?: T;
         id?: T;
       };
+  footer?:
+    | T
+    | {
+        eyebrow?: T;
+        heading?: T;
+        headingAccent?: T;
+        ctaLabel?: T;
+        ctaHref?: T;
+        exploreLabel?: T;
+        connectLabel?: T;
+        copyrightSuffix?: T;
+        bottomNote?: T;
+        backToTopLabel?: T;
+      };
+  notFound?:
+    | T
+    | {
+        eyebrow?: T;
+        title?: T;
+        body?: T;
+        homeLabel?: T;
+        projectsLabel?: T;
+      };
+  metaDescription?: T;
+  siteUrl?: T;
   defaultOgImage?: T;
   cvFile?: T;
   updatedAt?: T;
@@ -1060,6 +1677,9 @@ export interface HomeSelect<T extends boolean = true> {
   headlineAccent?: T;
   script?: T;
   lede?: T;
+  heroPortrait?: T;
+  heroCaption?: T;
+  heroBadge?: T;
   primaryCta?:
     | T
     | {
@@ -1071,6 +1691,52 @@ export interface HomeSelect<T extends boolean = true> {
     | {
         label?: T;
         href?: T;
+      };
+  manifesto?:
+    | T
+    | {
+        eyebrow?: T;
+        heading?: T;
+        headingAccent?: T;
+        body?: T;
+        nowLabel?: T;
+      };
+  projectsSection?:
+    | T
+    | {
+        eyebrow?: T;
+        headingLineOne?: T;
+        headingLineTwo?: T;
+        description?: T;
+        ctaLabel?: T;
+        ctaHref?: T;
+      };
+  writingSection?:
+    | T
+    | {
+        eyebrow?: T;
+        heading?: T;
+        ctaLabel?: T;
+        ctaHref?: T;
+        itemCtaLabel?: T;
+      };
+  certificatesSection?:
+    | T
+    | {
+        eyebrow?: T;
+        headingLineOne?: T;
+        headingLineTwo?: T;
+        ctaLabel?: T;
+        ctaHref?: T;
+      };
+  achievementsSection?:
+    | T
+    | {
+        eyebrow?: T;
+        headingLineOne?: T;
+        headingLineTwo?: T;
+        ctaLabel?: T;
+        ctaHref?: T;
       };
   marquee?:
     | T
@@ -1085,6 +1751,7 @@ export interface HomeSelect<T extends boolean = true> {
         value?: T;
         id?: T;
       };
+  statsEyebrow?: T;
   stats?:
     | T
     | {
@@ -1103,6 +1770,13 @@ export interface HomeSelect<T extends boolean = true> {
  */
 export interface AboutSelect<T extends boolean = true> {
   eyebrow?: T;
+  headlineLines?:
+    | T
+    | {
+        line?: T;
+        id?: T;
+      };
+  headlineAccent?: T;
   title?: T;
   intro?: T;
   portrait?:
@@ -1112,18 +1786,23 @@ export interface AboutSelect<T extends boolean = true> {
         caption?: T;
         image?: T;
       };
+  signature?: T;
+  narrativeSignature?: T;
   narrative?:
     | T
     | {
         text?: T;
         id?: T;
       };
+  philosophyEyebrow?: T;
   philosophy?:
     | T
     | {
         quote?: T;
         body?: T;
       };
+  valuesEyebrow?: T;
+  valuesIntro?: T;
   values?:
     | T
     | {
@@ -1131,6 +1810,8 @@ export interface AboutSelect<T extends boolean = true> {
         body?: T;
         id?: T;
       };
+  journeyEyebrow?: T;
+  journeyIntro?: T;
   journey?:
     | T
     | {
@@ -1139,7 +1820,22 @@ export interface AboutSelect<T extends boolean = true> {
         detail?: T;
         id?: T;
       };
+  nextEyebrow?: T;
   next?: T;
+  primaryCta?:
+    | T
+    | {
+        label?: T;
+        href?: T;
+      };
+  secondaryCta?:
+    | T
+    | {
+        label?: T;
+        href?: T;
+      };
+  metaTitle?: T;
+  metaDescription?: T;
   updatedAt?: T;
   createdAt?: T;
   globalType?: T;
@@ -1151,14 +1847,220 @@ export interface AboutSelect<T extends boolean = true> {
 export interface ContactSelect<T extends boolean = true> {
   eyebrow?: T;
   title?: T;
+  titleAccent?: T;
   blurb?: T;
+  replyTime?: T;
+  invitation?:
+    | T
+    | {
+        eyebrow?: T;
+        script?: T;
+        body?: T;
+      };
+  form?:
+    | T
+    | {
+        eyebrow?: T;
+        nameLabel?: T;
+        namePlaceholder?: T;
+        emailLabel?: T;
+        emailPlaceholder?: T;
+        messageLabel?: T;
+        messagePlaceholder?: T;
+        submitLabel?: T;
+        sendingLabel?: T;
+        footnote?: T;
+      };
   channels?:
     | T
     | {
         label?: T;
         value?: T;
         href?: T;
+        icon?: T;
         id?: T;
+      };
+  success?:
+    | T
+    | {
+        script?: T;
+        heading?: T;
+        headingAccent?: T;
+        body?: T;
+        ctaLabel?: T;
+      };
+  errorMessages?:
+    | T
+    | {
+        nameRequired?: T;
+        emailRequired?: T;
+        emailInvalid?: T;
+        messageRequired?: T;
+        submitFailed?: T;
+      };
+  metaTitle?: T;
+  metaDescription?: T;
+  updatedAt?: T;
+  createdAt?: T;
+  globalType?: T;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "projects-page_select".
+ */
+export interface ProjectsPageSelect<T extends boolean = true> {
+  eyebrow?: T;
+  headlineLineOne?: T;
+  headlineLineTwo?: T;
+  intro?: T;
+  countNoun?: T;
+  viewLabel?: T;
+  curatedLabel?: T;
+  recentLabel?: T;
+  featuredLabel?: T;
+  allLabel?: T;
+  ofLabel?: T;
+  featuredBadge?: T;
+  rowCtaLabel?: T;
+  emptyScript?: T;
+  emptyMessageFeatured?: T;
+  emptyMessageDefault?: T;
+  emptyCtaLabel?: T;
+  metaTitle?: T;
+  metaDescription?: T;
+  updatedAt?: T;
+  createdAt?: T;
+  globalType?: T;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "writing-page_select".
+ */
+export interface WritingPageSelect<T extends boolean = true> {
+  eyebrow?: T;
+  headlineLineOne?: T;
+  headlineLineTwo?: T;
+  lede?: T;
+  ledeHighlight?: T;
+  signature?: T;
+  descriptor?: T;
+  featuredEyebrow?: T;
+  featuredCtaLabel?: T;
+  archiveEyebrow?: T;
+  archiveHeading?: T;
+  archiveHeadingAccent?: T;
+  allLabel?: T;
+  metaTitle?: T;
+  metaDescription?: T;
+  updatedAt?: T;
+  createdAt?: T;
+  globalType?: T;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "achievements-page_select".
+ */
+export interface AchievementsPageSelect<T extends boolean = true> {
+  eyebrow?: T;
+  headingLineOne?: T;
+  headingLineTwo?: T;
+  lede?: T;
+  signature?: T;
+  statLabels?:
+    | T
+    | {
+        label?: T;
+        id?: T;
+      };
+  highlightsEyebrow?: T;
+  highlightsHeading?: T;
+  highlightsHeadingAccent?: T;
+  highlightsBlurb?: T;
+  leadScript?: T;
+  recordEyebrow?: T;
+  recordHeading?: T;
+  recordHeadingAccent?: T;
+  linkLabel?: T;
+  closingText?: T;
+  closingTextAccent?: T;
+  primaryCta?:
+    | T
+    | {
+        label?: T;
+        href?: T;
+      };
+  secondaryCta?:
+    | T
+    | {
+        label?: T;
+        href?: T;
+      };
+  metaTitle?: T;
+  metaDescription?: T;
+  updatedAt?: T;
+  createdAt?: T;
+  globalType?: T;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "certificates-page_select".
+ */
+export interface CertificatesPageSelect<T extends boolean = true> {
+  eyebrow?: T;
+  headlinePrefix?: T;
+  headlineAccent?: T;
+  headlineSuffix?: T;
+  lede?: T;
+  ledeHighlight?: T;
+  signature?: T;
+  filterEyebrow?: T;
+  filterDescription?: T;
+  allLabel?: T;
+  disciplines?:
+    | T
+    | {
+        label?: T;
+        id?: T;
+      };
+  closingEyebrow?: T;
+  closingHeadingPrefix?: T;
+  closingHeadingAccent?: T;
+  closingHeadingSuffix?: T;
+  closingBody?: T;
+  closingCtaLabel?: T;
+  closingCtaHref?: T;
+  metaTitle?: T;
+  metaDescription?: T;
+  updatedAt?: T;
+  createdAt?: T;
+  globalType?: T;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "project-page_select".
+ */
+export interface ProjectPageSelect<T extends boolean = true> {
+  caseStudy?:
+    | T
+    | {
+        visionLabel?: T;
+        problemLabel?: T;
+        buildLabel?: T;
+        outcomeLabel?: T;
+        galleryLabel?: T;
+        builtWithLabel?: T;
+        proofLabel?: T;
+      };
+  pager?:
+    | T
+    | {
+        prevLabel?: T;
+        nextLabel?: T;
+        latestLabel?: T;
+        startLabel?: T;
+        allProjectsLabel?: T;
+        allProjectsScript?: T;
+        backLinkLabel?: T;
       };
   updatedAt?: T;
   createdAt?: T;

@@ -1,7 +1,9 @@
 import type { Metadata } from 'next'
+import { draftMode } from 'next/headers'
 import { notFound } from 'next/navigation'
-import { getArticle, getArticles } from '@/lib/content'
+import { getArticle, getArticles, getSite, getArticleRaw } from '@/lib/content'
 import ArticleDetail from '../../components/writing/article-detail'
+import { ArticleLive } from '../../components/live/article-live'
 
 export async function generateStaticParams() {
   const articles = await getArticles()
@@ -25,6 +27,14 @@ export async function generateMetadata({
 
 export default async function Page({ params }: { params: Promise<{ slug: string }> }) {
   const { slug } = await params
+  const { isEnabled } = await draftMode()
+  const site = await getSite()
+
+  if (isEnabled) {
+    const initialArticle = (await getArticleRaw(slug)) ?? {}
+    return <ArticleLive initialArticle={initialArticle} authorName={site.name} />
+  }
+
   const articles = await getArticles()
   const i = articles.findIndex((x) => x.slug === slug)
   if (i === -1) notFound()
@@ -33,6 +43,7 @@ export default async function Page({ params }: { params: Promise<{ slug: string 
       article={articles[i]}
       prev={i > 0 ? articles[i - 1] : null}
       next={i < articles.length - 1 ? articles[i + 1] : null}
+      authorName={site.name}
     />
   )
 }
