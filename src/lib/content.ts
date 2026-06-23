@@ -8,6 +8,7 @@ import {
   story as staticStory,
   contact as staticContact,
   projects as staticProjects,
+  sessions as staticSessions,
   articles as staticArticles,
   achievements as staticAchievements,
   certificates as staticCertificates,
@@ -16,12 +17,15 @@ import {
   achievementsPage as staticAchievementsPage,
   certificatesPage as staticCertificatesPage,
   projectPage as staticProjectPage,
+  sessionsPage as staticSessionsPage,
+  sessionPage as staticSessionPage,
   type SiteConfig,
   type HomeData,
   type Stat,
   type Story,
   type ContactData,
   type Project,
+  type Session,
   type Article,
   type Achievement,
   type Certificate,
@@ -30,6 +34,8 @@ import {
   type AchievementsPageData,
   type CertificatesPageData,
   type ProjectPageData,
+  type SessionsPageData,
+  type SessionPageData,
 } from './portfolio-data'
 import {
   mapSite,
@@ -46,6 +52,9 @@ import {
   mapAchievementsPage,
   mapCertificatesPage,
   mapProjectPage,
+  mapSession,
+  mapSessionsPage,
+  mapSessionPage,
 } from './mappers'
 
 /* ------------------------------------------------------------------ *
@@ -185,6 +194,39 @@ export async function getProjectRaw(slug: string): Promise<Rec | null> {
   }, null)
 }
 
+/* ------------------------------- sessions ------------------------------- */
+export async function getSessions(): Promise<Session[]> {
+  return safe(async () => {
+    const payload = await client()
+    const { docs } = await payload.find({ collection: 'sessions', limit: 100, depth: 1, sort: ['order', '-date'] })
+    if (!docs.length) return null
+    return docs.map((d) => mapSession(d as unknown as Rec))
+  }, staticSessions)
+}
+
+export async function getSession(slug: string): Promise<Session | null> {
+  return safe(async () => {
+    const payload = await client()
+    const { docs } = await payload.find({ collection: 'sessions', where: { slug: { equals: slug } }, limit: 1, depth: 1 })
+    if (docs[0]) return mapSession(docs[0] as unknown as Rec)
+    return staticSessions.find((s) => s.slug === slug) ?? null
+  }, staticSessions.find((s) => s.slug === slug) ?? null)
+}
+
+export async function getSessionRaw(slug: string): Promise<Rec | null> {
+  return safe(async () => {
+    const payload = await client()
+    const { docs } = await payload.find({
+      collection: 'sessions',
+      where: { slug: { equals: slug } },
+      limit: 1,
+      depth: 1,
+      draft: true,
+    })
+    return (docs[0] as unknown as Rec) ?? null
+  }, null)
+}
+
 /* ------------------------------- articles ------------------------------- */
 export async function getArticles(): Promise<Article[]> {
   return safe(async () => {
@@ -277,4 +319,20 @@ export async function getProjectPage(): Promise<ProjectPageData> {
     const g = (await payload.findGlobal({ slug: 'project-page', depth: 0 })) as unknown as Rec
     return mapProjectPage(g)
   }, staticProjectPage)
+}
+
+export async function getSessionsPage(): Promise<SessionsPageData> {
+  return safe(async () => {
+    const payload = await client()
+    const g = (await payload.findGlobal({ slug: 'sessions-page', depth: 0 })) as unknown as Rec
+    return mapSessionsPage(g)
+  }, staticSessionsPage)
+}
+
+export async function getSessionPage(): Promise<SessionPageData> {
+  return safe(async () => {
+    const payload = await client()
+    const g = (await payload.findGlobal({ slug: 'session-page', depth: 0 })) as unknown as Rec
+    return mapSessionPage(g)
+  }, staticSessionPage)
 }

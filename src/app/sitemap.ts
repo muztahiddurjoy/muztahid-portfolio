@@ -1,15 +1,16 @@
 import type { MetadataRoute } from 'next'
-import { getArticles, getProjects } from '@/lib/content'
+import { getArticles, getProjects, getSessions } from '@/lib/content'
 
 const SITE_URL = process.env.NEXT_PUBLIC_SITE_URL || 'https://muztahid.dev'
 
 export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
-  const [projects, articles] = await Promise.all([getProjects(), getArticles()])
+  const [projects, sessions, articles] = await Promise.all([getProjects(), getSessions(), getArticles()])
 
   const staticRoutes: MetadataRoute.Sitemap = [
     '',
     '/about',
     '/projects',
+    '/sessions',
     '/writing',
     '/achievements',
     '/certificates',
@@ -23,6 +24,13 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
     priority: 0.6,
   }))
 
+  const sessionRoutes: MetadataRoute.Sitemap = sessions.map((s) => ({
+    url: `${SITE_URL}/sessions/${s.slug}`,
+    lastModified: s.date ? new Date(s.date) : new Date(),
+    changeFrequency: 'monthly',
+    priority: 0.6,
+  }))
+
   const articleRoutes: MetadataRoute.Sitemap = articles.map((a) => ({
     url: `${SITE_URL}/writing/${a.slug}`,
     lastModified: a.date ? new Date(a.date) : new Date(),
@@ -30,5 +38,5 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
     priority: 0.6,
   }))
 
-  return [...staticRoutes, ...projectRoutes, ...articleRoutes]
+  return [...staticRoutes, ...projectRoutes, ...sessionRoutes, ...articleRoutes]
 }
