@@ -10,6 +10,7 @@ import { Reveal } from '../ui/reveal'
 import { AnimatedHeading } from '../ui/animated-heading'
 import { CtaButton } from '../ui/cta-button'
 import { ImageFrame } from '../ui/image-frame'
+import { AmbientBackground } from '../ui/ambient-background'
 import { Eyebrow, Signature } from '../ui/primitives'
 import { usePreview } from '../preview-context'
 
@@ -72,7 +73,8 @@ export function AboutPage({ story }: { story: Story }) {
       {/* ============================================================
           01 · HERO — the builder, the thesis, the signature
           ============================================================ */}
-      <section data-hero className="container-page pb-20 md:pb-28">
+      <section data-hero className="container-page relative pb-20 md:pb-28">
+        <AmbientBackground />
         <div className="grid items-center gap-12 lg:grid-cols-[1.05fr_0.95fr] lg:gap-16">
           {/* story column */}
           <div className="relative z-10">

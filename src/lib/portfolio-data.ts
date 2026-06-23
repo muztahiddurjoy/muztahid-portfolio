@@ -3,6 +3,8 @@
    Builder-first framing: a full-stack engineer & hustler who ships.
    ============================================================ */
 
+import { heroImage, aboutPortrait, projectImages, articleCovers } from './images'
+
 export const siteConfig = {
   name: 'Muztahid Rahman',
   shortName: 'Muztahid',
@@ -72,8 +74,8 @@ export const home = {
     { label: 'Shipping', value: 'Autonomous navigation with BRACU Mongol-Tori' },
     { label: 'Studying', value: 'Computer Science at BRAC University' },
   ],
-  // hero portrait — empty string renders the text placeholder; set via CMS upload
-  heroImage: '',
+  // hero portrait — curated default; a CMS `heroPortrait` upload overrides it
+  heroImage,
   heroCaption: 'Engineer · Dhaka',
   heroBadge: 'est. 2021',
   statsEyebrow: 'By the numbers',
@@ -130,7 +132,7 @@ export const story = {
   title: 'I’m an engineer who loves to build — end to end, and built to last.',
   intro:
     'My work lives where vision meets the soldering iron. I don’t just imagine products; I architect the systems, write the code, lead the teams, and ship the things that turn an idea into a working product.',
-  portrait: { label: 'Muztahid Rahman', caption: 'Engineer · Dhaka', image: '' },
+  portrait: { label: 'Muztahid Rahman', caption: 'Engineer · Dhaka', image: aboutPortrait },
   headlineLines: ['I build companies —', 'and the technology that makes them', 'inevitable.'],
   headlineAccent: 'inevitable.',
   signature: 'Muztahid Rahman',
@@ -456,6 +458,17 @@ export const projects: Project[] = [
   },
 ]
 
+// Attach curated default cover + gallery imagery by slug. A CMS `cover.image` /
+// `gallery[].image` upload overrides these per-field via the mappers.
+for (const p of projects) {
+  const imgs = projectImages[p.slug]
+  if (!imgs) continue
+  p.cover.image = imgs.cover
+  p.gallery.forEach((shot, i) => {
+    if (imgs.gallery[i]) shot.image = imgs.gallery[i]
+  })
+}
+
 /* ---------------- Writing (blog) ---------------- */
 export type WritingCategory = 'building' | 'engineering' | 'robotics' | 'essays'
 
@@ -622,6 +635,12 @@ export const articles: Article[] = [
     ),
   },
 ]
+
+// Attach curated default article covers by slug (CMS upload overrides via mapper).
+for (const a of articles) {
+  const cover = articleCovers[a.slug]
+  if (cover) a.cover.image = cover
+}
 
 /* ---------------- Achievements ---------------- */
 export type AchievementType = 'award' | 'competition' | 'leadership' | 'milestone'

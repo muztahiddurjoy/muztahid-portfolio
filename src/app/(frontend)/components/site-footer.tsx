@@ -7,6 +7,8 @@ import { CtaButton } from './ui/cta-button'
 import { Reveal } from './ui/reveal'
 import { GithubIcon, LinkedinIcon } from './ui/brand-icons'
 import { AccentText } from './ui/primitives'
+import { AmbientBackground } from './ui/ambient-background'
+import { ambient } from '@/lib/images'
 import { useLenis } from '../providers/smooth-scroll'
 
 export function SiteFooter({ site }: { site: SiteConfig }) {
@@ -17,7 +19,8 @@ export function SiteFooter({ site }: { site: SiteConfig }) {
   }
 
   return (
-    <footer className="relative mt-24 border-t border-border bg-elevated">
+    <footer className="relative mt-24 overflow-hidden border-t border-border bg-elevated">
+      <AmbientBackground photo={ambient.footer} />
       <div className="container-page py-20">
         <Reveal>
           <p className="eyebrow mb-6">{site.footer.eyebrow}</p>

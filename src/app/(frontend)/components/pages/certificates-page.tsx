@@ -6,6 +6,7 @@ import { useIsoLayoutEffect } from '@/lib/use-iso-layout-effect'
 import { cn } from '@/lib/utils'
 import { type Certificate, type CertificatesPageData } from '@/lib/portfolio-data'
 import { Reveal } from '../ui/reveal'
+import { AmbientBackground } from '../ui/ambient-background'
 import { Eyebrow, Tag, Signature, CountUp, AccentText } from '../ui/primitives'
 import { CtaButton } from '../ui/cta-button'
 import { Icon } from '../ui/lucide-icon'
@@ -60,7 +61,8 @@ export default function CertificatesPage({
   return (
     <main className="relative pt-28 md:pt-32">
       {/* ---------------- Hero ---------------- */}
-      <section className="container-page pb-16 md:pb-24">
+      <section className="container-page relative pb-16 md:pb-24">
+        <AmbientBackground />
         <div className="max-w-4xl">
           <Reveal>
             <Eyebrow>{chrome.eyebrow}</Eyebrow>

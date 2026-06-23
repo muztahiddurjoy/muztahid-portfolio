@@ -14,6 +14,7 @@ import {
 import { Reveal } from '../ui/reveal'
 import { AnimatedHeading } from '../ui/animated-heading'
 import { ImageFrame } from '../ui/image-frame'
+import { AmbientBackground } from '../ui/ambient-background'
 import { Eyebrow, Tag } from '../ui/primitives'
 import { TransitionLink } from '../ui/transition-link'
 import { usePreview } from '../preview-context'
@@ -112,7 +113,8 @@ export default function ProjectsPage({
   return (
     <div className="pt-28 md:pt-32">
       {/* ---------------- Hero ---------------- */}
-      <section className="container-page pb-14 md:pb-20">
+      <section className="container-page relative pb-14 md:pb-20">
+        <AmbientBackground />
         <Reveal>
           <Eyebrow index={total}>{chrome.eyebrow}</Eyebrow>
         </Reveal>

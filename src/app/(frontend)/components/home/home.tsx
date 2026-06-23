@@ -24,6 +24,7 @@ import { AnimatedHeading } from '../ui/animated-heading'
 import { CtaButton } from '../ui/cta-button'
 import { Eyebrow, Tag, Signature, Marquee, CountUp, AccentText } from '../ui/primitives'
 import { ImageFrame } from '../ui/image-frame'
+import { AmbientBackground } from '../ui/ambient-background'
 import { TransitionLink } from '../ui/transition-link'
 import { Icon, type IconName } from '../ui/lucide-icon'
 import { usePreview } from '../preview-context'
@@ -123,6 +124,7 @@ export function Home({
           01 · HERO
           ============================================================ */}
       <section data-hero className="container-page relative min-h-[86vh] pb-16">
+        <AmbientBackground />
         <div className="grid items-center gap-12 lg:grid-cols-[1.12fr_0.88fr] lg:gap-16">
           {/* headline column */}
           <div className="relative z-10">

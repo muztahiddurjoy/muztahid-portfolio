@@ -1,6 +1,6 @@
 import { mongooseAdapter } from '@payloadcms/db-mongodb'
 import { lexicalEditor } from '@payloadcms/richtext-lexical'
-import { vercelBlobStorage } from '@payloadcms/storage-vercel-blob'
+import { cloudinaryStorage } from 'payload-cloudinary'
 import path from 'path'
 import { buildConfig, type Plugin } from 'payload'
 import { fileURLToPath } from 'url'
@@ -28,16 +28,27 @@ const filename = fileURLToPath(import.meta.url)
 const dirname = path.dirname(filename)
 
 /**
- * Durable media storage on serverless hosting (Vercel's filesystem is
- * ephemeral). Only enabled when a Blob token is present, so local dev keeps
- * using disk storage with zero extra setup.
+ * Durable media storage on serverless hosting (the host filesystem is
+ * ephemeral). Uploads are offloaded to Cloudinary, which also serves the files
+ * via its CDN with on-the-fly transforms. Only enabled when Cloudinary
+ * credentials are present, so local dev keeps using disk storage with zero
+ * extra setup.
  */
 const plugins: Plugin[] = []
-if (process.env.BLOB_READ_WRITE_TOKEN) {
+if (
+  process.env.CLOUDINARY_CLOUD_NAME &&
+  process.env.CLOUDINARY_API_KEY &&
+  process.env.CLOUDINARY_API_SECRET
+) {
   plugins.push(
-    vercelBlobStorage({
+    cloudinaryStorage({
+      config: {
+        cloud_name: process.env.CLOUDINARY_CLOUD_NAME,
+        api_key: process.env.CLOUDINARY_API_KEY,
+        api_secret: process.env.CLOUDINARY_API_SECRET,
+      },
       collections: { media: true },
-      token: process.env.BLOB_READ_WRITE_TOKEN,
+      folder: process.env.CLOUDINARY_FOLDER || 'muztahid-portfolio',
     }),
   )
 }

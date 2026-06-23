@@ -12,8 +12,10 @@ import { gsap } from '@/lib/gsap'
 import { useIsoLayoutEffect } from '@/lib/use-iso-layout-effect'
 import { cn } from '@/lib/utils'
 import type { ContactData, SiteConfig } from '@/lib/portfolio-data'
+import { ambient } from '@/lib/images'
 import { Reveal } from '../ui/reveal'
 import { AnimatedHeading } from '../ui/animated-heading'
+import { AmbientBackground } from '../ui/ambient-background'
 import { Eyebrow, AccentText } from '../ui/primitives'
 import { Magnetic } from '../ui/magnetic'
 import { GithubIcon, LinkedinIcon } from '../ui/brand-icons'
@@ -249,7 +251,8 @@ export default function ContactPage({
   return (
     <main className="pt-28 md:pt-32">
       {/* ============ HERO ============ */}
-      <section className="container-page pb-20 pt-6 md:pb-28">
+      <section className="container-page relative pb-20 pt-6 md:pb-28">
+        <AmbientBackground photo={ambient.contact} />
         <Reveal>
           <Eyebrow>{contact.eyebrow}</Eyebrow>
         </Reveal>

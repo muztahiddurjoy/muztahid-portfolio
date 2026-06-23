@@ -12,6 +12,7 @@ import { cn } from '@/lib/utils'
 import { Reveal } from '../ui/reveal'
 import { AnimatedHeading } from '../ui/animated-heading'
 import { ImageFrame } from '../ui/image-frame'
+import { AmbientBackground } from '../ui/ambient-background'
 import { CtaButton } from '../ui/cta-button'
 import { TransitionLink } from '../ui/transition-link'
 import { Eyebrow, Tag, Signature, AccentText } from '../ui/primitives'
@@ -39,7 +40,8 @@ export default function WritingPage({
   return (
     <main className="pt-28 md:pt-32">
       {/* ============================== HERO ============================== */}
-      <section className="container-page pb-20 md:pb-28">
+      <section className="container-page relative pb-20 md:pb-28">
+        <AmbientBackground />
         <Reveal>
           <Eyebrow index="01">{chrome.eyebrow}</Eyebrow>
         </Reveal>

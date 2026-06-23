@@ -294,9 +294,13 @@ export function mapContact(raw: Rec | null | undefined): ContactData {
 export function mapProject(raw: Rec | null | undefined): Project {
   const d = rec(raw)
   const cover = rec(d.cover)
-  const coverImage = mediaUrl(cover.image)
+  const slug = str(d.slug)
+  // Fall back to the curated static imagery for this slug when the CMS doc has no
+  // upload, so covers/gallery render whether we read Payload or static content.
+  const fb = staticProjects.find((p) => p.slug === slug)
+  const coverImage = mediaUrl(cover.image) ?? fb?.cover.image
   return {
-    slug: str(d.slug),
+    slug,
     name: str(d.name),
     tagline: str(d.tagline),
     role: str(d.role),
@@ -318,8 +322,8 @@ export function mapProject(raw: Rec | null | undefined): Project {
     build: arr<{ point?: unknown }>(d.build).map((b) => str(b.point)),
     outcome: str(d.outcome),
     links: arr<{ label?: unknown; url?: unknown }>(d.links).map((l) => ({ label: str(l.label), url: str(l.url) })),
-    gallery: arr<{ label?: unknown; caption?: unknown; image?: unknown }>(d.gallery).map((gx) => {
-      const img = mediaUrl(gx.image)
+    gallery: arr<{ label?: unknown; caption?: unknown; image?: unknown }>(d.gallery).map((gx, i) => {
+      const img = mediaUrl(gx.image) ?? fb?.gallery[i]?.image
       return { label: str(gx.label), caption: str(gx.caption), ...(img ? { image: img } : {}) }
     }),
   }
@@ -329,7 +333,8 @@ export function mapProject(raw: Rec | null | undefined): Project {
 export function mapArticle(raw: Rec | null | undefined): Article {
   const d = rec(raw)
   const cover = rec(d.cover)
-  const coverImage = mediaUrl(cover.image)
+  const fb = staticArticles.find((a) => a.slug === str(d.slug))
+  const coverImage = mediaUrl(cover.image) ?? fb?.cover.image
   const date = str(d.date)
   const body: ArticleBlock[] = arr<Rec>(d.body)
     .map((b): ArticleBlock | null => {
