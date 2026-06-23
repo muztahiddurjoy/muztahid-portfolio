@@ -204,13 +204,16 @@ export type Project = {
   tagline: string
   role: string
   type: ProjectType
+  /** Organization / client the project was built for (e.g. "Appbaksho", "BRACU Mongol-Tori"). */
+  organization?: string
   year: string
   /** ISO build/ship date — drives the "Recent" view. Optional; falls back to `year`. */
   date?: string
   status: string
   featured: boolean
   summary: string
-  cover: { label: string; caption: string; image?: string }
+  /** `image` is an uploaded Media doc; `url` is an external image URL (e.g. a GitHub OG card). */
+  cover: { label: string; caption: string; image?: string; url?: string }
   metrics: { label: string; value: string; proof?: boolean }[]
   stack: string[]
   // case study
@@ -219,7 +222,7 @@ export type Project = {
   build: string[]
   outcome: string
   links: { label: string; url: string }[]
-  gallery: { label: string; caption: string; image?: string }[]
+  gallery: { label: string; caption: string; image?: string; url?: string }[]
 }
 
 export const projects: Project[] = [
