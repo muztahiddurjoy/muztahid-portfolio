@@ -32,6 +32,7 @@ import {
   projectPage,
 } from '../lib/portfolio-data'
 import { sessionCreateData, sessionsPageData, sessionPageData } from './seed-sessions'
+import { seedProjects } from './seed-projects'
 
 type AnyCollection =
   | 'projects'
@@ -184,34 +185,9 @@ const run = async () => {
     }
   }
 
-  await reset('projects')
-  for (const v of projects) {
-    await payload.create({
-      collection: 'projects',
-      data: {
-        name: v.name,
-        slug: v.slug,
-        tagline: v.tagline,
-        role: v.role,
-        type: v.type,
-        year: v.year,
-        ...(v.date ? { date: v.date } : {}),
-        status: v.status,
-        featured: v.featured,
-        summary: v.summary,
-        cover: { label: v.cover.label, caption: v.cover.caption },
-        stack: v.stack,
-        metrics: v.metrics.map((m) => ({ label: m.label, value: m.value })),
-        vision: v.vision,
-        problem: v.problem,
-        build: v.build.map((point) => ({ point })),
-        outcome: v.outcome,
-        links: v.links.map((l) => ({ label: l.label, url: l.url })),
-        gallery: v.gallery.map((g) => ({ label: g.label, caption: g.caption })),
-        _status: 'published',
-      },
-    })
-  }
+  // Projects come from the curated GitHub import — wiped & recreated, OG covers
+  // as external URLs, curated order pinned. See ./seed-projects.
+  await seedProjects(payload)
 
   await reset('sessions')
   for (let i = 0; i < sessions.length; i++) {
