@@ -7,6 +7,13 @@ export async function generateMetadata(): Promise<Metadata> {
   return {
     title: chrome.metaTitle,
     description: chrome.metaDescription,
+    alternates: { canonical: '/projects' },
+    openGraph: {
+      title: chrome.metaTitle,
+      description: chrome.metaDescription,
+      type: 'website',
+      url: '/projects',
+    },
   }
 }
 

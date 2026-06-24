@@ -21,7 +21,7 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
     url: `${SITE_URL}/projects/${v.slug}`,
     lastModified: v.date ? new Date(v.date) : new Date(),
     changeFrequency: 'monthly',
-    priority: 0.6,
+    priority: v.featured ? 0.8 : 0.6,
   }))
 
   const sessionRoutes: MetadataRoute.Sitemap = sessions.map((s) => ({

@@ -18,10 +18,29 @@ export async function generateMetadata({
   const { slug } = await params
   const v = await getProject(slug)
   if (!v) return { title: 'Project not found' }
+  const image = v.cover.url ?? v.cover.image
+  const ogTitle = v.organization ? `${v.name} · ${v.organization}` : v.name
+  const keywords = [...v.stack, v.organization, v.type, 'Muztahid Rahman'].filter(
+    (k): k is string => Boolean(k),
+  )
   return {
     title: v.name,
     description: v.summary,
-    openGraph: { title: v.name, description: v.summary, type: 'article' },
+    keywords,
+    alternates: { canonical: `/projects/${v.slug}` },
+    openGraph: {
+      title: ogTitle,
+      description: v.summary,
+      type: 'article',
+      url: `/projects/${v.slug}`,
+      ...(image ? { images: [{ url: image, width: 1200, height: 600, alt: v.name }] } : {}),
+    },
+    twitter: {
+      card: 'summary_large_image',
+      title: ogTitle,
+      description: v.summary,
+      ...(image ? { images: [image] } : {}),
+    },
   }
 }
 
@@ -40,14 +59,19 @@ export default async function Page({ params }: { params: Promise<{ slug: string 
   if (i === -1) notFound()
   const project = projects[i]
 
+  const coverImage = project.cover.url ?? project.cover.image
   const projectLd = {
     '@context': 'https://schema.org',
     '@type': 'CreativeWork',
     name: project.name,
     description: project.summary,
-    ...(project.date ? { dateCreated: project.date } : {}),
+    ...(coverImage ? { image: coverImage } : {}),
+    ...(project.date ? { dateCreated: project.date, dateModified: project.date } : {}),
     keywords: project.stack.join(', '),
     author: { '@type': 'Person', name: site.name, url: site.linkedin },
+    ...(project.organization
+      ? { sourceOrganization: { '@type': 'Organization', name: project.organization } }
+      : {}),
     ...(project.links[0]?.url ? { url: project.links[0].url } : {}),
   }
 
