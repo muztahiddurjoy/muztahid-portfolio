@@ -10,172 +10,28 @@ import type { Project } from './portfolio-data'
  * each repo's real description / README; org & client attribution lives in
  * `organization` (empty when it would just repeat the project name).
  *
- * Featured projects span products, robotics/research and open-source work.
- * This file is the editable source of truth — tweak here, then `npm run seed`
- * (or `npm run seed:projects`) to push into the CMS, or edit in /admin.
+ * Order matters: featured projects come first in curated strength order (the
+ * homepage shows the top 4), then the rest most-recent first. Edit here, then
+ * `npm run seed` / `npm run seed:projects` to push into the CMS, or edit /admin.
  */
 export const githubProjects: Project[] = [
   {
-    slug: 'auracard',
-    name: 'Auracard',
-    tagline: 'A modern web app, shipped on TypeScript.',
+    slug: 'zf-pharma',
+    name: 'ZF Pharma',
+    tagline: 'Storefront crafted with TypeScript.',
     role: 'Full-stack Developer',
     type: 'product',
-    organization: '',
+    organization: 'Appbaksho',
     year: '2026',
-    date: '2026-06-22',
+    date: '2026-06-08',
     status: 'Live',
     featured: true,
     summary:
-      'Auracard Digital Identity Platform Auracard is a modern digital identity platform that enables professionals to create verified digital profiles accessible via NFC enabled cards and smart links. Live at auracard-tan.vercel.app.',
+      'ZF Pharma A full stack online pharmacy management platform for Zf Pharma, Mirpur DOHS, Dhaka . The system consists of three applications: a customer facing storefront, an admin dashboard, and a NestJS REST API backend. Live at zf-pharma.vercel.app.',
     cover: {
-      label: 'Auracard',
-      caption: 'A modern web app, shipped on TypeScript.',
-      url: 'https://opengraph.githubassets.com/f5d3fbbdd2f3e2e4/muztahiddurjoy/Auracard',
-    },
-    metrics: [
-      {
-        label: 'Primary stack',
-        value: 'TypeScript',
-      },
-      {
-        label: 'Status',
-        value: 'Live',
-      },
-    ],
-    stack: ['TypeScript', 'JavaScript'],
-    vision: "Build Auracard a modern web app that's quick to load and easy to maintain.",
-    problem: 'Auracard wanted to retire slow, ageing tooling for a maintainable modern stack.',
-    build: [
-      'Built with TypeScript, JavaScript.',
-      'Shipped to production at auracard-tan.vercel.app.',
-    ],
-    outcome: 'Live in production at auracard-tan.vercel.app.',
-    links: [
-      {
-        label: 'Live site',
-        url: 'https://auracard-tan.vercel.app',
-      },
-      {
-        label: 'GitHub',
-        url: 'https://github.com/muztahiddurjoy/Auracard',
-      },
-    ],
-    gallery: [],
-  },
-  {
-    slug: 'bn-ansi-to-unicode',
-    name: 'Bangla ANSI To Unicode',
-    tagline: 'Typescript Bangla text ANSI (Bijoy) to Unicode format converter',
-    role: 'Full-stack Developer',
-    type: 'product',
-    organization: 'BinduLogic',
-    year: '2022',
-    date: '2022-08-25',
-    status: 'Shipped',
-    featured: true,
-    summary:
-      'Bijoy ANSI to Unicode converter Typescript Bangla text ANSI (Bijoy) to Unicode format converter. The original author of this was @codesigntheory and package source code was unavailable on Github.',
-    cover: {
-      label: 'Bangla ANSI To Unicode',
-      caption: 'Typescript Bangla text ANSI (Bijoy) to Unicode format converter',
-      url: 'https://opengraph.githubassets.com/3e89a2069406e20e2e1b94c44e4f551b8a815853b435274d877e78d622471997/BinduLogic/bn-ansi-to-unicode',
-    },
-    metrics: [
-      {
-        label: 'GitHub stars',
-        value: '1',
-        proof: true,
-      },
-      {
-        label: 'Primary stack',
-        value: 'JavaScript',
-      },
-      {
-        label: 'Status',
-        value: 'Open source',
-      },
-    ],
-    stack: ['JavaScript'],
-    vision: 'Give BinduLogic a fast, dependable tool that people genuinely enjoy using.',
-    problem:
-      'BinduLogic needed a tool that loads fast, looks sharp and is simple to run day to day.',
-    build: ['Built with JavaScript.', 'Delivered as part of BinduLogic.'],
-    outcome: 'Delivered for BinduLogic.',
-    links: [
-      {
-        label: 'GitHub',
-        url: 'https://github.com/BinduLogic/bn-ansi-to-unicode',
-      },
-    ],
-    gallery: [],
-  },
-  {
-    slug: 'bindusms-woocommerce-plugin',
-    name: 'Bindusms Woocommerce Plugin',
-    tagline: 'BinduSMS WooCommerce Plugin for sending order notification SMS',
-    role: 'Full-stack Developer',
-    type: 'product',
-    organization: 'BinduLogic',
-    year: '2022',
-    date: '2022-11-03',
-    status: 'Live',
-    featured: true,
-    summary:
-      'BinduSms Plugin for WordPress Wordpress Woocommerce plugin for BinduSms. This plugin lets you notify your customers about their WooCommerce order updates via SMS. To use it you will need a BinduSMS account. Sign up for free at sms.bindulogic.com.',
-    cover: {
-      label: 'Bindusms Woocommerce Plugin',
-      caption: 'BinduSMS WooCommerce Plugin for sending order notification SMS',
-      url: 'https://opengraph.githubassets.com/312a92ff707a90ee0444654c10094a2dc65f1db845970b7dda5d6b325e66b460/BinduLogic/bindusms-woocommerce-plugin',
-    },
-    metrics: [
-      {
-        label: 'Primary stack',
-        value: 'PHP',
-      },
-      {
-        label: 'Status',
-        value: 'Live',
-      },
-    ],
-    stack: ['PHP'],
-    vision: 'Deliver BinduLogic a production-grade storefront that scales with the business.',
-    problem: 'BinduLogic required a storefront that works on every device and is easy to extend.',
-    build: [
-      'Built with PHP.',
-      'Shipped to production at sms.bindulogic.com.',
-      'Delivered as part of BinduLogic.',
-    ],
-    outcome: 'Live in production at sms.bindulogic.com.',
-    links: [
-      {
-        label: 'Live site',
-        url: 'https://sms.bindulogic.com',
-      },
-      {
-        label: 'GitHub',
-        url: 'https://github.com/BinduLogic/bindusms-woocommerce-plugin',
-      },
-    ],
-    gallery: [],
-  },
-  {
-    slug: 'kotha-boli',
-    name: 'Kotha Boli',
-    tagline: 'Web App crafted with TypeScript.',
-    role: 'Full-stack Developer',
-    type: 'product',
-    organization: '',
-    year: '2025',
-    date: '2026-06-21',
-    status: 'Live',
-    featured: true,
-    summary:
-      'KothaBoli Language Learning Platform A modern platform connecting language learners with native speakers for personalized one on one sessions. Project Structure Quick Start Prerequisites Node.js 18+ and npm Docker and Docker Compose Database Setup 1. Live at kotha-boli.vercel.app.',
-    cover: {
-      label: 'Kotha Boli',
-      caption: 'Web App crafted with TypeScript.',
-      url: 'https://opengraph.githubassets.com/fd8d30c37924bd5c/muztahiddurjoy/kotha-boli',
+      label: 'ZF Pharma',
+      caption: 'Storefront crafted with TypeScript.',
+      url: 'https://opengraph.githubassets.com/412f1273bbaaa43a/Appbaksho/zf-pharma',
     },
     metrics: [
       {
@@ -188,21 +44,164 @@ export const githubProjects: Project[] = [
       },
     ],
     stack: ['TypeScript', 'Python', 'JavaScript'],
-    vision: "Build Kotha Boli a modern web app that's quick to load and easy to maintain.",
-    problem: 'Kotha Boli wanted to retire slow, ageing tooling for a maintainable modern stack.',
+    vision: "Build Appbaksho a modern storefront that's quick to load and easy to maintain.",
+    problem: 'Appbaksho wanted to retire slow, ageing tooling for a maintainable modern stack.',
     build: [
       'Built with TypeScript, Python, JavaScript.',
-      'Shipped to production at kotha-boli.vercel.app.',
+      'Shipped to production at zf-pharma.vercel.app.',
+      'Delivered as part of Appbaksho.',
     ],
-    outcome: 'Live in production at kotha-boli.vercel.app.',
+    outcome: 'Live in production at zf-pharma.vercel.app.',
     links: [
       {
         label: 'Live site',
-        url: 'https://kotha-boli.vercel.app',
+        url: 'https://zf-pharma.vercel.app',
       },
       {
         label: 'GitHub',
-        url: 'https://github.com/muztahiddurjoy/kotha-boli',
+        url: 'https://github.com/Appbaksho/zf-pharma',
+      },
+    ],
+    gallery: [],
+  },
+  {
+    slug: 'mt11-controls',
+    name: 'MT11 Controls',
+    tagline: 'MT11 control system',
+    role: 'Robotics Software Engineer',
+    type: 'research',
+    organization: 'BRACU Mongol-Tori',
+    year: '2025',
+    date: '2026-06-16',
+    status: 'Field-tested',
+    featured: true,
+    summary:
+      'MT11 Rover Controls Workspace A complete robotics control system integrating ROS2, PlatformIO firmware, and MAVLink protocol for autonomous rover operations. This workspace contains the control software for the MT11 Rover project.',
+    cover: {
+      label: 'MT11 Controls',
+      caption: 'MT11 control system',
+      url: 'https://opengraph.githubassets.com/177da4084614a3d5/bracu-mongoltori/mt11-controls',
+    },
+    metrics: [
+      {
+        label: 'Primary stack',
+        value: 'Python',
+      },
+      {
+        label: 'Status',
+        value: 'Field-tested',
+      },
+    ],
+    stack: ['Python', 'C++', 'CMake'],
+    vision: 'Make mt11 controls robust enough for unforgiving field conditions.',
+    problem: 'MT11 Controls needed to survive rough terrain, tight timing and limited compute.',
+    build: [
+      'Built with Python, C++, CMake.',
+      "Delivered as part of BRACU Mongol-Tori's engineering team.",
+    ],
+    outcome: "Fielded as part of BRACU Mongol-Tori's rover programme.",
+    links: [
+      {
+        label: 'GitHub',
+        url: 'https://github.com/bracu-mongoltori/mt11-controls',
+      },
+    ],
+    gallery: [],
+  },
+  {
+    slug: 'touchpad-solutions',
+    name: 'Touchpad Solutions',
+    tagline: "Appbaksho's web app, engineered end to end.",
+    role: 'Full-stack Developer',
+    type: 'product',
+    organization: 'Appbaksho',
+    year: '2026',
+    date: '2026-06-10',
+    status: 'Live',
+    featured: true,
+    summary:
+      'Touchpad Solutions is a web app built with TypeScript, JavaScript for Appbaksho, deployed at touchpad-solutions.vercel.app.',
+    cover: {
+      label: 'Touchpad Solutions',
+      caption: "Appbaksho's web app, engineered end to end.",
+      url: 'https://opengraph.githubassets.com/b4c9d56430a6c657/Appbaksho/touchpad-solutions',
+    },
+    metrics: [
+      {
+        label: 'Primary stack',
+        value: 'TypeScript',
+      },
+      {
+        label: 'Status',
+        value: 'Live',
+      },
+    ],
+    stack: ['TypeScript', 'JavaScript'],
+    vision: 'Deliver Appbaksho a production-grade web app that scales with the business.',
+    problem: 'Appbaksho required a web app that works on every device and is easy to extend.',
+    build: [
+      'Built with TypeScript, JavaScript.',
+      'Shipped to production at touchpad-solutions.vercel.app.',
+      'Delivered as part of Appbaksho.',
+    ],
+    outcome: 'Live in production at touchpad-solutions.vercel.app.',
+    links: [
+      {
+        label: 'Live site',
+        url: 'https://touchpad-solutions.vercel.app',
+      },
+      {
+        label: 'GitHub',
+        url: 'https://github.com/Appbaksho/touchpad-solutions',
+      },
+    ],
+    gallery: [],
+  },
+  {
+    slug: 'mongol-tori-alumni-connect',
+    name: 'Mongol Tori Alumni Connect',
+    tagline: 'A modern tool, shipped on TypeScript.',
+    role: 'Full-stack Developer',
+    type: 'product',
+    organization: 'BOT Engineers',
+    year: '2025',
+    date: '2026-01-07',
+    status: 'Live',
+    featured: true,
+    summary:
+      'Mongol Tori Alumni Connect is a tool built with TypeScript, JavaScript, PostgreSQL for BOT Engineers, deployed at mongol-tori-alumni-connect.vercel.app.',
+    cover: {
+      label: 'Mongol Tori Alumni Connect',
+      caption: 'A modern tool, shipped on TypeScript.',
+      url: 'https://opengraph.githubassets.com/7d4b67a73b593406c2a46c9861e05b35c7433e0495cf379cda72ec440e464abd/BOT-ENGINEERS/mongol-tori-alumni-connect',
+    },
+    metrics: [
+      {
+        label: 'Primary stack',
+        value: 'TypeScript',
+      },
+      {
+        label: 'Status',
+        value: 'Live',
+      },
+    ],
+    stack: ['TypeScript', 'JavaScript', 'PostgreSQL'],
+    vision: 'Deliver BOT Engineers a production-grade tool that scales with the business.',
+    problem: 'BOT Engineers required a tool that works on every device and is easy to extend.',
+    build: [
+      'Built with TypeScript, JavaScript, PostgreSQL.',
+      'Shipped to production at mongol-tori-alumni-connect.vercel.app.',
+      'Delivered as part of BOT Engineers.',
+    ],
+    outcome: 'Live in production at mongol-tori-alumni-connect.vercel.app.',
+    links: [
+      {
+        label: 'Live site',
+        url: 'https://mongol-tori-alumni-connect.vercel.app',
+      },
+      {
+        label: 'GitHub',
+        url: 'https://github.com/BOT-ENGINEERS/mongol-tori-alumni-connect',
       },
     ],
     gallery: [],
@@ -258,94 +257,97 @@ export const githubProjects: Project[] = [
     gallery: [],
   },
   {
-    slug: 'mongol-tori-alumni-connect',
-    name: 'Mongol Tori Alumni Connect',
-    tagline: 'A modern tool, shipped on TypeScript.',
+    slug: 'bindusms-woocommerce-plugin',
+    name: 'Bindusms Woocommerce Plugin',
+    tagline: 'BinduSMS WooCommerce Plugin for sending order notification SMS',
     role: 'Full-stack Developer',
     type: 'product',
-    organization: 'BOT Engineers',
-    year: '2025',
-    date: '2026-01-07',
+    organization: 'BinduLogic',
+    year: '2022',
+    date: '2022-11-03',
     status: 'Live',
     featured: true,
     summary:
-      'Mongol Tori Alumni Connect is a tool built with TypeScript, JavaScript, PostgreSQL for BOT Engineers, deployed at mongol-tori-alumni-connect.vercel.app.',
+      'BinduSms Plugin for WordPress Wordpress Woocommerce plugin for BinduSms. This plugin lets you notify your customers about their WooCommerce order updates via SMS. To use it you will need a BinduSMS account. Sign up for free at sms.bindulogic.com.',
     cover: {
-      label: 'Mongol Tori Alumni Connect',
-      caption: 'A modern tool, shipped on TypeScript.',
-      url: 'https://opengraph.githubassets.com/7d4b67a73b593406c2a46c9861e05b35c7433e0495cf379cda72ec440e464abd/BOT-ENGINEERS/mongol-tori-alumni-connect',
+      label: 'Bindusms Woocommerce Plugin',
+      caption: 'BinduSMS WooCommerce Plugin for sending order notification SMS',
+      url: 'https://opengraph.githubassets.com/312a92ff707a90ee0444654c10094a2dc65f1db845970b7dda5d6b325e66b460/BinduLogic/bindusms-woocommerce-plugin',
     },
     metrics: [
       {
         label: 'Primary stack',
-        value: 'TypeScript',
+        value: 'PHP',
       },
       {
         label: 'Status',
         value: 'Live',
       },
     ],
-    stack: ['TypeScript', 'JavaScript', 'PostgreSQL'],
-    vision: 'Deliver BOT Engineers a production-grade tool that scales with the business.',
-    problem: 'BOT Engineers required a tool that works on every device and is easy to extend.',
+    stack: ['PHP'],
+    vision: 'Deliver BinduLogic a production-grade storefront that scales with the business.',
+    problem: 'BinduLogic required a storefront that works on every device and is easy to extend.',
     build: [
-      'Built with TypeScript, JavaScript, PostgreSQL.',
-      'Shipped to production at mongol-tori-alumni-connect.vercel.app.',
-      'Delivered as part of BOT Engineers.',
+      'Built with PHP.',
+      'Shipped to production at sms.bindulogic.com.',
+      'Delivered as part of BinduLogic.',
     ],
-    outcome: 'Live in production at mongol-tori-alumni-connect.vercel.app.',
+    outcome: 'Live in production at sms.bindulogic.com.',
     links: [
       {
         label: 'Live site',
-        url: 'https://mongol-tori-alumni-connect.vercel.app',
+        url: 'https://sms.bindulogic.com',
       },
       {
         label: 'GitHub',
-        url: 'https://github.com/BOT-ENGINEERS/mongol-tori-alumni-connect',
+        url: 'https://github.com/BinduLogic/bindusms-woocommerce-plugin',
       },
     ],
     gallery: [],
   },
   {
-    slug: 'mt11-controls',
-    name: 'MT11 Controls',
-    tagline: 'MT11 control system',
-    role: 'Robotics Software Engineer',
-    type: 'research',
-    organization: 'BRACU Mongol-Tori',
-    year: '2025',
-    date: '2026-06-16',
-    status: 'Field-tested',
+    slug: 'bn-ansi-to-unicode',
+    name: 'Bangla ANSI To Unicode',
+    tagline: 'Typescript Bangla text ANSI (Bijoy) to Unicode format converter',
+    role: 'Full-stack Developer',
+    type: 'product',
+    organization: 'BinduLogic',
+    year: '2022',
+    date: '2022-08-25',
+    status: 'Shipped',
     featured: true,
     summary:
-      'MT11 Rover Controls Workspace A complete robotics control system integrating ROS2, PlatformIO firmware, and MAVLink protocol for autonomous rover operations. This workspace contains the control software for the MT11 Rover project.',
+      'Bijoy ANSI to Unicode converter Typescript Bangla text ANSI (Bijoy) to Unicode format converter. The original author of this was @codesigntheory and package source code was unavailable on Github.',
     cover: {
-      label: 'MT11 Controls',
-      caption: 'MT11 control system',
-      url: 'https://opengraph.githubassets.com/177da4084614a3d5/bracu-mongoltori/mt11-controls',
+      label: 'Bangla ANSI To Unicode',
+      caption: 'Typescript Bangla text ANSI (Bijoy) to Unicode format converter',
+      url: 'https://opengraph.githubassets.com/3e89a2069406e20e2e1b94c44e4f551b8a815853b435274d877e78d622471997/BinduLogic/bn-ansi-to-unicode',
     },
     metrics: [
       {
+        label: 'GitHub stars',
+        value: '1',
+        proof: true,
+      },
+      {
         label: 'Primary stack',
-        value: 'Python',
+        value: 'JavaScript',
       },
       {
         label: 'Status',
-        value: 'Field-tested',
+        value: 'Open source',
       },
     ],
-    stack: ['Python', 'C++', 'CMake'],
-    vision: 'Make mt11 controls robust enough for unforgiving field conditions.',
-    problem: 'MT11 Controls needed to survive rough terrain, tight timing and limited compute.',
-    build: [
-      'Built with Python, C++, CMake.',
-      "Delivered as part of BRACU Mongol-Tori's engineering team.",
-    ],
-    outcome: "Fielded as part of BRACU Mongol-Tori's rover programme.",
+    stack: ['JavaScript'],
+    vision: 'Give BinduLogic a fast, dependable tool that people genuinely enjoy using.',
+    problem:
+      'BinduLogic needed a tool that loads fast, looks sharp and is simple to run day to day.',
+    build: ['Built with JavaScript.', 'Delivered as part of BinduLogic.'],
+    outcome: 'Delivered for BinduLogic.',
     links: [
       {
         label: 'GitHub',
-        url: 'https://github.com/bracu-mongoltori/mt11-controls',
+        url: 'https://github.com/BinduLogic/bn-ansi-to-unicode',
       },
     ],
     gallery: [],
@@ -399,22 +401,22 @@ export const githubProjects: Project[] = [
     gallery: [],
   },
   {
-    slug: 'touchpad-solutions',
-    name: 'Touchpad Solutions',
-    tagline: "Appbaksho's web app, engineered end to end.",
+    slug: 'auracard',
+    name: 'Auracard',
+    tagline: 'A modern web app, shipped on TypeScript.',
     role: 'Full-stack Developer',
     type: 'product',
-    organization: 'Appbaksho',
+    organization: '',
     year: '2026',
-    date: '2026-06-10',
+    date: '2026-06-22',
     status: 'Live',
     featured: true,
     summary:
-      'Touchpad Solutions is a web app built with TypeScript, JavaScript for Appbaksho, deployed at touchpad-solutions.vercel.app.',
+      'Auracard Digital Identity Platform Auracard is a modern digital identity platform that enables professionals to create verified digital profiles accessible via NFC enabled cards and smart links. Live at auracard-tan.vercel.app.',
     cover: {
-      label: 'Touchpad Solutions',
-      caption: "Appbaksho's web app, engineered end to end.",
-      url: 'https://opengraph.githubassets.com/b4c9d56430a6c657/Appbaksho/touchpad-solutions',
+      label: 'Auracard',
+      caption: 'A modern web app, shipped on TypeScript.',
+      url: 'https://opengraph.githubassets.com/f5d3fbbdd2f3e2e4/muztahiddurjoy/Auracard',
     },
     metrics: [
       {
@@ -427,43 +429,42 @@ export const githubProjects: Project[] = [
       },
     ],
     stack: ['TypeScript', 'JavaScript'],
-    vision: 'Deliver Appbaksho a production-grade web app that scales with the business.',
-    problem: 'Appbaksho required a web app that works on every device and is easy to extend.',
+    vision: "Build Auracard a modern web app that's quick to load and easy to maintain.",
+    problem: 'Auracard wanted to retire slow, ageing tooling for a maintainable modern stack.',
     build: [
       'Built with TypeScript, JavaScript.',
-      'Shipped to production at touchpad-solutions.vercel.app.',
-      'Delivered as part of Appbaksho.',
+      'Shipped to production at auracard-tan.vercel.app.',
     ],
-    outcome: 'Live in production at touchpad-solutions.vercel.app.',
+    outcome: 'Live in production at auracard-tan.vercel.app.',
     links: [
       {
         label: 'Live site',
-        url: 'https://touchpad-solutions.vercel.app',
+        url: 'https://auracard-tan.vercel.app',
       },
       {
         label: 'GitHub',
-        url: 'https://github.com/Appbaksho/touchpad-solutions',
+        url: 'https://github.com/muztahiddurjoy/Auracard',
       },
     ],
     gallery: [],
   },
   {
-    slug: 'zf-pharma',
-    name: 'ZF Pharma',
-    tagline: 'Storefront crafted with TypeScript.',
+    slug: 'kotha-boli',
+    name: 'Kotha Boli',
+    tagline: 'Web App crafted with TypeScript.',
     role: 'Full-stack Developer',
     type: 'product',
-    organization: 'Appbaksho',
-    year: '2026',
-    date: '2026-06-08',
+    organization: '',
+    year: '2025',
+    date: '2026-06-21',
     status: 'Live',
     featured: true,
     summary:
-      'ZF Pharma A full stack online pharmacy management platform for Zf Pharma, Mirpur DOHS, Dhaka . The system consists of three applications: a customer facing storefront, an admin dashboard, and a NestJS REST API backend. Live at zf-pharma.vercel.app.',
+      'KothaBoli Language Learning Platform A modern platform connecting language learners with native speakers for personalized one on one sessions. Project Structure Quick Start Prerequisites Node.js 18+ and npm Docker and Docker Compose Database Setup 1. Live at kotha-boli.vercel.app.',
     cover: {
-      label: 'ZF Pharma',
-      caption: 'Storefront crafted with TypeScript.',
-      url: 'https://opengraph.githubassets.com/412f1273bbaaa43a/Appbaksho/zf-pharma',
+      label: 'Kotha Boli',
+      caption: 'Web App crafted with TypeScript.',
+      url: 'https://opengraph.githubassets.com/fd8d30c37924bd5c/muztahiddurjoy/kotha-boli',
     },
     metrics: [
       {
@@ -476,22 +477,21 @@ export const githubProjects: Project[] = [
       },
     ],
     stack: ['TypeScript', 'Python', 'JavaScript'],
-    vision: "Build Appbaksho a modern storefront that's quick to load and easy to maintain.",
-    problem: 'Appbaksho wanted to retire slow, ageing tooling for a maintainable modern stack.',
+    vision: "Build Kotha Boli a modern web app that's quick to load and easy to maintain.",
+    problem: 'Kotha Boli wanted to retire slow, ageing tooling for a maintainable modern stack.',
     build: [
       'Built with TypeScript, Python, JavaScript.',
-      'Shipped to production at zf-pharma.vercel.app.',
-      'Delivered as part of Appbaksho.',
+      'Shipped to production at kotha-boli.vercel.app.',
     ],
-    outcome: 'Live in production at zf-pharma.vercel.app.',
+    outcome: 'Live in production at kotha-boli.vercel.app.',
     links: [
       {
         label: 'Live site',
-        url: 'https://zf-pharma.vercel.app',
+        url: 'https://kotha-boli.vercel.app',
       },
       {
         label: 'GitHub',
-        url: 'https://github.com/Appbaksho/zf-pharma',
+        url: 'https://github.com/muztahiddurjoy/kotha-boli',
       },
     ],
     gallery: [],
