@@ -248,7 +248,7 @@ function ProjectRow({
           <ImageFrame
             label={v.cover.label}
             caption={v.cover.caption}
-            src={v.cover.image}
+            src={v.cover.image ?? v.cover.url}
             ratio="aspect-[16/10]"
           />
         </div>
@@ -287,7 +287,15 @@ function ProjectRow({
           <p className="mt-3 max-w-md text-lg leading-relaxed text-muted-foreground">
             {v.tagline}
           </p>
-          <p className="mt-2 text-sm text-muted-foreground">{v.role}</p>
+          <p className="mt-2 text-sm text-muted-foreground">
+            {v.role}
+            {v.organization && (
+              <>
+                {' · '}
+                <span className="text-foreground/80">{v.organization}</span>
+              </>
+            )}
+          </p>
 
           {/* metrics */}
           <div className="mt-6 flex flex-wrap gap-x-8 gap-y-3">

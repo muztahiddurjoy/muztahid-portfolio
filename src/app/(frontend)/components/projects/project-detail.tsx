@@ -182,6 +182,12 @@ export default function ProjectDetail({
         <Reveal delay={0.22} y={16}>
           <div className="mt-9 flex flex-wrap items-center gap-x-4 gap-y-2 text-sm text-muted-foreground">
             <span className="text-foreground">{project.role}</span>
+            {project.organization && (
+              <>
+                <Dot />
+                <span className="text-foreground">{project.organization}</span>
+              </>
+            )}
             <Dot />
             <span>{project.year}</span>
             <Dot />
@@ -232,7 +238,7 @@ export default function ProjectDetail({
             <ImageFrame
               label={project.cover.label}
               caption={project.cover.caption}
-              src={project.cover.image}
+              src={project.cover.image ?? project.cover.url}
               ratio="aspect-[16/9]"
             />
           </div>
@@ -331,7 +337,7 @@ export default function ProjectDetail({
                   <ImageFrame
                     label={shot.label}
                     caption={shot.caption}
-                    src={shot.image || undefined}
+                    src={shot.image ?? shot.url}
                     ratio="aspect-[4/3]"
                     index={String(i + 1).padStart(2, '0')}
                   />

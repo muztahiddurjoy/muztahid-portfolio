@@ -295,7 +295,7 @@ export function Home({
                 <article key={v.slug} className="grid items-center gap-8 md:grid-cols-2 md:gap-14">
                   <Reveal y={40} className={cn('relative', flip && 'md:order-2')}>
                     <TransitionLink href={href} data-cursor aria-label={`View ${v.name}`} className="block">
-                      <ImageFrame label={v.cover.label} caption={v.cover.caption} src={v.cover.image} ratio="aspect-[16/12]" />
+                      <ImageFrame label={v.cover.label} caption={v.cover.caption} src={v.cover.image ?? v.cover.url} ratio="aspect-[16/12]" />
                     </TransitionLink>
                   </Reveal>
 
@@ -313,7 +313,14 @@ export function Home({
 
                     <p className="mt-4 text-lg text-muted-foreground">{v.tagline}</p>
                     <p className="mt-4 text-sm text-muted-foreground">
-                      {v.role} &middot; {v.year} &middot; {v.status}
+                      {v.role}
+                      {v.organization && (
+                        <>
+                          {' '}
+                          &middot; <span className="text-foreground/80">{v.organization}</span>
+                        </>
+                      )}{' '}
+                      &middot; {v.year} &middot; {v.status}
                     </p>
 
                     <dl className="mt-7 flex flex-wrap gap-x-12 gap-y-5 border-t border-border pt-7">
